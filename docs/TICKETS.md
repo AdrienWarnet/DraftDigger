@@ -699,6 +699,16 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 **Terminé quand** : quelqu'un crée un build pour un nouveau champion et l'exporte en suivant le README.
 **Dépend de** : Epics 0 à 6.
 
+### T7.5 – Bouton « Installer l'app » (S)
+
+**Quoi** : proposer l'installation sans passer par le menu de Chrome.
+**À faire**
+- [ ] Capter l'événement `beforeinstallprompt` ; afficher un bouton « Installer l'app » (écran « À propos » ou bandeau discret) uniquement quand l'installation est possible.
+- [ ] Masquer le bouton une fois l'app installée (`appinstalled`, ou lancée en mode `standalone`).
+
+**Terminé quand** : sur Chrome Android, le bouton ouvre la fenêtre d'installation ; il n'apparaît pas dans l'app installée.
+**Dépend de** : T0.3.
+
 ---
 
 ## Ordre de réalisation conseillé
@@ -708,7 +718,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 3. **Builds et moteur** : T3.1 → T3.4, puis T4.1 → T4.6.
 4. **Éditeur de builds** : T3.5 → T3.9.
 5. **Usage** : T5.1 → T5.4, puis T6.1 → T6.5.
-6. **Finition** : T1.5, puis T7.1 → T7.4.
+6. **Finition** : T1.5, puis T7.1 → T7.5.
 
 ## Plus tard (hors MVP)
 

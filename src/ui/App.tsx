@@ -1,3 +1,5 @@
+import { GameDataGate } from './data/GameDataGate'
+import { GameDataProvider } from './data/GameDataProvider'
 import { AppShell } from './layout/AppShell'
 import { DEV_SHOWCASE, SCREENS, type Route } from './navigation/routes'
 import { useRoute } from './navigation/useRoute'
@@ -30,9 +32,13 @@ function Screen({ route }: { route: Route }) {
 function App() {
   const route = useRoute()
   return (
-    <AppShell route={route} title={titleFor(route)}>
-      <Screen route={route} />
-    </AppShell>
+    <GameDataProvider>
+      <AppShell route={route} title={titleFor(route)}>
+        <GameDataGate>
+          <Screen route={route} />
+        </GameDataGate>
+      </AppShell>
+    </GameDataProvider>
   )
 }
 
