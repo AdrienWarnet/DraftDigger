@@ -22,9 +22,11 @@ Sur le téléphone (Chrome Android) : ouvrir l'URL, puis menu ⋮ → « Install
 
 ### Déploiement
 
-`main` = prod. Chaque push sur `main` (merge d'une epic validée) déclenche GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) : lint, tests, build, publication sur GitHub Pages. Lancement manuel possible depuis l'onglet Actions (« Run workflow »).
+`main` = prod. Chaque push sur `main` (merge d'une epic validée) déclenche GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) : lint, tests, build, puis publication du site construit dans la branche `gh-pages`, servie par GitHub Pages. Lancement manuel possible depuis l'onglet Actions (« Run workflow »).
 
-Réglage GitHub (une seule fois) : Settings → Pages → Source : **GitHub Actions**.
+Réglage GitHub (une seule fois) : Settings → Pages → Source : **Deploy from a branch** → `gh-pages` / `(root)`.
+
+La branche `gh-pages` est générée par la CI : ne jamais la modifier à la main.
 
 ### Composants d'interface
 
