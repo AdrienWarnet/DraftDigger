@@ -348,16 +348,6 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 **Terminé quand** : tests sur des compos réelles (ex : Lux + Nami → Lux mid, Nami support) ; une correction manuelle est respectée ; le vis-à-vis suit le poste du joueur et les corrections ; aucun vis-à-vis si personne n'est à ce poste.
 **Dépend de** : T2.2.
 
-### T2.4 – Draft partielle (S)
-
-**Quoi** : l'app fonctionne même si tout n'est pas rempli.
-**À faire**
-- [ ] Les métriques du moteur (T4.1) tolèrent des emplacements vides.
-- [ ] Un message indique combien d'ennemis sont connus (« recommandation basée sur 3/5 ennemis »).
-
-**Terminé quand** : avec 0 ennemi, l'écran ne plante pas et le moteur renvoie un résultat de confiance « low ».
-**Dépend de** : T2.2.
-
 ### T2.5 – Sauvegarde et réinitialisation (S)
 
 **Quoi** : ne pas perdre la partie en cours si le navigateur se ferme.
@@ -365,7 +355,7 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 - [ ] Store (Zustand ou Context) avec persistance `localStorage`.
 - [ ] Bouton « Nouvelle partie » avec confirmation qui remet tout à zéro.
 
-**Terminé quand** : recharger la page restaure draft (postes compris), items achetés et situation.
+**Terminé quand** : recharger la page restaure draft (postes compris), items achetés et situation (ces deux derniers dès qu'ils existent, epic 6) ; une sauvegarde illisible repart d'une draft vide sans planter.
 **Dépend de** : T2.2.
 
 ---
@@ -503,7 +493,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 - [ ] `laneOpponentDamage` : `"ad"` si part AD ≥ 0,65, `"ap"` si part AP ≥ 0,65, sinon `"mixed"`.
 - [ ] Gérer 0 à 5 ennemis (retourner aussi `knownEnemies`).
 
-**Terminé quand** : tests sur 3 compos (full AD, full AP, mixte) et sur une compo vide.
+**Terminé quand** : tests sur 3 compos (full AD, full AP, mixte), sur une compo partielle et sur une compo vide (ex-T2.4 : avec 0 ennemi, pas de plantage et confiance « low » en sortie du moteur).
 **Dépend de** : T1.2.
 
 ### T4.2 – Calcul de réduction de dégâts (M)
@@ -598,6 +588,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 - [ ] Carte « Build recommandé » (nom, runes, sorts) avec `BuildView` de T3.3.
 - [ ] Carte « Premier item » (image, nom, raison).
 - [ ] Les `reasons` en puces courtes.
+- [ ] Draft partielle (ex-T2.4) : message « Recommandation basée sur 3/5 ennemis » ; avec 0 ennemi, l'écran ne plante pas.
 - [ ] Bouton « Lancer la partie » qui ouvre l'écran Partie.
 
 **Terminé quand** : en saisissant une compo, la recommandation apparaît en moins d'une seconde.

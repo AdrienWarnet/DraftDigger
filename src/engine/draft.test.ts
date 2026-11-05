@@ -3,6 +3,9 @@ import {
   addEnemy,
   emptyDraft,
   enemyLayout,
+  hasDraftContent,
+  newGame,
+  parseDraft,
   MAX_ENEMIES,
   pickedChampionIds,
   playerChampionId,
@@ -103,5 +106,78 @@ describe('enemyLayout', () => {
     draft = addEnemy(draft, 'Lux', 'top') // index 1, fixé top
     draft = addEnemy(draft, 'Nami') // index 2, sans poste
     expect(enemyLayout(draft)).toEqual({ top: 1, jungle: 0, mid: 2, bot: null, support: null })
+  })
+})
+
+describe('newGame', () => {
+  it('vide la draft mais garde le poste et le champion du joueur', () => {
+    let draft = setPlayerPosition(emptyDraft(), 'jungle')
+    draft = setAlly(draft, 'jungle', 'LeeSin')
+    draft = setAlly(draft, 'mid', 'Ahri')
+    draft = addEnemy(draft, 'Zed', 'mid')
+    const next = newGame(draft)
+    expect(next.playerPosition).toBe('jungle')
+    expect(next.allies).toEqual({
+      top: null,
+      jungle: 'LeeSin',
+      mid: null,
+      bot: null,
+      support: null,
+    })
+    expect(next.enemies).toEqual([])
+    expect(hasDraftContent(next)).toBe(false)
+    expect(hasDraftContent(draft)).toBe(true)
+  })
+})
+
+describe('parseDraft', () => {
+  it('relit une draft sauvegardée à l’identique', () => {
+    let draft = setPlayerPosition(emptyDraft(), 'mid')
+    draft = setAlly(draft, 'mid', 'Ahri')
+    draft = addEnemy(draft, 'Zed', 'mid')
+    draft = addEnemy(draft, 'Lux')
+    expect(parseDraft(JSON.parse(JSON.stringify(draft)))).toEqual(draft)
+  })
+
+  it.each([
+    null,
+    'texte',
+    [],
+    { playerPosition: 'milieu', allies: {}, enemies: [] },
+    { playerPosition: 'top' },
+  ])('sauvegarde illisible : null (%o)', (value) => {
+    expect(parseDraft(value)).toBeNull()
+  })
+
+  it('écarte les doublons, les ennemis en trop et les valeurs invalides', () => {
+    const draft = parseDraft({
+      playerPosition: 'top',
+      allies: { top: 'Yorick', jungle: 42, mid: 'Yorick' },
+      enemies: [
+        { championId: 'Zed', lockedPosition: 'mid' },
+        { championId: 'Zed' },
+        { championId: 'Yorick' },
+        'Lux',
+        { championId: 'A', lockedPosition: 'milieu' },
+        { championId: 'B' },
+        { championId: 'C' },
+        { championId: 'D' },
+        { championId: 'E' },
+      ],
+    })
+    expect(draft?.allies).toEqual({
+      top: 'Yorick',
+      jungle: null,
+      mid: null,
+      bot: null,
+      support: null,
+    })
+    expect(draft?.enemies).toEqual([
+      { championId: 'Zed', lockedPosition: 'mid' },
+      { championId: 'A', lockedPosition: null },
+      { championId: 'B', lockedPosition: null },
+      { championId: 'C', lockedPosition: null },
+      { championId: 'D', lockedPosition: null },
+    ])
   })
 })

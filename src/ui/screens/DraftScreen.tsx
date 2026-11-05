@@ -1,4 +1,11 @@
-import { enemyLayout, MAX_ENEMIES, pickedChampionIds, type Draft } from '../../engine/draft'
+import { useState } from 'react'
+import {
+  enemyLayout,
+  hasDraftContent,
+  MAX_ENEMIES,
+  pickedChampionIds,
+  type Draft,
+} from '../../engine/draft'
 import { POSITIONS, type Champion, type Position } from '../../engine/types'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
@@ -27,6 +34,8 @@ export function DraftScreen() {
   const removeEnemy = useDraftStore((s) => s.removeEnemy)
   const moveEnemy = useDraftStore((s) => s.moveEnemy)
   const unlockEnemy = useDraftStore((s) => s.unlockEnemy)
+  const startNewGame = useDraftStore((s) => s.newGame)
+  const [confirmingReset, setConfirmingReset] = useState(false)
 
   const layout = enemyLayout(draft, positionRates)
   const target = validTarget(parsePickerTarget(useRouteParams()), draft)
@@ -155,6 +164,35 @@ export function DraftScreen() {
             Ajouter un ennemi
           </Button>
         )}
+        {hasDraftContent(draft) &&
+          (confirmingReset ? (
+            <div
+              className={styles.confirm}
+              role="group"
+              aria-labelledby="confirmer-nouvelle-partie"
+            >
+              <p id="confirmer-nouvelle-partie">
+                Effacer cette draft ? Ton poste et ton champion sont gardés.
+              </p>
+              <div className={styles.confirmActions}>
+                <Button variant="secondary" onClick={() => setConfirmingReset(false)}>
+                  Annuler
+                </Button>
+                <Button
+                  onClick={() => {
+                    startNewGame()
+                    setConfirmingReset(false)
+                  }}
+                >
+                  Nouvelle partie
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Button variant="ghost" block onClick={() => setConfirmingReset(true)}>
+              Nouvelle partie
+            </Button>
+          ))}
       </div>
 
       {target && (

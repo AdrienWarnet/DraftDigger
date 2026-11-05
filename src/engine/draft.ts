@@ -128,3 +128,57 @@ export function removeEnemy(draft: Draft, index: number): Draft {
   if (!draft.enemies[index]) return draft
   return { ...draft, enemies: draft.enemies.filter((_, i) => i !== index) }
 }
+
+/**
+ * Nouvelle partie : vide la draft mais garde le poste et le champion du joueur
+ * (il rejoue souvent le même).
+ */
+export function newGame(draft: Draft): Draft {
+  const next = emptyDraft(draft.playerPosition)
+  const player = playerChampionId(draft)
+  return player ? setAlly(next, draft.playerPosition, player) : next
+}
+
+/** `true` si la draft contient autre chose que le champion du joueur. */
+export function hasDraftContent(draft: Draft): boolean {
+  if (draft.enemies.length > 0) return true
+  return POSITIONS.some((p) => p !== draft.playerPosition && draft.allies[p] !== null)
+}
+
+/**
+ * Relit une draft sauvegardée. Renvoie `null` si elle est illisible ;
+ * les champions en double ou les ennemis en trop sont écartés.
+ */
+export function parseDraft(value: unknown): Draft | null {
+  if (!isRecord(value) || !isPosition(value.playerPosition) || !isRecord(value.allies)) return null
+  if (!Array.isArray(value.enemies)) return null
+
+  let draft = emptyDraft(value.playerPosition)
+  for (const position of POSITIONS) {
+    const id = value.allies[position]
+    if (typeof id === 'string' && id) draft = setAlly(draft, position, id)
+  }
+  for (const enemy of value.enemies) {
+    if (!isRecord(enemy) || typeof enemy.championId !== 'string' || !enemy.championId) continue
+    const locked = isPosition(enemy.lockedPosition) ? enemy.lockedPosition : null
+    draft = addEnemy(draft, enemy.championId)
+    const last = draft.enemies.at(-1)
+    if (locked && last?.championId === enemy.championId && last.lockedPosition === null) {
+      draft = {
+        ...draft,
+        enemies: draft.enemies.map((e, i, all) =>
+          i === all.length - 1 ? { ...e, lockedPosition: locked } : e,
+        ),
+      }
+    }
+  }
+  return draft
+}
+
+function isPosition(value: unknown): value is Position {
+  return (POSITIONS as readonly unknown[]).includes(value)
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
