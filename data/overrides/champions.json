@@ -1,0 +1,40 @@
+{
+  "_format": "Clé = id Data Dragon du champion. Champs facultatifs : damage {ad, ap, true} (remplace, ramené à une somme de 1), threats {cc, burst, engage, heal, tank} de 0 à 3 (complète), tags (remplace), note (libre). Les clés qui commencent par _ sont ignorées.",
+
+  "DrMundo": { "threats": { "heal": 3 }, "note": "Régénération massive." },
+  "Warwick": { "threats": { "heal": 3 }, "note": "Drain de vie." },
+  "Aatrox": { "threats": { "heal": 3 }, "note": "Omnivampirisme." },
+  "Vladimir": { "threats": { "heal": 3 }, "note": "Soins sur ses sorts." },
+  "Soraka": { "threats": { "heal": 3 }, "note": "Soins d'équipe." },
+  "Yuumi": { "threats": { "heal": 3 }, "note": "Soins sur son porteur." },
+  "Sylas": { "threats": { "heal": 2 } },
+  "Swain": { "threats": { "heal": 2 } },
+  "Briar": { "threats": { "heal": 2 } },
+  "Fiddlesticks": { "threats": { "heal": 2 } },
+  "Olaf": { "threats": { "heal": 2 } },
+  "Volibear": { "threats": { "heal": 2 } },
+  "Illaoi": { "threats": { "heal": 2 } },
+  "Sona": { "threats": { "heal": 2 } },
+  "Nami": { "threats": { "heal": 2 } },
+
+  "Gwen": {
+    "damage": { "ad": 0.15, "ap": 0.85 },
+    "note": "Dégâts surtout magiques ; valeur estimée."
+  },
+  "Akali": { "damage": { "ad": 0.15, "ap": 0.85 }, "note": "Valeur estimée." },
+  "Fizz": { "damage": { "ad": 0.15, "ap": 0.85 }, "note": "Valeur estimée." },
+  "Ekko": { "damage": { "ad": 0.15, "ap": 0.85 }, "note": "Valeur estimée." },
+  "Diana": { "damage": { "ad": 0.15, "ap": 0.85 }, "note": "Valeur estimée." },
+  "Evelynn": { "damage": { "ad": 0.1, "ap": 0.9 }, "note": "Valeur estimée." },
+  "Elise": { "damage": { "ad": 0.15, "ap": 0.85 }, "note": "Valeur estimée." },
+  "Kennen": { "damage": { "ad": 0.2, "ap": 0.8 }, "note": "Valeur estimée." },
+  "Mordekaiser": { "damage": { "ad": 0.1, "ap": 0.9 }, "note": "Valeur estimée." },
+  "Corki": {
+    "damage": { "ad": 0.3, "ap": 0.7 },
+    "note": "Passif en dégâts magiques ; valeur estimée."
+  },
+  "Belveth": {
+    "damage": { "ad": 0.85, "ap": 0.15 },
+    "note": "Dégâts surtout physiques ; valeur estimée."
+  }
+}

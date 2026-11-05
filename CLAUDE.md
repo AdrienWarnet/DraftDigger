@@ -3,14 +3,14 @@
 ## Le projet
 WebApp mobile-first (PWA) pour League of Legends. Le joueur crée ses propres builds (runes + sorts + items + conditions d'usage) **dans l'app**, pour n'importe quel champion, et les enregistre sur son téléphone.
 
-- **Avant la game** : il choisit son champion, saisit la compo alliée et ennemie (+ son vis-à-vis de lane). L'app recommande l'un de ses builds pour ce champion et le premier item, avec une explication.
+- **Avant la game** : il choisit son poste (top, jungle, mid, bot, support) et son champion, saisit la compo alliée et ennemie poste par poste (son vis-à-vis = l'ennemi du même poste). L'app recommande l'un de ses builds pour ce champion à ce poste et le premier item, avec une explication.
 - **Pendant la game** : il saisit ses items achetés et sa situation (devant / égalité / en retard). L'app propose les prochains items avec une explication.
 
 Le moteur est **générique** : aucun code spécifique à un champion. L'app démarre avec un build d'exemple (Yorick) pour pouvoir tester tout de suite.
 
 ## Périmètre actuel : MVP uniquement
 Tickets des epics 0 à 7. Tout tourne sur le téléphone : aucun serveur.
-Ne PAS faire : backend, comptes, lecture de partie en direct, recommandation de pick, données automatiques (stats de builds), éditeur avancé de conditions.
+Ne PAS faire : backend, comptes, lecture de partie en direct, recommandation de pick, données automatiques (stats de builds), éditeur avancé de conditions, quêtes de rôle (epic 8, plus tard).
 Un backend viendra probablement plus tard (calculs plus lourds, synchro) : l'accès aux builds passe par une interface `BuildRepository` pour pouvoir changer d'implémentation sans toucher au moteur ni à l'UI.
 
 ## Stack

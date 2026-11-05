@@ -32,6 +32,16 @@ La branche `gh-pages` est générée par la CI : ne jamais la modifier à la mai
 
 En dev uniquement, `#/composants` affiche tous les composants de base (boutons, cartes, onglets, bandeau « Pourquoi »). Les couleurs, tailles et espacements sont dans [src/ui/theme/tokens.css](src/ui/theme/tokens.css).
 
+### Corriger les données du jeu
+
+Data Dragon ne dit pas tout (soins, anti-tank, répartition AD/AP de certains champions). Les corrections se font sans toucher au code :
+
+- [data/overrides/champions.json](data/overrides/champions.json) : par id de champion, `damage`, `threats` (`cc`, `burst`, `engage`, `heal`, `tank` de 0 à 3), `tags`.
+- [data/overrides/items.json](data/overrides/items.json) : par id d'item, `addCategories` / `removeCategories` (ex : `antitank`).
+- [data/defaults/](data/defaults/) : règles par défaut (menaces par classe de champion, catégories d'items).
+
+Le format est rappelé dans la clé `_format` de chaque fichier. Un id inconnu ou une valeur invalide produit un avertissement dans la console du navigateur, sans bloquer l'app.
+
 ### Tester sur le téléphone pendant le dev
 
 `npm run dev:phone`, puis ouvrir sur le téléphone l'adresse « Network » affichée (même wifi que le PC). Pas d'installation ni de hors-ligne dans ce mode.
@@ -61,6 +71,7 @@ src/
   store/      # état de la partie
 data/
   builds/     # build d'exemple
+  defaults/   # valeurs par défaut (menaces par classe de champion)
   presets/    # presets de conditions de l'éditeur
   overrides/  # corrections manuelles champions / items
 docs/TICKETS.md   # tickets du MVP
