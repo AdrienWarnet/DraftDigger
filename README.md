@@ -26,6 +26,10 @@ Sur le téléphone (Chrome Android) : ouvrir l'URL, puis menu ⋮ → « Install
 
 Réglage GitHub (une seule fois) : Settings → Pages → Source : **GitHub Actions**.
 
+### Composants d'interface
+
+En dev uniquement, `#/composants` affiche tous les composants de base (boutons, cartes, onglets, bandeau « Pourquoi »). Les couleurs, tailles et espacements sont dans [src/ui/theme/tokens.css](src/ui/theme/tokens.css).
+
 ### Tester sur le téléphone pendant le dev
 
 `npm run dev:phone`, puis ouvrir sur le téléphone l'adresse « Network » affichée (même wifi que le PC). Pas d'installation ni de hors-ligne dans ce mode.

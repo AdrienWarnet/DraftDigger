@@ -1,0 +1,40 @@
+.banner {
+  position: relative;
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
+  background: linear-gradient(90deg, rgb(201 165 76 / 0.14), rgb(201 165 76 / 0.03) 70%);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* Le filet doré : repère visuel constant du « pourquoi » dans toute l'app. */
+.banner::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--color-accent);
+}
+
+.title {
+  margin-bottom: var(--space-2);
+  color: var(--color-accent-strong);
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.single,
+.list {
+  font-size: var(--text-base);
+  max-width: 60ch;
+}
+
+.list {
+  margin: 0;
+  padding-left: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.list li::marker {
+  color: var(--color-accent);
+}
