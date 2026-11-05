@@ -17,6 +17,7 @@ export type RawChampion = {
 
 export type RawItem = {
   name: string
+  description?: string // HTML
   from?: string[]
   into?: string[]
   gold: { base: number; total: number; sell: number; purchasable: boolean }

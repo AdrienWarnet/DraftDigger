@@ -1,0 +1,26 @@
+{
+  "fromTags": {
+    "Armor": "armor",
+    "SpellBlock": "mr",
+    "MagicResist": "mr",
+    "Health": "hp",
+    "Damage": "ad",
+    "SpellDamage": "ap",
+    "AttackSpeed": "attackspeed",
+    "CriticalStrike": "crit",
+    "LifeSteal": "lifesteal",
+    "SpellVamp": "omnivamp",
+    "ArmorPenetration": "armorpen",
+    "MagicPenetration": "magicpen",
+    "AbilityHaste": "haste",
+    "Tenacity": "tenacity",
+    "Boots": "boots",
+    "NonbootsMovement": "mobility",
+    "Consumable": "consumable",
+    "Trinket": "trinket",
+    "Vision": "vision"
+  },
+  "fromDescription": {
+    "antiheal": ["Hémorragie"]
+  }
+}

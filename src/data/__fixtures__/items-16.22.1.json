@@ -1,0 +1,287 @@
+{
+  "version": "16.22.1",
+  "items": {
+    "3075": {
+      "name": "Cotte épineuse",
+      "description": "<mainText><stats><attention>+150</attention> PV<br><attention>+75</attention> armure</stats><br><br><passive>Épines</passive><br>Quand vous êtes touché par une attaque, vous infligez des <magicDamage>dégâts magiques</magicDamage> à l'attaquant, ainsi que 40% d'<keyword>Hémorragie</keyword> pendant 3 sec si c'est un champion.</mainText>",
+      "from": ["3076", "1031", "1028"],
+      "gold": {
+        "base": 450,
+        "purchasable": true,
+        "total": 2450,
+        "sell": 1715
+      },
+      "tags": ["Health", "Armor"],
+      "maps": {
+        "11": true
+      },
+      "stats": {
+        "FlatHPPoolMod": 150,
+        "FlatArmorMod": 75
+      },
+      "image": {
+        "full": "3075.png"
+      },
+      "depth": 3
+    },
+    "323075": {
+      "name": "Cotte épineuse",
+      "description": "<mainText><stats><attention>+200</attention> PV<br><attention>+85</attention> armure</stats><br><br><passive>Épines</passive><br>Quand vous êtes touché par une attaque, vous infligez des <magicDamage>dégâts magiques</magicDamage> à l'attaquant, ainsi que 40% d'<keyword>Hémorragie</keyword> pendant 3 sec si c'est un champion.</mainText>",
+      "from": ["3076", "1031", "1028"],
+      "gold": {
+        "base": 650,
+        "purchasable": true,
+        "total": 2650,
+        "sell": 1855
+      },
+      "tags": ["Health", "Armor"],
+      "maps": {
+        "11": true
+      },
+      "stats": {
+        "FlatHPPoolMod": 200,
+        "FlatArmorMod": 85
+      },
+      "image": {
+        "full": "323075.png"
+      },
+      "depth": 3
+    },
+    "1029": {
+      "name": "Armure d'étoffe",
+      "description": "<mainText><stats><attention>+15</attention> armure</stats><br><br></mainText>",
+      "into": [
+        "2421",
+        "2420",
+        "1031",
+        "323050",
+        "323190",
+        "2019",
+        "3193",
+        "3047",
+        "3024",
+        "3050",
+        "2524",
+        "3023",
+        "3076",
+        "3082",
+        "3105",
+        "3190"
+      ],
+      "gold": {
+        "base": 300,
+        "purchasable": true,
+        "total": 300,
+        "sell": 210
+      },
+      "tags": ["Armor"],
+      "maps": {
+        "11": true
+      },
+      "stats": {
+        "FlatArmorMod": 15
+      },
+      "image": {
+        "full": "1029.png"
+      }
+    },
+    "3065": {
+      "name": "Visage spirituel",
+      "description": "<mainText><stats><attention>+400</attention> PV<br><attention>+50</attention> résistance magique<br><attention>+10</attention> accélération de compétence<br><attention>+100%</attention> de régénération de base des PV</stats><br><br><passive>Vitalité intarissable</passive><br>Les soins et les boucliers que vous recevez sont augmentés de 25%.</mainText>",
+      "from": ["3211", "3067"],
+      "gold": {
+        "base": 650,
+        "purchasable": true,
+        "total": 2700,
+        "sell": 1890
+      },
+      "tags": ["Health", "SpellBlock", "HealthRegen", "CooldownReduction", "AbilityHaste"],
+      "maps": {
+        "11": true
+      },
+      "stats": {
+        "FlatSpellBlockMod": 50,
+        "FlatHPPoolMod": 400
+      },
+      "image": {
+        "full": "3065.png"
+      },
+      "depth": 3
+    },
+    "1028": {
+      "name": "Cristal de rubis",
+      "description": "<mainText><stats><attention>+150</attention> PV</stats><br><br></mainText>",
+      "into": [
+        "3742",
+        "1011",
+        "3068",
+        "2021",
+        "323222",
+        "323075",
+        "326617",
+        "323107",
+        "3012",
+        "3147",
+        "3067",
+        "3211",
+        "2502",
+        "322526",
+        "2526",
+        "3023",
+        "3044",
+        "3053",
+        "3066",
+        "3075",
+        "3152",
+        "3161",
+        "3801",
+        "3803",
+        "4401",
+        "4635",
+        "6035",
+        "6660",
+        "6662"
+      ],
+      "gold": {
+        "base": 400,
+        "purchasable": true,
+        "total": 400,
+        "sell": 280
+      },
+      "tags": ["Health"],
+      "maps": {
+        "11": true
+      },
+      "stats": {
+        "FlatHPPoolMod": 150
+      },
+      "image": {
+        "full": "1028.png"
+      }
+    },
+    "3165": {
+      "name": "Morellonomicon",
+      "description": "<mainText><stats><attention>+75</attention> puissance<br><attention>+350</attention> PV<br><attention>+15</attention> accélération de compétence</stats><br><br><passive>Hémorragie</passive><br>Infliger des <magicDamage>dégâts magiques</magicDamage> aux champions leur inflige <keyword>40% d'Hémorragie</keyword> pendant 3 sec.</mainText>",
+      "from": ["3916", "1026", "3067"],
+      "gold": {
+        "base": 400,
+        "purchasable": true,
+        "total": 2850,
+        "sell": 1995
+      },
+      "tags": ["Health", "SpellDamage", "CooldownReduction", "AbilityHaste"],
+      "maps": {
+        "11": true
+      },
+      "stats": {
+        "FlatHPPoolMod": 350,
+        "FlatMagicDamageMod": 75
+      },
+      "image": {
+        "full": "3165.png"
+      },
+      "depth": 3
+    },
+    "6694": {
+      "name": "Rancune de Serylda",
+      "description": "<mainText><stats><attention>+45</attention> dégâts d'attaque<br><attention>+35%</attention> de pénétration d'armure<br><attention>+15</attention> accélération de compétence</stats><br><br><passive>Froid mordant</passive><br>Vos compétences blessantes <status>ralentissent</status> de 30% pendant 1 sec les ennemis qui ont moins de 50% de leurs PV.</mainText>",
+      "from": ["3133", "3035"],
+      "gold": {
+        "base": 500,
+        "purchasable": true,
+        "total": 3000,
+        "sell": 2100
+      },
+      "tags": ["Damage", "CooldownReduction", "ArmorPenetration", "AbilityHaste"],
+      "maps": {
+        "11": true
+      },
+      "stats": {
+        "FlatPhysicalDamageMod": 45
+      },
+      "image": {
+        "full": "6694.png"
+      },
+      "depth": 3
+    },
+    "3123": {
+      "name": "Marque du bourreau",
+      "description": "<mainText><stats><attention>+15</attention> dégâts d'attaque</stats><br><br><passive>Hémorragie</passive><br>Infliger des dégâts physiques aux champions leur inflige <keyword>40% d'Hémorragie</keyword> pendant 3 sec.</mainText>",
+      "from": ["1036"],
+      "into": ["3033", "6609"],
+      "gold": {
+        "base": 450,
+        "purchasable": true,
+        "total": 800,
+        "sell": 560
+      },
+      "tags": ["Damage"],
+      "maps": {
+        "11": true
+      },
+      "stats": {
+        "FlatPhysicalDamageMod": 15
+      },
+      "image": {
+        "full": "3123.png"
+      },
+      "depth": 2
+    },
+    "3330": {
+      "name": "Effigie d'épouvantail",
+      "description": "<mainText><stats></stats><br><br>Ne peut être vendu<br><br><active>Propriété active - Relique :</active> vous posez une Effigie qui dure 0 sec et ressemble exactement à la manière dont Fiddlesticks apparaît aux ennemis. L'objet stocke une charge toutes les 0 sec, jusqu'à un maximum de 2 charges.<br><br>Les champions ennemis qui s'approchent d'une Effigie l'activent : l'Effigie feint alors une action aléatoire, après quoi elle disparaît.</mainText>",
+      "gold": {
+        "base": 0,
+        "purchasable": true,
+        "total": 0,
+        "sell": 0
+      },
+      "tags": ["Active", "Jungle", "Lane", "Trinket", "Vision"],
+      "maps": {
+        "11": true
+      },
+      "stats": {},
+      "image": {
+        "full": "3330.png"
+      },
+      "requiredChampion": "FiddleSticks"
+    },
+    "1040": {
+      "name": "Lame d'obsidienne",
+      "description": "<mainText><stats></stats><br><br><passive>8%</passive> d'omnivampirisme contre les monstres de la jungle.<br><li><passive>Brûlure :</passive> blesser des monstres de la jungle leur applique une brûlure qui inflige <magicDamage>0 pts de dégâts magiques</magicDamage> en 5 sec.<li><passive>Chemin automatique :</passive> lancer 5 fois Châtiment <status>consomme</status> cet objet et améliore votre Attaque-Châtiment, ce qui augmente ses dégâts contre les monstres à <trueDamage>900</trueDamage>.<li><passive>Chasseur :</passive> tuer des grands monstres de la jungle vous octroie de l'expérience supplémentaire.<li><passive>Respiration :</passive> dans la jungle ou la rivière, vous régénérez jusqu'à <scaleMana>0 pts de mana</scaleMana> par seconde (selon votre mana manquant). <br><br><rules><status>Consommer</status> cet objet vous octroie tous ses effets de façon permanente et augmente les dégâts de Châtiment contre les monstres. Si vous avez gagné plus de PO en tuant des sbires qu'en tuant des monstres de la jungle, les PO et l'expérience que vous rapportent les sbires sont largement réduites. Les soins ne sont pas réduits pour les attaques à effet de zone. Si vous avez deux niveaux de moins que le niveau moyen des champions de la partie, tuer des monstres vous rapporte de l'expérience supplémentaire. </rules></mainText>",
+      "gold": {
+        "base": 350,
+        "purchasable": true,
+        "total": 350,
+        "sell": 140
+      },
+      "tags": ["LifeSteal", "SpellVamp", "Jungle"],
+      "maps": {
+        "11": false
+      },
+      "stats": {},
+      "image": {
+        "full": "1040.png"
+      }
+    },
+    "1501": {
+      "name": "Fortification",
+      "description": "<mainText><stats></stats><br><br></mainText>",
+      "gold": {
+        "base": 0,
+        "purchasable": false,
+        "total": 0,
+        "sell": 0
+      },
+      "tags": [],
+      "maps": {
+        "11": true
+      },
+      "stats": {},
+      "image": {
+        "full": "1501.png"
+      },
+      "inStore": false
+    }
+  }
+}
