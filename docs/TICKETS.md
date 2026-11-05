@@ -300,7 +300,7 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 - [ ] `data/overrides/champions.json` : surcharge par `id` de `damage`, `threats`, `tags`.
 - [ ] `data/overrides/items.json` : ajout de catégories (`antiheal`, `antitank`...).
 - [ ] Fusion des overrides dans T1.2 et T1.3, avec validation (un `id` inconnu produit un avertissement console, pas un crash).
-- [ ] Pré-remplir quelques overrides évidents (items anti-soin connus, champions mixtes).
+- [ ] Pré-remplir quelques overrides évidents : champions qui se soignent ou se régénèrent (menace `heal`, ex : Dr. Mundo, Warwick, Aatrox, Vladimir, Soraka), champions dont la répartition AD/AP de Data Dragon est fausse, items anti-tank. Liste à valider par le joueur.
 
 **Terminé quand** : modifier un override change le champion ou l'item affiché sans toucher au code.
 **Dépend de** : T1.2, T1.3.

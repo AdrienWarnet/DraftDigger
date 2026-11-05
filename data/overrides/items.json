@@ -1,0 +1,18 @@
+{
+  "_format": "Clé = id Data Dragon de l'item. Champs facultatifs : addCategories, removeCategories (listes), note (libre). L'anti-soin est détecté automatiquement (« Hémorragie »), pas besoin de l'ajouter. Les clés qui commencent par _ sont ignorées.",
+
+  "3036": {
+    "addCategories": ["antitank"],
+    "note": "Salutations de Dominik : pénétration d'armure, dégâts bonus contre les gros PV."
+  },
+  "3033": { "addCategories": ["antitank"], "note": "Rappel mortel : pénétration d'armure." },
+  "6694": { "addCategories": ["antitank"], "note": "Rancune de Serylda : pénétration d'armure." },
+  "3071": { "addCategories": ["antitank"], "note": "Couperet noir : réduction d'armure." },
+  "3153": {
+    "addCategories": ["antitank"],
+    "note": "Lame du roi déchu : dégâts en % des PV actuels."
+  },
+  "3135": { "addCategories": ["antitank"], "note": "Bâton du vide : pénétration magique." },
+  "3137": { "addCategories": ["antitank"], "note": "Fleur de crypte : pénétration magique." },
+  "6653": { "addCategories": ["antitank"], "note": "Tourment de Liandry : dégâts en % des PV max." }
+}
