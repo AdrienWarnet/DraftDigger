@@ -38,6 +38,18 @@ export default defineConfig({
       workbox: {
         // Toute l'app est mise en cache : lancement instantané et hors ligne.
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+        // Icônes Data Dragon (champions, items, runes, sorts) : gardées en cache pour le hors-ligne.
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/ddragon\.leagueoflegends\.com\/cdn\/.*\.png$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'ddragon-images',
+              expiration: { maxEntries: 800, maxAgeSeconds: 60 * 60 * 24 * 60 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
       },
     }),
   ],
