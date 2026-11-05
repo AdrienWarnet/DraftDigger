@@ -233,7 +233,7 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 - [ ] `vite-plugin-pwa` : manifest (nom, icônes, couleur), service worker.
 - [ ] Mise en cache de l'app pour un lancement rapide.
 
-**Terminé quand** : l'audit Lighthouse PWA est valide et l'app est installable sur Android.
+**Terminé quand** : Chrome ne remonte aucune erreur d'installabilité (DevTools → Application → Manifest ; l'audit PWA de Lighthouse n'existe plus depuis Lighthouse 12), l'app se relance hors ligne, et elle est installable sur Android.
 **Dépend de** : T0.2.
 
 ### T0.4 – Thème mobile-first (S)
