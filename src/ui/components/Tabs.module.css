@@ -10,8 +10,9 @@
 }
 
 .tab {
+  min-width: 0;
   min-height: var(--touch-min);
-  padding: 0 var(--space-2);
+  padding: 0 var(--space-1);
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
@@ -41,4 +42,9 @@
 
 .behind[aria-checked='true'] {
   background: var(--color-behind);
+}
+
+/* 5 options ou plus (ex : postes) : texte plus petit pour tenir sur un petit écran. */
+.tabs[data-dense] .tab {
+  font-size: var(--text-sm);
 }

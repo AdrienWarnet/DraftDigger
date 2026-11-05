@@ -3,7 +3,7 @@
 ## Le projet
 WebApp mobile-first (PWA) pour League of Legends. Le joueur crée ses propres builds (runes + sorts + items + conditions d'usage) **dans l'app**, pour n'importe quel champion, et les enregistre sur son téléphone.
 
-- **Avant la game** : il choisit son poste (top, jungle, mid, bot, support) et son champion, saisit la compo alliée et ennemie poste par poste (son vis-à-vis = l'ennemi du même poste). L'app recommande l'un de ses builds pour ce champion à ce poste et le premier item, avec une explication.
+- **Avant la game** : il choisit son poste (top, jungle, mid, bot, support) et son champion, saisit ses alliés poste par poste et les ennemis dans n'importe quel ordre (l'app devine leur poste ; son vis-à-vis = l'ennemi du même poste). L'app recommande l'un de ses builds pour ce champion à ce poste et le premier item, avec une explication.
 - **Pendant la game** : il saisit ses items achetés et sa situation (devant / égalité / en retard). L'app propose les prochains items avec une explication.
 
 Le moteur est **générique** : aucun code spécifique à un champion. L'app démarre avec un build d'exemple (Yorick) pour pouvoir tester tout de suite.
@@ -49,6 +49,7 @@ docs/TICKETS.md
 - Pas de dépendance lourde sans raison ; privilégier la simplicité.
 - Si une règle précise manque, mets une valeur plausible avec un commentaire `TODO(joueur)` dans le code et continue (pas de commentaire dans les fichiers `.json`).
 - Mets à jour le README quand un ticket change la façon de lancer ou d'utiliser l'app.
+- Les captures d'écran de vérification vont dans `captures/` (ignoré par git) et sont données au joueur sous forme de liens cliquables.
 
 ## Workflow Git (à appliquer sans qu'on le redemande)
 - `main` = prod, seule branche déployée (GitHub Pages). Elle ne bouge pas pendant le développement des epics.
