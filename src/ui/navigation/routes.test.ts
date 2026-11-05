@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { DEFAULT_SCREEN, DEV_SHOWCASE, hashFor, parseRoute, SCREENS } from './routes'
+import {
+  DEFAULT_SCREEN,
+  DEV_SHOWCASE,
+  hashFor,
+  parseRoute,
+  parseRouteParams,
+  SCREENS,
+} from './routes'
 
 describe('parseRoute', () => {
   it.each(SCREENS.map((s) => s.id))('reconnaît #/%s', (id) => {
@@ -22,5 +29,23 @@ describe('parseRoute', () => {
   it('n’ouvre la page des composants que si elle est autorisée', () => {
     expect(parseRoute(hashFor(DEV_SHOWCASE))).toBe(DEFAULT_SCREEN)
     expect(parseRoute(hashFor(DEV_SHOWCASE), { allowDevShowcase: true })).toBe(DEV_SHOWCASE)
+  })
+})
+
+describe('paramètres de route', () => {
+  it('construit et relit les paramètres', () => {
+    const hash = hashFor('draft', 'choisir', 'allie-top')
+    expect(hash).toBe('#/draft/choisir/allie-top')
+    expect(parseRoute(hash)).toBe('draft')
+    expect(parseRouteParams(hash)).toEqual(['choisir', 'allie-top'])
+  })
+
+  it('aucun paramètre', () => {
+    expect(parseRouteParams('#/draft')).toEqual([])
+    expect(parseRouteParams('')).toEqual([])
+  })
+
+  it('encode les caractères spéciaux', () => {
+    expect(parseRouteParams(hashFor('builds', 'Kai Sa'))).toEqual(['Kai Sa'])
   })
 })
