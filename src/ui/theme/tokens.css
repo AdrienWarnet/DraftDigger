@@ -1,0 +1,57 @@
+/*
+ * Jetons de design DraftDigger. Thème sombre par défaut.
+ * Toute couleur, taille ou espacement de l'UI passe par ces variables.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Couleurs de base */
+  --color-bg: #0b0f17; /* fond, identique au logo et au manifest */
+  --color-surface: #151c27; /* cartes */
+  --color-surface-raised: #1e2734; /* éléments posés sur une carte */
+  --color-line: #2b3646; /* bordures, séparateurs */
+  --color-text: #eef1f5;
+  --color-text-muted: #9ba8b8;
+
+  /* Action : l'or du logo, réservé aux actions et à la sélection */
+  --color-accent: #c9a54c;
+  --color-accent-strong: #e3c06a;
+  --color-on-accent: #1a1406;
+
+  /* Couleurs porteuses d'information */
+  --color-ally: #5aa2e6;
+  --color-enemy: #e4675f;
+  --color-ahead: #5cc38f;
+  --color-behind: #e39a55;
+  --color-danger: #e4675f;
+
+  /* Typographie */
+  --font-body: 'Barlow', system-ui, sans-serif;
+  --font-display: 'Barlow Semi Condensed', 'Barlow', system-ui, sans-serif;
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1.0625rem; /* 17px : lisible à bout de bras */
+  --text-lg: 1.3125rem; /* 21px */
+  --text-xl: 1.625rem; /* 26px */
+  --text-2xl: 2.125rem; /* 34px */
+  --leading-tight: 1.15;
+  --leading-body: 1.45;
+
+  /* Espacements (base 4px) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  /* Formes : le rayon dépend de la hiérarchie */
+  --radius-sm: 8px; /* contrôles internes */
+  --radius-md: 12px; /* boutons */
+  --radius-lg: 16px; /* cartes */
+
+  /* Tactile */
+  --touch-min: 48px; /* au-dessus du minimum de 44px du ticket */
+
+  --nav-height: 64px;
+  --duration-fast: 120ms;
+}
