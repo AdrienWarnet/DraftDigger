@@ -718,7 +718,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 ## Règles de travail pour Claude Code
 
-- Un ticket = une branche `ticket-<id>-<nom>` issue de la branche `epic-<n>-<nom>`, commits nommés avec l'identifiant (`T4.3 – évaluateur de conditions`), PR vers la branche d'epic une fois validé. Détail dans `CLAUDE.md` (« Workflow Git »).
+- Un ticket = une branche `ticket-<id>-<nom>` issue de la branche `epic-<n>-<nom>`, commits nommés avec l'identifiant (`T4.3 – évaluateur de conditions`), merge en squash dans la branche d'epic une fois validé (pas de PR). Détail dans `CLAUDE.md` (« Workflow Git »).
 - Ne jamais mettre de logique métier dans les composants React : tout passe par `src/engine`.
 - Les builds ne sont lus et écrits que via `BuildRepository`.
 - Tout ce qui est configurable (presets, overrides, poids, modificateurs) vit dans des fichiers JSON ou un fichier de config unique, pas dans le code.

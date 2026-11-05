@@ -58,8 +58,9 @@ docs/TICKETS.md
   1. Je code le ticket, je vérifie (build, tests, lint), je m'arrête pour validation.
   2. Validation du joueur → commit + push sur la branche du ticket. Message : `T0.1 – initialiser le projet`.
   3. Si on continue le ticket : commits supplémentaires sur la même branche, push.
-  4. Ticket validé définitivement → PR `ticket-…` → `epic-…`, puis merge (squash : un commit par ticket sur l'epic).
-- Epic validée définitivement (plus rien à y toucher) → PR `epic-…` → `main`, puis merge.
+  4. Ticket validé définitivement → merge en local de `ticket-…` dans `epic-…` (`git merge --squash`, un commit `T0.1 – …` par ticket sur l'epic), puis push de l'epic.
+- Epic validée définitivement (plus rien à y toucher) → merge en local de `epic-…` dans `main` (`git merge --no-ff`, message `Epic 0 – …`), puis push de `main`.
+- Pas de PR GitHub (pas d'accès `gh` sur ce dépôt) : tout se fait en git local + push.
 - Ne jamais pousser ni merger sans validation explicite.
 
 ## Commandes
