@@ -305,17 +305,6 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 **Terminé quand** : modifier un override change le champion ou l'item affiché sans toucher au code.
 **Dépend de** : T1.2, T1.3.
 
-### T1.5 – Changement de patch (M)
-
-**Quoi** : l'app survit aux nouveaux patchs.
-**À faire**
-- [ ] Au chargement, comparer les `id` des builds avec les items et runes du patch courant.
-- [ ] Lister les ids introuvables dans un écran « Alertes de données » (item supprimé, rune renommée).
-- [ ] Afficher la version du patch en bas de l'app.
-
-**Terminé quand** : un build contenant un item inexistant produit une alerte lisible, sans planter.
-**Dépend de** : T1.1, T3.4.
-
 ---
 
 # EPIC 2 – Saisie de la draft
@@ -480,6 +469,20 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 
 **Terminé quand** : exporter, vider le stockage, réimporter → les builds sont identiques ; un fichier invalide est refusé avec un message clair.
 **Dépend de** : T3.2, T3.5.
+
+
+### T3.10 – Changement de patch (M)
+
+*(ex-T1.5, déplacé ici car il dépend de T3.4.)*
+
+**Quoi** : l'app survit aux nouveaux patchs.
+**À faire**
+- [ ] Au chargement, comparer les `id` des builds avec les items et runes du patch courant.
+- [ ] Lister les ids introuvables dans un écran « Alertes de données » (item supprimé, rune renommée).
+- [ ] Afficher la version du patch en bas de l'app.
+
+**Terminé quand** : un build contenant un item inexistant produit une alerte lisible, sans planter.
+**Dépend de** : T1.1, T3.4.
 
 ---
 
@@ -744,9 +747,9 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 1. **Socle** : T0.1 → T0.4, puis T1.1 → T1.4.
 2. **Saisie** : T2.1 → T2.5.
 3. **Builds et moteur** : T3.1 → T3.4, puis T4.1 → T4.6.
-4. **Éditeur de builds** : T3.5 → T3.9.
+4. **Éditeur de builds** : T3.5 → T3.10.
 5. **Usage** : T5.1 → T5.4, puis T6.1 → T6.5.
-6. **Finition** : T1.5, puis T7.1 → T7.5.
+6. **Finition** : T7.1 → T7.5.
 7. **Plus tard** : epic 8 (quêtes de rôle).
 
 ## Plus tard (hors MVP)
