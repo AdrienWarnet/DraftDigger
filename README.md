@@ -14,11 +14,28 @@ npm install
 npm run dev
 ```
 
+## En ligne
+
+**https://adrienwarnet.github.io/DraftDigger/**
+
+Sur le téléphone : ouvrir l'URL, puis « Ajouter à l'écran d'accueil ».
+
+### Déploiement
+
+`main` = prod. Chaque push sur `main` (merge d'une epic validée) déclenche GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) : lint, tests, build, publication sur GitHub Pages. Lancement manuel possible depuis l'onglet Actions (« Run workflow »).
+
+Réglage GitHub (une seule fois) : Settings → Pages → Source : **GitHub Actions**.
+
+### Tester sur le téléphone pendant le dev
+
+`npm run dev:phone`, puis ouvrir sur le téléphone l'adresse « Network » affichée (même wifi que le PC). Pas d'installation ni de hors-ligne dans ce mode.
+
 ## Commandes
 
 | Commande               | Rôle                                        |
 | ---------------------- | ------------------------------------------- |
 | `npm run dev`          | serveur de développement                    |
+| `npm run dev:phone`    | serveur de dev accessible en wifi (téléphone) |
 | `npm run build`        | vérification TypeScript + build de production (`dist/`) |
 | `npm run preview`      | sert le build de production en local        |
 | `npm test`             | tests Vitest (une passe)                    |

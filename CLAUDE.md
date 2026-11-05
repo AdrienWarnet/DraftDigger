@@ -51,7 +51,7 @@ docs/TICKETS.md
 - Mets à jour le README quand un ticket change la façon de lancer ou d'utiliser l'app.
 
 ## Workflow Git (à appliquer sans qu'on le redemande)
-- `main` ne bouge pas pendant le développement des epics.
+- `main` = prod, seule branche déployée (GitHub Pages). Elle ne bouge pas pendant le développement des epics.
 - Une branche par epic, créée depuis `main` : `epic-<n>-<nom-de-l-epic>` (ex : `epic-0-fondations-techniques`).
 - Une branche par ticket, créée depuis sa branche d'epic : `ticket-<id>-<nom-du-ticket>` (ex : `ticket-0.1-initialiser-le-projet`).
 - Cycle d'un ticket :
@@ -65,5 +65,6 @@ docs/TICKETS.md
 
 ## Commandes
 - `npm run dev` : serveur de développement
+- `npm run dev:phone` : serveur de dev accessible en wifi pour tester sur le téléphone
 - `npm run build` : build de production
 - `npm test` : tests Vitest
