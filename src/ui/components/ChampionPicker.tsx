@@ -8,6 +8,8 @@ type ChampionPickerProps = {
   onSelect: (champion: Champion) => void
   /** Libellé du champ de recherche (lu par les lecteurs d'écran). */
   label?: string
+  /** Place le curseur dans la recherche à l'ouverture (ouvre le clavier sur mobile). */
+  autoFocus?: boolean
 }
 
 /**
@@ -18,6 +20,7 @@ export function ChampionPicker({
   champions,
   onSelect,
   label = 'Rechercher un champion',
+  autoFocus = true,
 }: ChampionPickerProps) {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -28,8 +31,8 @@ export function ChampionPicker({
 
   // Le sélecteur s'ouvre à la demande du joueur : on place directement le curseur dans la recherche.
   useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
+    if (autoFocus) inputRef.current?.focus()
+  }, [autoFocus])
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter' && results[0]) {

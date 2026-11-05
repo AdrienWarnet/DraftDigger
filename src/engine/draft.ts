@@ -1,3 +1,4 @@
+import { guessEnemyPositions, type EnemyLayout, type PositionRates } from './positions'
 import { POSITIONS, type Position } from './types'
 
 /**
@@ -79,28 +80,48 @@ export function replaceEnemy(draft: Draft, index: number, championId: string): D
 }
 
 /**
- * Poste de chaque ennemi pour l'affichage face à face : index de l'ennemi par poste.
- * Les postes fixés par le joueur d'abord ; les autres ennemis remplissent les postes libres
- * dans l'ordre de saisie (T2.3 remplacera ce remplissage par une répartition devinée).
+ * Poste de chaque ennemi : postes fixés par le joueur, les autres devinés d'après les taux de jeu.
+ * Sans taux (`{}`), les ennemis non fixés remplissent les postes libres dans l'ordre de saisie.
  */
-export function enemyLayout(draft: Draft): Record<Position, number | null> {
-  const layout = Object.fromEntries(POSITIONS.map((p) => [p, null])) as Record<
-    Position,
-    number | null
-  >
-  draft.enemies.forEach((enemy, index) => {
-    if (enemy.lockedPosition && layout[enemy.lockedPosition] === null) {
-      layout[enemy.lockedPosition] = index
-    }
+export function enemyLayout(draft: Draft, rates: PositionRates = {}): EnemyLayout {
+  return guessEnemyPositions(draft.enemies, rates)
+}
+
+/** Ton vis-à-vis : l'ennemi placé à ton poste, ou `null`. */
+export function laneOpponent(draft: Draft, rates: PositionRates = {}): EnemyPick | null {
+  const index = enemyLayout(draft, rates)[draft.playerPosition]
+  return index === null ? null : (draft.enemies[index] ?? null)
+}
+
+/**
+ * Corrige un poste : l'ennemi placé à `from` est fixé à `to` ; celui qui était à `to`
+ * (s'il y en a un) est fixé à `from`. Les autres ennemis non fixés restent devinés.
+ */
+export function moveEnemy(
+  draft: Draft,
+  from: Position,
+  to: Position,
+  rates: PositionRates = {},
+): Draft {
+  if (from === to) return draft
+  const layout = enemyLayout(draft, rates)
+  const moving = layout[from]
+  if (moving === null) return draft
+  const displaced = layout[to]
+  const enemies = draft.enemies.map((enemy, index) => {
+    if (index === moving) return { ...enemy, lockedPosition: to }
+    if (index === displaced) return { ...enemy, lockedPosition: from }
+    return enemy
   })
-  const placed = new Set(Object.values(layout))
-  const freePositions = POSITIONS.filter((p) => layout[p] === null)
-  draft.enemies.forEach((_, index) => {
-    if (placed.has(index)) return
-    const position = freePositions.shift()
-    if (position) layout[position] = index
-  })
-  return layout
+  return { ...draft, enemies }
+}
+
+/** Rend le poste d'un ennemi à nouveau deviné par l'app. */
+export function unlockEnemy(draft: Draft, index: number): Draft {
+  const enemy = draft.enemies[index]
+  if (!enemy || enemy.lockedPosition === null) return draft
+  const enemies = draft.enemies.map((e, i) => (i === index ? { ...e, lockedPosition: null } : e))
+  return { ...draft, enemies }
 }
 
 export function removeEnemy(draft: Draft, index: number): Draft {
