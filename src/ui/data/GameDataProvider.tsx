@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { buildCatalog } from '../../data/catalog'
 import { loadDDragon } from '../../data/ddragon'
 import { GameDataContext, type GameDataState } from './gameDataContext'
 
@@ -10,7 +11,8 @@ export function GameDataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let cancelled = false
     loadDDragon().then(
-      (result) => !cancelled && setState({ status: 'ready', result }),
+      (result) =>
+        !cancelled && setState({ status: 'ready', result, catalog: buildCatalog(result.data) }),
       (error: unknown) => {
         console.error(error)
         if (!cancelled) setState({ status: 'error', error })
