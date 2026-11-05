@@ -1,0 +1,5 @@
+/* Styles de base minimaux. Le thème complet arrive en T0.4. */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
