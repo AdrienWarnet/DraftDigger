@@ -22,3 +22,16 @@ export type Champion = {
   damage: { ad: number; ap: number; true: number }
   threats: Threats
 }
+
+export type ItemStats = { armor?: number; mr?: number; hp?: number; ad?: number; ap?: number }
+
+export type Item = {
+  id: string
+  name: string
+  image: string // URL
+  cost: number // gold.total
+  stats: ItemStats
+  /** "armor", "mr", "hp", "ad", "ap", "antiheal", "antitank", "mobility", "boots"... */
+  categories: string[]
+  buildsFrom: string[] // ids des composants
+}
