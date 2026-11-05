@@ -18,7 +18,7 @@ npm run dev
 
 **https://adrienwarnet.github.io/DraftDigger/**
 
-Sur le téléphone : ouvrir l'URL, puis « Ajouter à l'écran d'accueil ».
+Sur le téléphone (Chrome Android) : ouvrir l'URL, puis menu ⋮ → « Installer l'application ». L'app fonctionne ensuite hors ligne et se met à jour automatiquement à l'ouverture suivante d'une nouvelle version.
 
 ### Déploiement
 
@@ -43,6 +43,7 @@ Réglage GitHub (une seule fois) : Settings → Pages → Source : **GitHub Acti
 | `npm run lint`         | lint (oxlint)                               |
 | `npm run format`       | formate le code (Prettier)                  |
 | `npm run format:check` | vérifie le formatage                        |
+| `npm run generate-icons` | régénère les icônes PWA depuis `public/logo.svg` |
 
 ## Structure
 
