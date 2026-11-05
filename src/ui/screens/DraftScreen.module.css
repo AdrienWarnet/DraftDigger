@@ -1,0 +1,101 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sectionTitle {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* Draft face à face : [allié] [poste] [ennemi] par ligne. */
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.headers,
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3.75rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.headers {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.allyHeader,
+.enemyHeader {
+  padding-bottom: var(--space-1);
+  border-bottom: 3px solid;
+}
+
+.allyHeader {
+  grid-column: 1;
+  border-color: var(--color-ally);
+}
+
+.enemyHeader {
+  grid-column: 3;
+  text-align: right;
+  border-color: var(--color-enemy);
+}
+
+.position {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.row[data-player] .position {
+  color: var(--color-accent-strong);
+  font-weight: 600;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Correction du poste d'un ennemi, dans le sélecteur. */
+.enemyPosition {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.positionStatus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* Confirmation avant d'effacer la draft. */
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.confirmActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}

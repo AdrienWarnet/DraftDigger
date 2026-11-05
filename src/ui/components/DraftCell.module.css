@@ -1,0 +1,89 @@
+.cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-width: 0;
+  min-height: 52px;
+  padding: var(--space-1);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  cursor: pointer;
+  transition: border-color var(--duration-fast);
+}
+
+/* Face à face : côté ennemi en miroir (icône à droite, nom aligné vers le centre). */
+.cell[data-side='enemy'] {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.cell[data-side='ally'] {
+  text-align: left;
+}
+
+@media (hover: hover) {
+  .cell:hover {
+    border-color: var(--color-text-muted);
+  }
+}
+
+.cell[data-highlight='player'] {
+  border-color: var(--color-accent);
+}
+
+.cell[data-highlight='opponent'] {
+  border-color: var(--color-enemy);
+}
+
+.icon,
+.placeholder {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--color-line);
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: var(--leading-tight);
+}
+
+.name,
+.empty,
+.hint {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+}
+
+.name {
+  font-weight: 600;
+}
+
+.empty {
+  color: var(--color-text-muted);
+}
+
+.hint {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.cell[data-highlight='opponent'] .hint {
+  color: var(--color-enemy);
+}

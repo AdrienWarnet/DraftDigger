@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import type { Champion } from '../../engine/types'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
+import { ChampionPicker } from '../components/ChampionPicker'
+import { useCatalog } from '../data/gameDataContext'
 import { EmptyState } from '../components/EmptyState'
 import { ExplanationBanner } from '../components/ExplanationBanner'
 import { Tabs } from '../components/Tabs'
@@ -42,6 +45,32 @@ export function ComponentsShowcase() {
       <Button variant="ghost">Bouton discret</Button>
       <Button disabled>Bouton désactivé</Button>
       <EmptyState title="État vide" description="Explique quoi faire pour remplir l'écran." />
+      <PickerDemo />
     </>
+  )
+}
+
+function PickerDemo() {
+  const { champions } = useCatalog()
+  const [open, setOpen] = useState(false)
+  const [picked, setPicked] = useState<Champion | null>(null)
+  return (
+    <section style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+      <h2>Sélecteur de champion</h2>
+      <p className="muted">Choisi : {picked ? picked.name : 'aucun'}</p>
+      {open ? (
+        <ChampionPicker
+          champions={champions}
+          onSelect={(champion) => {
+            setPicked(champion)
+            setOpen(false)
+          }}
+        />
+      ) : (
+        <Button variant="secondary" onClick={() => setOpen(true)}>
+          Choisir un champion
+        </Button>
+      )}
+    </section>
   )
 }

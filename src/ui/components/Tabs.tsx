@@ -38,7 +38,13 @@ export function Tabs<T extends string>({ label, options, value, onChange }: Tabs
   }
 
   return (
-    <div className={styles.tabs} role="radiogroup" aria-label={label} onKeyDown={handleKeyDown}>
+    <div
+      className={styles.tabs}
+      role="radiogroup"
+      aria-label={label}
+      data-dense={options.length >= 5 || undefined}
+      onKeyDown={handleKeyDown}
+    >
       {options.map((option) => {
         const selected = option.value === value
         return (

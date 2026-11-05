@@ -8,7 +8,7 @@ Document à donner à Claude Code. Il contient le contexte, les choix techniques
 
 Une WebApp (mobile-first, PWA) pour League of Legends. Le joueur **crée lui-même ses builds dans l'app** (runes, sorts, items, conditions d'usage), pour **n'importe quel champion**, et les enregistre sur son téléphone. L'app :
 
-1. **Avant la game** : le joueur choisit son poste (top, jungle, mid, bot, support) et son champion, puis saisit la compo alliée et ennemie poste par poste. Son vis-à-vis de lane est l'ennemi du même poste. L'app recommande **l'un de ses builds pour ce champion à ce poste** et **le premier item** à acheter, avec une explication.
+1. **Avant la game** : le joueur choisit son poste (top, jungle, mid, bot, support) et son champion, saisit ses alliés poste par poste et les ennemis dans n'importe quel ordre : l'app devine le poste de chaque ennemi. Son vis-à-vis de lane est l'ennemi du même poste. L'app recommande **l'un de ses builds pour ce champion à ce poste** et **le premier item** à acheter, avec une explication.
 2. **Pendant la game** : le joueur saisit les items achetés et indique s'il est devant / à égalité / en retard. L'app propose **les prochains items** avec une explication.
 
 Le moteur doit être **générique** (aucun code spécifique à un champion). Au premier lancement, l'app charge un **build d'exemple** (Yorick, `data/builds/example.json`) pour pouvoir tester tout de suite.
@@ -124,7 +124,7 @@ type Metric =
 type Position = "top" | "jungle" | "mid" | "bot" | "support";
 ```
 
-Chaque équipe a 5 emplacements, un par poste. Le vis-à-vis de lane du joueur est l'ennemi placé au même poste que lui.
+Chaque équipe a 5 emplacements, un par poste. Les postes ennemis sont devinés (T2.3) puis corrigeables. Le vis-à-vis de lane du joueur est l'ennemi placé au même poste que lui.
 
 ### Build (le format central)
 
@@ -321,36 +321,31 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 
 ### T2.2 – Écran de saisie des deux équipes (M)
 
-**Quoi** : 5 emplacements alliés + 5 ennemis, un par poste.
+**Quoi** : saisir son équipe poste par poste et l'équipe ennemie dans n'importe quel ordre.
 **À faire**
-- [ ] Écran Draft : pour chaque poste (Top, Jungle, Mid, Bot, Support, dans cet ordre), un emplacement allié et un emplacement ennemi face à face ; tap pour choisir ou changer un champion.
-- [ ] Le joueur choisit son poste (`playerPosition`) : l'emplacement allié de ce poste est marqué « moi » et il y choisit son champion (`playerChampionId`). Poste et champion pré-remplis avec ceux de la dernière partie.
-- [ ] Les champions qui ont au moins un build pour le poste du joueur sont proposés en tête du sélecteur pour l'emplacement « moi ».
-- [ ] Échanger deux emplacements d'une même équipe (2 taps) pour corriger un poste mal deviné.
-- [ ] Bouton de suppression sur chaque emplacement.
+- [ ] Le joueur choisit son poste (`playerPosition`) ; l'emplacement allié de ce poste est marqué « moi » et il y choisit son champion. Poste et champion pré-remplis avec ceux de la dernière partie (via T2.5).
+- [ ] Équipe alliée : 5 emplacements, un par poste (Top, Jungle, Mid, Bot, Support) ; tap pour choisir ou changer un champion (le joueur connaît les postes alliés pendant la sélection).
+- [ ] Équipe ennemie : jusqu'à 5 champions ajoutés **sans poste**, dans l'ordre où ils sont connus ; tap pour changer, bouton pour retirer. Les postes sont devinés en T2.3.
+- [ ] Sélecteur en plein écran (T2.1) ; un champion déjà choisi ailleurs dans la draft n'est pas proposé ; le bouton retour d'Android ferme le sélecteur.
+- [ ] Les champions qui ont au moins un build pour le poste du joueur sont proposés en tête du sélecteur pour l'emplacement « moi » (branché quand les builds existent, epic 3).
+- [ ] Bouton de suppression sur chaque emplacement rempli.
+- [ ] État de la draft dans un store (Zustand), logique de modification en fonctions pures dans `src/engine/draft.ts`.
 
-**Terminé quand** : on peut remplir et vider les 10 emplacements, changer son poste et son champion, échanger deux ennemis ; l'état est conservé en changeant d'onglet.
+**Terminé quand** : on peut remplir et vider les 5 alliés et les 5 ennemis, changer son poste et son champion ; un champion ne peut pas être choisi deux fois ; l'état est conservé en changeant d'onglet.
 **Dépend de** : T2.1, T0.4.
 
-### T2.3 – Vis-à-vis de lane (S)
+### T2.3 – Postes ennemis devinés et vis-à-vis (M)
 
-**Quoi** : savoir quel ennemi est face au joueur, sans saisie supplémentaire.
+**Quoi** : placer automatiquement les ennemis sur leur poste le plus probable, et en déduire le vis-à-vis du joueur.
 **À faire**
-- [ ] Le vis-à-vis est déduit : l'ennemi au même poste que le joueur (fonction pure `laneOpponent(draft)` dans `src/engine`).
-- [ ] L'emplacement ennemi correspondant est mis en évidence (« ton vis-à-vis »).
-- [ ] Changer de poste ou échanger deux ennemis met à jour le vis-à-vis.
+- [ ] Données : taux de jeu par poste de chaque champion (source Meraki Analytics, `championrates.json`), embarquées dans `data/defaults/champion-positions.json` (le site n'autorise pas l'appel direct depuis le navigateur). Commande `npm run update-positions` pour les rafraîchir (fait la correspondance avec les ids Data Dragon).
+- [ ] Fonction pure `guessEnemyPositions(enemies, rates, locked)` : répartition des ennemis sur des postes distincts qui maximise la somme des taux de jeu (toutes les combinaisons, 120 au plus). Champion absent des données : taux nul partout.
+- [ ] Les postes devinés sont recalculés à chaque ajout ou retrait d'ennemi, et affichés comme « devinés ».
+- [ ] Corriger un poste en 2 taps (toucher l'ennemi, choisir son poste) : il échange sa place avec l'ennemi qui y était ; ces postes sont fixés, seuls les autres ennemis sont encore devinés. « Laisser deviner » annule une correction.
+- [ ] Affichage de l'équipe ennemie par poste, face à l'équipe alliée.
+- [ ] Vis-à-vis = l'ennemi au poste du joueur (fonction pure `laneOpponent(draft)`), mis en évidence (« ton vis-à-vis »).
 
-**Terminé quand** : le vis-à-vis suit le poste du joueur et les échanges d'ennemis ; aucun vis-à-vis si l'emplacement ennemi du poste est vide (test).
-**Dépend de** : T2.2.
-
-### T2.4 – Draft partielle (S)
-
-**Quoi** : l'app fonctionne même si tout n'est pas rempli.
-**À faire**
-- [ ] Les métriques du moteur (T4.1) tolèrent des emplacements vides.
-- [ ] Un message indique combien d'ennemis sont connus (« recommandation basée sur 3/5 ennemis »).
-
-**Terminé quand** : avec 0 ennemi, l'écran ne plante pas et le moteur renvoie un résultat de confiance « low ».
+**Terminé quand** : tests sur des compos réelles (ex : Lux + Nami → Lux mid, Nami support) ; une correction manuelle est respectée ; le vis-à-vis suit le poste du joueur et les corrections ; aucun vis-à-vis si personne n'est à ce poste.
 **Dépend de** : T2.2.
 
 ### T2.5 – Sauvegarde et réinitialisation (S)
@@ -360,7 +355,7 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 - [ ] Store (Zustand ou Context) avec persistance `localStorage`.
 - [ ] Bouton « Nouvelle partie » avec confirmation qui remet tout à zéro.
 
-**Terminé quand** : recharger la page restaure draft (postes compris), items achetés et situation.
+**Terminé quand** : recharger la page restaure draft (postes compris), items achetés et situation (ces deux derniers dès qu'ils existent, epic 6) ; une sauvegarde illisible repart d'une draft vide sans planter.
 **Dépend de** : T2.2.
 
 ---
@@ -498,7 +493,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 - [ ] `laneOpponentDamage` : `"ad"` si part AD ≥ 0,65, `"ap"` si part AP ≥ 0,65, sinon `"mixed"`.
 - [ ] Gérer 0 à 5 ennemis (retourner aussi `knownEnemies`).
 
-**Terminé quand** : tests sur 3 compos (full AD, full AP, mixte) et sur une compo vide.
+**Terminé quand** : tests sur 3 compos (full AD, full AP, mixte), sur une compo partielle et sur une compo vide (ex-T2.4 : avec 0 ennemi, pas de plantage et confiance « low » en sortie du moteur).
 **Dépend de** : T1.2.
 
 ### T4.2 – Calcul de réduction de dégâts (M)
@@ -593,6 +588,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 - [ ] Carte « Build recommandé » (nom, runes, sorts) avec `BuildView` de T3.3.
 - [ ] Carte « Premier item » (image, nom, raison).
 - [ ] Les `reasons` en puces courtes.
+- [ ] Draft partielle (ex-T2.4) : message « Recommandation basée sur 3/5 ennemis » ; avec 0 ennemi, l'écran ne plante pas.
 - [ ] Bouton « Lancer la partie » qui ouvre l'écran Partie.
 
 **Terminé quand** : en saisissant une compo, la recommandation apparaît en moins d'une seconde.
@@ -652,7 +648,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 **Quoi** : corriger les informations en cours de route.
 **À faire**
-- [ ] Modifier un ennemi ou échanger deux ennemis (donc le vis-à-vis) depuis l'écran Partie sans repasser par Draft (modale rapide).
+- [ ] Modifier un ennemi ou corriger les postes ennemis (donc le vis-à-vis) depuis l'écran Partie sans repasser par Draft (modale rapide).
 - [ ] Les recommandations se recalculent automatiquement.
 - [ ] Si un item est vendu, la progression se met à jour.
 

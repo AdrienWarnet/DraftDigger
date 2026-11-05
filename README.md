@@ -60,6 +60,7 @@ Le format est rappelé dans la clé `_format` de chaque fichier. Un id inconnu o
 | `npm run format`       | formate le code (Prettier)                  |
 | `npm run format:check` | vérifie le formatage                        |
 | `npm run generate-icons` | régénère les icônes PWA depuis `public/logo.svg` |
+| `npm run update-positions` | met à jour les taux de jeu par poste (postes ennemis devinés) |
 
 ## Structure
 

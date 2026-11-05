@@ -1,0 +1,98 @@
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* La recherche reste visible pendant qu'on fait défiler la grille. */
+.searchBar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-2);
+  background: var(--color-bg);
+}
+
+.search {
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-base); /* ≥ 16px : pas de zoom automatique sur mobile */
+}
+
+.search::placeholder {
+  color: var(--color-text-muted);
+}
+
+.search:focus-visible {
+  outline-offset: 0;
+  border-color: var(--color-accent);
+}
+
+.status {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: var(--space-2) var(--space-1);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--duration-fast);
+}
+
+@media (hover: hover) {
+  .cell:hover {
+    background: var(--color-surface);
+  }
+}
+
+.cell:active {
+  background: var(--color-surface-raised);
+}
+
+/* Premier résultat : celui que « Entrée » choisit. */
+.cell[data-first] {
+  border-color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+}
+
+.name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+}

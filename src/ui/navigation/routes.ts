@@ -15,8 +15,15 @@ export type Route = ScreenId | typeof DEV_SHOWCASE
 
 export const DEFAULT_SCREEN: ScreenId = 'draft'
 
-export function hashFor(route: Route): string {
-  return `#/${route}`
+/** `hashFor('draft', 'choisir', 'allie-top')` → `#/draft/choisir/allie-top`. */
+export function hashFor(route: Route, ...params: string[]): string {
+  return ['#', route, ...params.map(encodeURIComponent)].join('/')
+}
+
+/** Segments après l'écran : `#/draft/choisir/allie-top` → `['choisir', 'allie-top']`. */
+export function parseRouteParams(hash: string): string[] {
+  const path = hash.replace(/^#\/?/, '').split('?')[0] ?? ''
+  return path.split('/').slice(1).filter(Boolean).map(decodeURIComponent)
 }
 
 /** Lit l'écran demandé dans l'URL (`#/reco`). Toute valeur inconnue renvoie l'écran par défaut. */
