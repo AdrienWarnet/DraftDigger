@@ -37,7 +37,7 @@ export default defineConfig({
       },
       workbox: {
         // Toute l'app est mise en cache : lancement instantané et hors ligne.
-        globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
       },
     }),
   ],

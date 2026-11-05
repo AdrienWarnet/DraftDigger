@@ -1,0 +1,40 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+
+.title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+/* Repère d'équipe : barre verticale droite, à l'intérieur de l'arrondi. */
+.ally,
+.enemy {
+  position: relative;
+  padding-left: calc(var(--space-4) + 4px);
+}
+
+.ally::before,
+.enemy::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: var(--space-3);
+  bottom: var(--space-3);
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+}
+
+.ally::before {
+  background: var(--color-ally);
+}
+
+.enemy::before {
+  background: var(--color-enemy);
+}
