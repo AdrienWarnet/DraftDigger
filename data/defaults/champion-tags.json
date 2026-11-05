@@ -1,0 +1,8 @@
+{
+  "Assassin": { "burst": 2, "engage": 1 },
+  "Fighter": { "tank": 1, "engage": 1 },
+  "Mage": { "burst": 1, "cc": 1 },
+  "Marksman": {},
+  "Support": { "cc": 1 },
+  "Tank": { "tank": 3, "cc": 2, "engage": 2 }
+}

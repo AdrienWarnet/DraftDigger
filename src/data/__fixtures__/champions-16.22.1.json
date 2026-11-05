@@ -1,0 +1,85 @@
+{
+  "version": "16.22.1",
+  "champions": {
+    "Malphite": {
+      "id": "Malphite",
+      "key": "54",
+      "name": "Malphite",
+      "title": "Éclat du monolithe",
+      "tags": ["Tank", "Mage"],
+      "info": {
+        "attack": 5,
+        "defense": 9,
+        "magic": 7,
+        "difficulty": 2
+      },
+      "image": {
+        "full": "Malphite.png"
+      }
+    },
+    "Lux": {
+      "id": "Lux",
+      "key": "99",
+      "name": "Lux",
+      "title": "Dame de lumière",
+      "tags": ["Mage", "Support"],
+      "info": {
+        "attack": 2,
+        "defense": 4,
+        "magic": 9,
+        "difficulty": 5
+      },
+      "image": {
+        "full": "Lux.png"
+      }
+    },
+    "Jinx": {
+      "id": "Jinx",
+      "key": "222",
+      "name": "Jinx",
+      "title": "Gâchette folle",
+      "tags": ["Marksman"],
+      "info": {
+        "attack": 9,
+        "defense": 2,
+        "magic": 4,
+        "difficulty": 6
+      },
+      "image": {
+        "full": "Jinx.png"
+      }
+    },
+    "Zed": {
+      "id": "Zed",
+      "key": "238",
+      "name": "Zed",
+      "title": "Maître des ombres",
+      "tags": ["Assassin"],
+      "info": {
+        "attack": 9,
+        "defense": 2,
+        "magic": 1,
+        "difficulty": 7
+      },
+      "image": {
+        "full": "Zed.png"
+      }
+    },
+    "Soraka": {
+      "id": "Soraka",
+      "key": "16",
+      "name": "Soraka",
+      "title": "Enfant des étoiles",
+      "tags": ["Support", "Mage"],
+      "info": {
+        "attack": 2,
+        "defense": 5,
+        "magic": 7,
+        "difficulty": 3
+      },
+      "image": {
+        "full": "Soraka.png"
+      }
+    }
+  }
+}

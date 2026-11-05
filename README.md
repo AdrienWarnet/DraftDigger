@@ -61,6 +61,7 @@ src/
   store/      # état de la partie
 data/
   builds/     # build d'exemple
+  defaults/   # valeurs par défaut (menaces par classe de champion)
   presets/    # presets de conditions de l'éditeur
   overrides/  # corrections manuelles champions / items
 docs/TICKETS.md   # tickets du MVP

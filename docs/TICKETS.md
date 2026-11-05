@@ -8,7 +8,7 @@ Document à donner à Claude Code. Il contient le contexte, les choix techniques
 
 Une WebApp (mobile-first, PWA) pour League of Legends. Le joueur **crée lui-même ses builds dans l'app** (runes, sorts, items, conditions d'usage), pour **n'importe quel champion**, et les enregistre sur son téléphone. L'app :
 
-1. **Avant la game** : le joueur choisit son champion, saisit la compo alliée et ennemie (+ son vis-à-vis de lane). L'app recommande **l'un de ses builds pour ce champion** et **le premier item** à acheter, avec une explication.
+1. **Avant la game** : le joueur choisit son poste (top, jungle, mid, bot, support) et son champion, puis saisit la compo alliée et ennemie poste par poste. Son vis-à-vis de lane est l'ennemi du même poste. L'app recommande **l'un de ses builds pour ce champion à ce poste** et **le premier item** à acheter, avec une explication.
 2. **Pendant la game** : le joueur saisit les items achetés et indique s'il est devant / à égalité / en retard. L'app propose **les prochains items** avec une explication.
 
 Le moteur doit être **générique** (aucun code spécifique à un champion). Au premier lancement, l'app charge un **build d'exemple** (Yorick, `data/builds/example.json`) pour pouvoir tester tout de suite.
@@ -118,6 +118,14 @@ type Metric =
   | "situation";          // "ahead" | "even" | "behind"
 ```
 
+### Poste
+
+```ts
+type Position = "top" | "jungle" | "mid" | "bot" | "support";
+```
+
+Chaque équipe a 5 emplacements, un par poste. Le vis-à-vis de lane du joueur est l'ennemi placé au même poste que lui.
+
 ### Build (le format central)
 
 ```ts
@@ -125,6 +133,7 @@ type Build = {
   id: string;                   // identifiant unique généré (uuid)
   name: string;                 // "Duelliste"
   championId: string;           // "Yorick"
+  position: Position;           // "top" : un build est propre à un champion ET un poste
   order: number;                // ordre d'affichage, sert aussi au départage
   updatedAt: string;            // date ISO de dernière modification
   runes: {
@@ -180,7 +189,7 @@ type Recommendation<T> = {
 
 - **Réduction de dégâts** : dégâts reçus = dégâts × 100 / (100 + résistance). Exemple : 100 d'armure divise les dégâts physiques par 2, soit 50 % de réduction.
 - **Gain d'un item défensif** : pour un item donné et une compo ennemie, `gain = enemyAdShare × (réduction AD apportée) + enemyApShare × (réduction AP apportée)`, mesuré par rapport aux résistances de départ du build à ce moment.
-- **Choix d'un build** : `score = somme des weight des useWhen dont la condition est vraie`. Seuls les builds du champion joué sont candidats. Le plus haut score gagne ; en cas d'égalité, le build avec le plus petit `order`. Les `explain` des conditions vraies forment les `reasons`.
+- **Choix d'un build** : `score = somme des weight des useWhen dont la condition est vraie`. Seuls les builds du champion joué **et du poste joué** sont candidats. Le plus haut score gagne ; en cas d'égalité, le build avec le plus petit `order`. Les `explain` des conditions vraies forment les `reasons`.
 - **Situation** (`ahead` / `even` / `behind`) : voir T4.5. Avant la partie, la situation vaut toujours `even`.
 
 ### Échelle unique des scores : les « points »
@@ -323,24 +332,26 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 
 ### T2.2 – Écran de saisie des deux équipes (M)
 
-**Quoi** : 5 emplacements alliés + 5 ennemis.
+**Quoi** : 5 emplacements alliés + 5 ennemis, un par poste.
 **À faire**
-- [ ] Écran Draft : deux colonnes (ou deux blocs) de 5 emplacements, tap pour choisir ou changer un champion.
-- [ ] Un emplacement allié est marqué « moi » : le joueur y choisit son champion (`playerChampionId`). Pré-rempli avec le dernier champion joué.
-- [ ] Les champions qui ont au moins un build sont proposés en tête du sélecteur pour l'emplacement « moi ».
+- [ ] Écran Draft : pour chaque poste (Top, Jungle, Mid, Bot, Support, dans cet ordre), un emplacement allié et un emplacement ennemi face à face ; tap pour choisir ou changer un champion.
+- [ ] Le joueur choisit son poste (`playerPosition`) : l'emplacement allié de ce poste est marqué « moi » et il y choisit son champion (`playerChampionId`). Poste et champion pré-remplis avec ceux de la dernière partie.
+- [ ] Les champions qui ont au moins un build pour le poste du joueur sont proposés en tête du sélecteur pour l'emplacement « moi ».
+- [ ] Échanger deux emplacements d'une même équipe (2 taps) pour corriger un poste mal deviné.
 - [ ] Bouton de suppression sur chaque emplacement.
 
-**Terminé quand** : on peut remplir et vider les 10 emplacements, changer son propre champion ; l'état est conservé en changeant d'onglet.
+**Terminé quand** : on peut remplir et vider les 10 emplacements, changer son poste et son champion, échanger deux ennemis ; l'état est conservé en changeant d'onglet.
 **Dépend de** : T2.1, T0.4.
 
 ### T2.3 – Vis-à-vis de lane (S)
 
-**Quoi** : indiquer quel ennemi est face au joueur.
+**Quoi** : savoir quel ennemi est face au joueur, sans saisie supplémentaire.
 **À faire**
-- [ ] Sur l'équipe ennemie, une étoile ou un bouton « mon vis-à-vis » sur un seul emplacement à la fois.
-- [ ] Stocker `laneOpponentId` dans l'état.
+- [ ] Le vis-à-vis est déduit : l'ennemi au même poste que le joueur (fonction pure `laneOpponent(draft)` dans `src/engine`).
+- [ ] L'emplacement ennemi correspondant est mis en évidence (« ton vis-à-vis »).
+- [ ] Changer de poste ou échanger deux ennemis met à jour le vis-à-vis.
 
-**Terminé quand** : un seul vis-à-vis possible ; le désigner retire l'ancien.
+**Terminé quand** : le vis-à-vis suit le poste du joueur et les échanges d'ennemis ; aucun vis-à-vis si l'emplacement ennemi du poste est vide (test).
 **Dépend de** : T2.2.
 
 ### T2.4 – Draft partielle (S)
@@ -360,7 +371,7 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 - [ ] Store (Zustand ou Context) avec persistance `localStorage`.
 - [ ] Bouton « Nouvelle partie » avec confirmation qui remet tout à zéro.
 
-**Terminé quand** : recharger la page restaure draft, items achetés et situation.
+**Terminé quand** : recharger la page restaure draft (postes compris), items achetés et situation.
 **Dépend de** : T2.2.
 
 ---
@@ -375,7 +386,7 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 **À faire**
 - [ ] Types TypeScript dans `src/engine/types.ts`.
 - [ ] Schéma de validation (Zod) correspondant, avec messages d'erreur clairs.
-- [ ] Build d'exemple Yorick valide dans `data/builds/example.json` (JSON pur, sans commentaire ; valeurs plausibles).
+- [ ] Build d'exemple Yorick top valide dans `data/builds/example.json` (JSON pur, sans commentaire ; valeurs plausibles).
 
 **Terminé quand** : un JSON invalide est rejeté avec un message qui désigne le champ en cause ; `example.json` passe la validation.
 **Dépend de** : T0.1.
@@ -417,7 +428,7 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 
 **Quoi** : gérer la liste de ses builds.
 **À faire**
-- [ ] Liste groupée par champion (icône + nom du build), filtre par champion.
+- [ ] Liste groupée par champion puis par poste (icône, poste, nom du build), filtres par champion et par poste.
 - [ ] Actions : créer, ouvrir, dupliquer, supprimer (avec confirmation), réordonner au sein d'un champion.
 - [ ] Un build en erreur (T3.4) est signalé par un badge.
 
@@ -428,7 +439,7 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 
 **Quoi** : remplir la partie « fixe » d'un build.
 **À faire**
-- [ ] Champs : nom, champion (`ChampionPicker` de T2.1).
+- [ ] Champs : nom, champion (`ChampionPicker` de T2.1), poste.
 - [ ] Sélection des runes en suivant la structure Data Dragon : arbre principal → keystone → 3 runes, arbre secondaire (différent du principal) → 2 runes de lignes différentes, 3 fragments.
 - [ ] Sélection des 2 sorts d'invocateur (distincts, sorts de la Faille uniquement).
 - [ ] Brouillon conservé si on quitte l'éditeur sans enregistrer ; validation Zod + T3.4 à l'enregistrement.
@@ -551,14 +562,15 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 ### T5.1 – Choix du build (M)
 
-**Quoi** : appeler le moteur pour choisir parmi les builds du champion joué.
+**Quoi** : appeler le moteur pour choisir parmi les builds du champion et du poste joués.
 **À faire**
-- [ ] `recommendBuild(builds, metrics)` utilisant les `useWhen` des builds (l'appelant passe les builds de `playerChampionId`).
+- [ ] `recommendBuild(builds, metrics)` utilisant les `useWhen` des builds (l'appelant passe les builds de `playerChampionId` + `playerPosition`).
 - [ ] Départage par `order`.
 - [ ] Un seul build : il est retenu, confiance selon les ennemis connus.
-- [ ] Aucun build pour ce champion : message « Aucun build pour X » + bouton « Créer un build » (ouvre l'éditeur avec le champion pré-rempli).
+- [ ] Aucun build pour ce champion à ce poste, mais des builds à d'autres postes : ils sont proposés avec la mention « build prévu pour <poste> », confiance « low ».
+- [ ] Aucun build pour ce champion : message « Aucun build pour X » + bouton « Créer un build » (ouvre l'éditeur avec champion et poste pré-remplis).
 
-**Terminé quand** : test sur les 5 fixtures de T4.6 avec des builds de test, résultat attendu documenté ; cas 0 et 1 build testés.
+**Terminé quand** : test sur les 5 fixtures de T4.6 avec des builds de test, résultat attendu documenté ; cas 0 build, 1 build et « build d'un autre poste » testés.
 **Dépend de** : T4.3, T3.2.
 
 ### T5.2 – Choix du premier item (M)
@@ -637,7 +649,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 **Quoi** : corriger les informations en cours de route.
 **À faire**
-- [ ] Modifier un ennemi ou le vis-à-vis depuis l'écran Partie sans repasser par Draft (modale rapide).
+- [ ] Modifier un ennemi ou échanger deux ennemis (donc le vis-à-vis) depuis l'écran Partie sans repasser par Draft (modale rapide).
 - [ ] Les recommandations se recalculent automatiquement.
 - [ ] Si un item est vendu, la progression se met à jour.
 
@@ -711,6 +723,22 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 ---
 
+# EPIC 8 – Quêtes de rôle (hors MVP, plus tard)
+
+### T8.1 – Effets des quêtes de rôle (M)
+
+**Quoi** : tenir compte des récompenses des quêtes de rôle de chaque poste dans les recommandations.
+**Entrée requise du joueur** : la liste des effets à prendre en compte par poste (ex : emplacement d'item supplémentaire, niveau max, XP bonus), valables au patch courant. Data Dragon ne fournit pas ces informations.
+**À faire**
+- [ ] `data/role-quests.json` : effets par poste, éditables à chaque patch sans toucher au code.
+- [ ] Prise en compte dans la recommandation d'items (T6.3) : par exemple un emplacement supplémentaire change le nombre de slots à remplir.
+- [ ] Explication affichée quand un effet de quête influence la recommandation.
+
+**Terminé quand** : modifier un effet dans le JSON change la recommandation dans un test dédié.
+**Dépend de** : T6.3.
+
+---
+
 ## Ordre de réalisation conseillé
 
 1. **Socle** : T0.1 → T0.4, puis T1.1 → T1.4.
@@ -719,9 +747,11 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 4. **Éditeur de builds** : T3.5 → T3.9.
 5. **Usage** : T5.1 → T5.4, puis T6.1 → T6.5.
 6. **Finition** : T1.5, puis T7.1 → T7.5.
+7. **Plus tard** : epic 8 (quêtes de rôle).
 
 ## Plus tard (hors MVP)
 
+- **Quêtes de rôle** : voir epic 8.
 - **Éditeur avancé de conditions** : saisie libre métrique / opérateur / valeur / poids, en complément des presets.
 - **Backend** : nouvelle implémentation de `BuildRepository` (synchro entre appareils, sauvegarde), calculs plus lourds côté serveur.
 - Lecture de la partie en direct, données automatiques, recommandation de pick, comptes.
