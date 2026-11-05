@@ -341,7 +341,7 @@ Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, se
 - [ ] Données : taux de jeu par poste de chaque champion (source Meraki Analytics, `championrates.json`), embarquées dans `data/defaults/champion-positions.json` (le site n'autorise pas l'appel direct depuis le navigateur). Commande `npm run update-positions` pour les rafraîchir (fait la correspondance avec les ids Data Dragon).
 - [ ] Fonction pure `guessEnemyPositions(enemies, rates, locked)` : répartition des ennemis sur des postes distincts qui maximise la somme des taux de jeu (toutes les combinaisons, 120 au plus). Champion absent des données : taux nul partout.
 - [ ] Les postes devinés sont recalculés à chaque ajout ou retrait d'ennemi, et affichés comme « devinés ».
-- [ ] Échanger deux ennemis (2 taps) corrige leurs postes : ces postes sont verrouillés, seuls les autres ennemis sont encore devinés.
+- [ ] Corriger un poste en 2 taps (toucher l'ennemi, choisir son poste) : il échange sa place avec l'ennemi qui y était ; ces postes sont fixés, seuls les autres ennemis sont encore devinés. « Laisser deviner » annule une correction.
 - [ ] Affichage de l'équipe ennemie par poste, face à l'équipe alliée.
 - [ ] Vis-à-vis = l'ennemi au poste du joueur (fonction pure `laneOpponent(draft)`), mis en évidence (« ton vis-à-vis »).
 

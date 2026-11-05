@@ -18,15 +18,17 @@ import {
 import styles from './DraftScreen.module.css'
 
 export function DraftScreen() {
-  const { champions, championsById } = useCatalog()
+  const { champions, championsById, positionRates } = useCatalog()
   const draft = useDraftStore((s) => s.draft)
   const setPlayerPosition = useDraftStore((s) => s.setPlayerPosition)
   const setAlly = useDraftStore((s) => s.setAlly)
   const addEnemy = useDraftStore((s) => s.addEnemy)
   const replaceEnemy = useDraftStore((s) => s.replaceEnemy)
   const removeEnemy = useDraftStore((s) => s.removeEnemy)
+  const moveEnemy = useDraftStore((s) => s.moveEnemy)
+  const unlockEnemy = useDraftStore((s) => s.unlockEnemy)
 
-  const layout = enemyLayout(draft)
+  const layout = enemyLayout(draft, positionRates)
   const target = validTarget(parsePickerTarget(useRouteParams()), draft)
   const champion = (id: string | null | undefined) => (id ? (championsById.get(id) ?? null) : null)
   const enemyAt = (position: Position) => {
@@ -71,6 +73,20 @@ export function DraftScreen() {
   const available = champions.filter((c) => !picked.has(c.id) || c.id === currentId)
   const currentName = champion(currentId)?.name
 
+  /** Ennemi ouvert dans le sélecteur : son poste peut être corrigé. */
+  const editedEnemy = (() => {
+    if (target?.team !== 'enemy' || target.position === 'new') return null
+    const index = layout[target.position]
+    const pick = index === null ? null : draft.enemies[index]
+    if (index === null || !pick) return null
+    return {
+      index,
+      position: target.position,
+      name: champion(pick.championId)?.name ?? pick.championId,
+      guessed: pick.lockedPosition === null,
+    }
+  })()
+
   return (
     <>
       <section className={styles.section} aria-labelledby="draft-poste">
@@ -93,15 +109,19 @@ export function DraftScreen() {
         {POSITIONS.map((position) => {
           const isPlayer = position === draft.playerPosition
           const ally = champion(draft.allies[position])
-          const enemy = champion(enemyAt(position)?.championId)
+          const enemyPick = enemyAt(position)
+          const enemy = champion(enemyPick?.championId)
           const label = POSITION_LABELS[position]
+          const isOpponent = isPlayer && enemy !== null
+          const guessed = enemyPick !== null && enemyPick.lockedPosition === null
+          const hint = [isOpponent && 'vis-à-vis', guessed && 'deviné'].filter(Boolean).join(', ')
           return (
             <div key={position} className={styles.row} data-player={isPlayer || undefined}>
               <DraftCell
                 side="ally"
                 champion={ally}
                 emptyLabel={isPlayer ? 'Toi' : 'Choisir'}
-                highlighted={isPlayer}
+                highlight={isPlayer ? 'player' : undefined}
                 ariaLabel={`${isPlayer ? 'Ton champion' : 'Allié'} ${label} : ${ally ? `${ally.name}, changer` : 'choisir'}`}
                 onPick={() => openPicker({ team: 'ally', position })}
               />
@@ -110,7 +130,9 @@ export function DraftScreen() {
                 side="enemy"
                 champion={enemy}
                 emptyLabel="Choisir"
-                ariaLabel={`Ennemi ${label} : ${enemy ? `${enemy.name}, changer` : 'choisir'}`}
+                highlight={isOpponent ? 'opponent' : undefined}
+                hint={hint || undefined}
+                ariaLabel={`${isOpponent ? 'Ton vis-à-vis' : 'Ennemi'} ${label} : ${enemy ? `${enemy.name}${guessed ? ' (poste deviné)' : ''}, changer` : 'choisir'}`}
                 onPick={() => openPicker({ team: 'enemy', position })}
               />
             </div>
@@ -121,7 +143,7 @@ export function DraftScreen() {
       <div className={styles.footer}>
         <p className="muted">
           {draft.enemies.length === 0
-            ? "Touche une case ennemie si tu connais son poste, sinon ajoute l'ennemi : son poste sera déduit."
+            ? "Ajoute les ennemis dans n'importe quel ordre : l'app devine leur poste. Touche une case ennemie pour corriger."
             : `${draft.enemies.length} ennemi${draft.enemies.length > 1 ? 's' : ''} sur ${MAX_ENEMIES}.`}
         </p>
         {draft.enemies.length < MAX_ENEMIES && (
@@ -147,7 +169,41 @@ export function DraftScreen() {
             )
           }
         >
-          <ChampionPicker champions={available} onSelect={handleSelect} />
+          {editedEnemy && (
+            <section className={styles.enemyPosition} aria-labelledby="poste-ennemi">
+              <h3 id="poste-ennemi" className={styles.sectionTitle}>
+                Poste de {editedEnemy.name}
+              </h3>
+              <Tabs<Position>
+                label={`Poste de ${editedEnemy.name}`}
+                value={editedEnemy.position}
+                onChange={(to) => {
+                  moveEnemy(editedEnemy.position, to, positionRates)
+                  closePicker()
+                }}
+                options={POSITIONS.map((p) => ({ value: p, label: POSITION_LABELS[p] }))}
+              />
+              <div className={styles.positionStatus}>
+                <p className="muted">
+                  {editedEnemy.guessed
+                    ? "Poste deviné par l'app. Choisis le bon poste si besoin."
+                    : 'Poste fixé par toi.'}
+                </p>
+                {!editedEnemy.guessed && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      unlockEnemy(editedEnemy.index)
+                      closePicker()
+                    }}
+                  >
+                    Laisser deviner
+                  </Button>
+                )}
+              </div>
+            </section>
+          )}
+          <ChampionPicker champions={available} onSelect={handleSelect} autoFocus={!editedEnemy} />
         </Sheet>
       )}
     </>

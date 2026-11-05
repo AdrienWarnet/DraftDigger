@@ -29,8 +29,12 @@
   }
 }
 
-.cell[data-highlighted] {
+.cell[data-highlight='player'] {
   border-color: var(--color-accent);
+}
+
+.cell[data-highlight='opponent'] {
+  border-color: var(--color-enemy);
 }
 
 .icon,
@@ -49,9 +53,17 @@
   font-size: var(--text-lg);
 }
 
-.name,
-.empty {
+.text {
   flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: var(--leading-tight);
+}
+
+.name,
+.empty,
+.hint {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -65,4 +77,13 @@
 
 .empty {
   color: var(--color-text-muted);
+}
+
+.hint {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.cell[data-highlight='opponent'] .hint {
+  color: var(--color-enemy);
 }

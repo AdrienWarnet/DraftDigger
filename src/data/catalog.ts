@@ -1,6 +1,8 @@
+import type { PositionRates } from '../engine/positions'
 import type { Champion, Item } from '../engine/types'
 import { buildChampions, DEFAULT_TAG_THREATS, type TagThreats } from './champions'
 import type { DDragonData } from './ddragonTypes'
+import { DEFAULT_POSITION_RATES } from './positionRates'
 import { buildItems, DEFAULT_ITEM_CATEGORY_RULES, type ItemCategoryRules } from './items'
 import {
   applyChampionOverrides,
@@ -19,6 +21,8 @@ export type GameCatalog = {
   items: Item[]
   championsById: Map<string, Champion>
   itemsById: Map<string, Item>
+  /** Taux de jeu par poste, pour deviner le poste des ennemis. */
+  positionRates: PositionRates
 }
 
 export type CatalogOptions = {
@@ -26,6 +30,7 @@ export type CatalogOptions = {
   itemCategoryRules?: ItemCategoryRules
   championOverrides?: Record<string, ChampionOverride>
   itemOverrides?: Record<string, ItemOverride>
+  positionRates?: PositionRates
   warn?: Warn
 }
 
@@ -46,5 +51,6 @@ export function buildCatalog(data: DDragonData, options: CatalogOptions = {}): G
     items,
     championsById: new Map(champions.map((c) => [c.id, c])),
     itemsById: new Map(items.map((i) => [i.id, i])),
+    positionRates: options.positionRates ?? DEFAULT_POSITION_RATES,
   }
 }

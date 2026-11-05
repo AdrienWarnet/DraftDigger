@@ -9,8 +9,10 @@ type DraftCellProps = {
   emptyLabel: string
   /** Description complète pour les lecteurs d'écran (ex : « Allié Top : Yorick, changer »). */
   ariaLabel: string
-  /** Case du joueur : bordure dorée. */
-  highlighted?: boolean
+  /** Mise en évidence : case du joueur (or) ou de son vis-à-vis (rouge). */
+  highlight?: 'player' | 'opponent'
+  /** Petite précision sous le nom (ex : « deviné », « vis-à-vis »). */
+  hint?: string
   onPick: () => void
 }
 
@@ -20,7 +22,8 @@ export function DraftCell({
   side,
   emptyLabel,
   ariaLabel,
-  highlighted = false,
+  highlight,
+  hint,
   onPick,
 }: DraftCellProps) {
   return (
@@ -28,7 +31,7 @@ export function DraftCell({
       type="button"
       className={styles.cell}
       data-side={side}
-      data-highlighted={highlighted || undefined}
+      data-highlight={highlight}
       onClick={onPick}
       aria-label={ariaLabel}
     >
@@ -46,8 +49,11 @@ export function DraftCell({
           +
         </span>
       )}
-      <span className={champion ? styles.name : styles.empty} translate="no">
-        {champion ? champion.name : emptyLabel}
+      <span className={styles.text}>
+        <span className={champion ? styles.name : styles.empty} translate="no">
+          {champion ? champion.name : emptyLabel}
+        </span>
+        {hint && <span className={styles.hint}>{hint}</span>}
       </span>
     </button>
   )

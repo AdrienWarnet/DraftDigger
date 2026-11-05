@@ -1,0 +1,546 @@
+{
+  "_source": "Meraki Analytics championrates.json (patch 16.3), ids Data Dragon 16.22.1. Généré par npm run update-positions, ne pas modifier à la main.",
+  "patch": "16.3",
+  "rates": {
+    "Aatrox": {
+      "top": 3.19
+    },
+    "Ahri": {
+      "mid": 3.7
+    },
+    "Akali": {
+      "top": 1.06,
+      "mid": 4.45
+    },
+    "Akshan": {
+      "mid": 1.33
+    },
+    "Alistar": {
+      "support": 2.27
+    },
+    "Ambessa": {
+      "top": 2.03,
+      "jungle": 1.1
+    },
+    "Amumu": {
+      "jungle": 1.44
+    },
+    "Anivia": {
+      "mid": 1.34
+    },
+    "Annie": {
+      "mid": 0.6
+    },
+    "Aphelios": {
+      "bot": 5.93
+    },
+    "Ashe": {
+      "bot": 3.35
+    },
+    "AurelionSol": {
+      "mid": 1.38
+    },
+    "Aurora": {
+      "mid": 1.31
+    },
+    "Azir": {
+      "mid": 1.22
+    },
+    "Bard": {
+      "support": 2.91
+    },
+    "Belveth": {
+      "jungle": 0.65
+    },
+    "Blitzcrank": {
+      "support": 2.81
+    },
+    "Brand": {
+      "support": 1.56
+    },
+    "Braum": {
+      "support": 5.43
+    },
+    "Briar": {
+      "jungle": 1.87
+    },
+    "Caitlyn": {
+      "bot": 8.96
+    },
+    "Camille": {
+      "top": 1.09
+    },
+    "Cassiopeia": {
+      "mid": 0.66
+    },
+    "Chogath": {
+      "top": 1.51
+    },
+    "Corki": {
+      "bot": 1.64
+    },
+    "Darius": {
+      "top": 3.34
+    },
+    "Diana": {
+      "jungle": 5.42,
+      "mid": 1.69
+    },
+    "Draven": {
+      "bot": 1.99
+    },
+    "DrMundo": {
+      "top": 2.45,
+      "jungle": 1.41
+    },
+    "Ekko": {
+      "jungle": 5.13,
+      "mid": 2.2
+    },
+    "Elise": {
+      "jungle": 1
+    },
+    "Evelynn": {
+      "jungle": 1.26
+    },
+    "Ezreal": {
+      "bot": 5.79
+    },
+    "Fiddlesticks": {
+      "jungle": 1.26
+    },
+    "Fiora": {
+      "top": 1.83
+    },
+    "Fizz": {
+      "mid": 2.06
+    },
+    "Galio": {
+      "mid": 2.23
+    },
+    "Gangplank": {
+      "top": 2.77
+    },
+    "Garen": {
+      "top": 3.14
+    },
+    "Gnar": {
+      "top": 1.87
+    },
+    "Gragas": {
+      "top": 0.92
+    },
+    "Graves": {
+      "jungle": 1.98
+    },
+    "Gwen": {
+      "top": 2.09,
+      "jungle": 2.17
+    },
+    "Hecarim": {
+      "jungle": 1.31
+    },
+    "Heimerdinger": {
+      "top": 0.44
+    },
+    "Hwei": {
+      "mid": 1.39
+    },
+    "Illaoi": {
+      "top": 1.01
+    },
+    "Irelia": {
+      "top": 2.19,
+      "mid": 1.5
+    },
+    "Ivern": {
+      "jungle": 0.62
+    },
+    "Janna": {
+      "support": 2.08
+    },
+    "JarvanIV": {
+      "jungle": 2.64
+    },
+    "Jax": {
+      "top": 3.29,
+      "jungle": 1.51
+    },
+    "Jayce": {
+      "top": 1.34,
+      "jungle": 3.53
+    },
+    "Jhin": {
+      "bot": 6.53
+    },
+    "Jinx": {
+      "bot": 7.26
+    },
+    "Kaisa": {
+      "bot": 7.26
+    },
+    "Kalista": {
+      "bot": 0.52
+    },
+    "Karma": {
+      "support": 3.91
+    },
+    "Karthus": {
+      "jungle": 0.71
+    },
+    "Kassadin": {
+      "mid": 2.1
+    },
+    "Katarina": {
+      "mid": 3.81
+    },
+    "Kayle": {
+      "top": 2.5
+    },
+    "Kayn": {
+      "jungle": 2.56
+    },
+    "Kennen": {
+      "top": 1.44
+    },
+    "Khazix": {
+      "jungle": 3.59
+    },
+    "Kindred": {
+      "jungle": 0.92
+    },
+    "Kled": {
+      "top": 0.77
+    },
+    "KogMaw": {
+      "bot": 0.72
+    },
+    "KSante": {
+      "top": 1.73
+    },
+    "Leblanc": {
+      "mid": 2.13
+    },
+    "LeeSin": {
+      "jungle": 4.96
+    },
+    "Leona": {
+      "support": 3.65
+    },
+    "Lillia": {
+      "jungle": 1.54
+    },
+    "Lissandra": {
+      "mid": 1.42
+    },
+    "Lucian": {
+      "bot": 5.2
+    },
+    "Lulu": {
+      "support": 4.78
+    },
+    "Lux": {
+      "mid": 2.03,
+      "support": 2.82
+    },
+    "Malphite": {
+      "top": 3.28,
+      "jungle": 2.58
+    },
+    "Malzahar": {
+      "mid": 2.95
+    },
+    "Maokai": {
+      "support": 0.59
+    },
+    "MasterYi": {
+      "jungle": 2.53
+    },
+    "Mel": {
+      "mid": 2.17,
+      "support": 1.27
+    },
+    "Milio": {
+      "support": 3.84
+    },
+    "MissFortune": {
+      "bot": 4.62
+    },
+    "MonkeyKing": {
+      "jungle": 1.15
+    },
+    "Mordekaiser": {
+      "top": 2.65
+    },
+    "Morgana": {
+      "support": 2.73
+    },
+    "Naafiri": {
+      "mid": 1.67
+    },
+    "Nami": {
+      "support": 6.22
+    },
+    "Nasus": {
+      "top": 2.17
+    },
+    "Nautilus": {
+      "support": 4.88
+    },
+    "Neeko": {
+      "support": 1.46
+    },
+    "Nidalee": {
+      "jungle": 0.81
+    },
+    "Nilah": {
+      "bot": 1.25
+    },
+    "Nocturne": {
+      "jungle": 1.78
+    },
+    "Nunu": {
+      "jungle": 1.97
+    },
+    "Olaf": {
+      "top": 0.96
+    },
+    "Orianna": {
+      "mid": 2.67
+    },
+    "Ornn": {
+      "top": 2.22
+    },
+    "Pantheon": {
+      "support": 1.34
+    },
+    "Poppy": {
+      "support": 0.93
+    },
+    "Pyke": {
+      "support": 3.09
+    },
+    "Qiyana": {
+      "jungle": 1.11,
+      "mid": 1.29
+    },
+    "Quinn": {
+      "top": 0.58
+    },
+    "Rakan": {
+      "support": 1.86
+    },
+    "Rammus": {
+      "jungle": 0.97
+    },
+    "RekSai": {
+      "jungle": 1.08
+    },
+    "Rell": {
+      "support": 1.48
+    },
+    "Renata": {
+      "support": 0.65
+    },
+    "Renekton": {
+      "top": 2.61
+    },
+    "Rengar": {
+      "jungle": 2.02
+    },
+    "Riven": {
+      "top": 2.4
+    },
+    "Rumble": {
+      "top": 1.32
+    },
+    "Ryze": {
+      "mid": 3.33
+    },
+    "Samira": {
+      "bot": 2.54
+    },
+    "Sejuani": {
+      "jungle": 0.92
+    },
+    "Senna": {
+      "support": 2.37
+    },
+    "Seraphine": {
+      "support": 2.08
+    },
+    "Sett": {
+      "top": 2.93
+    },
+    "Shaco": {
+      "jungle": 2.25
+    },
+    "Shen": {
+      "top": 1.7
+    },
+    "Shyvana": {
+      "jungle": 0.61
+    },
+    "Singed": {
+      "top": 1.23
+    },
+    "Sion": {
+      "top": 2.15
+    },
+    "Sivir": {
+      "bot": 4.54
+    },
+    "Skarner": {
+      "jungle": 0.35
+    },
+    "Smolder": {
+      "bot": 5.42
+    },
+    "Sona": {
+      "support": 3.53
+    },
+    "Soraka": {
+      "support": 2.59
+    },
+    "Swain": {
+      "support": 1.72
+    },
+    "Sylas": {
+      "jungle": 2.34,
+      "mid": 3.45
+    },
+    "Syndra": {
+      "mid": 3.16
+    },
+    "TahmKench": {
+      "top": 1.11,
+      "support": 1.33
+    },
+    "Taliyah": {
+      "mid": 1.13
+    },
+    "Talon": {
+      "jungle": 1.52
+    },
+    "Taric": {
+      "support": 0.7
+    },
+    "Teemo": {
+      "top": 1.42
+    },
+    "Thresh": {
+      "support": 6.76
+    },
+    "Tristana": {
+      "bot": 2.13
+    },
+    "Trundle": {
+      "top": 0.59,
+      "jungle": 0.47
+    },
+    "Tryndamere": {
+      "top": 1.22
+    },
+    "TwistedFate": {
+      "mid": 2.37
+    },
+    "Twitch": {
+      "bot": 2.76
+    },
+    "Udyr": {
+      "jungle": 0.82
+    },
+    "Urgot": {
+      "top": 1.27
+    },
+    "Varus": {
+      "top": 1.74,
+      "bot": 2.87
+    },
+    "Vayne": {
+      "top": 1.41,
+      "bot": 3.6
+    },
+    "Veigar": {
+      "mid": 2.28
+    },
+    "Velkoz": {
+      "support": 1.3
+    },
+    "Vex": {
+      "mid": 1.37
+    },
+    "Vi": {
+      "jungle": 1.68
+    },
+    "Viego": {
+      "jungle": 7.14
+    },
+    "Viktor": {
+      "mid": 2.8
+    },
+    "Vladimir": {
+      "top": 1.02,
+      "mid": 1.4
+    },
+    "Volibear": {
+      "top": 2.4,
+      "jungle": 2.78
+    },
+    "Warwick": {
+      "jungle": 1.29
+    },
+    "Xayah": {
+      "bot": 1.58
+    },
+    "Xerath": {
+      "mid": 1.93,
+      "support": 1.3
+    },
+    "XinZhao": {
+      "jungle": 1.15
+    },
+    "Yasuo": {
+      "top": 1.46,
+      "mid": 4.93
+    },
+    "Yone": {
+      "top": 1.93,
+      "mid": 2.56
+    },
+    "Yorick": {
+      "top": 1.81
+    },
+    "Yunara": {
+      "bot": 4.67
+    },
+    "Yuumi": {
+      "support": 2.4
+    },
+    "Zaahen": {
+      "top": 2.92
+    },
+    "Zac": {
+      "jungle": 1.8
+    },
+    "Zed": {
+      "jungle": 3,
+      "mid": 3.81
+    },
+    "Zeri": {
+      "bot": 1.33
+    },
+    "Ziggs": {
+      "bot": 0.86
+    },
+    "Zilean": {
+      "support": 1.25
+    },
+    "Zoe": {
+      "mid": 1.9
+    },
+    "Zyra": {
+      "support": 1.38
+    }
+  }
+}
