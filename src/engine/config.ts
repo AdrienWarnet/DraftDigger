@@ -49,3 +49,9 @@ export const METRIC_THRESHOLDS = {
   /** Niveau de menace `tank` à partir duquel un champion compte comme tank. */
   tankLevel: 2,
 } as const
+
+/**
+ * Niveau du champion pris pour ses résistances de base dans le calcul défensif (milieu de partie).
+ * TODO(joueur) : ajuster si les gains défensifs semblent sur ou sous-estimés.
+ */
+export const DEFENSE_REFERENCE_LEVEL = 9
