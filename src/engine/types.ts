@@ -99,14 +99,22 @@ export type ItemSlot = {
   alternatives: ItemAlternative[]
 }
 
+/**
+ * Longueur maximale du nom d'un build : sur un écran de 360 px, un nom de 24 caractères
+ * tient sur une ligne dans la liste « Mes builds » (mesuré).
+ */
+export const MAX_BUILD_NAME_LENGTH = 24
+
 export type Build = {
   id: string
   name: string
   championId: string
   /** Un build est propre à un champion ET un poste. */
   position: Position
-  /** Ordre d'affichage, sert aussi au départage. */
+  /** Ordre de création dans son groupe (champion + poste), sert à l'affichage. */
   order: number
+  /** Build favori de son champion à ce poste (un seul) : choisi en cas d'égalité. */
+  favorite?: boolean
   /** Date ISO de dernière modification. */
   updatedAt: string
   runes: BuildRunes

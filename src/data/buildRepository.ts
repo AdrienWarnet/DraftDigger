@@ -6,7 +6,7 @@ import type { Build, Position } from '../engine/types'
  * Asynchrone pour la même raison.
  */
 export interface BuildRepository {
-  /** Tous les builds valides, triés par champion, poste puis ordre ; et les builds illisibles. */
+  /** Tous les builds valides, triés par champion, poste, favori puis ordre ; et les builds illisibles. */
   list(): Promise<BuildList>
   /** Builds d'un champion (et d'un poste si précisé), triés par ordre. */
   listByChampion(championId: string, position?: Position): Promise<Build[]>
@@ -14,12 +14,11 @@ export interface BuildRepository {
   /**
    * Crée ou met à jour un build (validé ; `updatedAt` mis à jour).
    * Un nouveau build est placé à la fin de son champion et de son poste.
+   * S'il est favori, les autres builds du même champion à ce poste ne le sont plus.
    * Lève `BuildValidationError` si le build est invalide.
    */
   save(build: Build): Promise<Build>
   delete(id: string): Promise<void>
-  /** Range les builds dans l'ordre des ids donnés (en général ceux d'un champion et d'un poste). */
-  reorder(ids: string[]): Promise<void>
 }
 
 export type InvalidBuild = {
