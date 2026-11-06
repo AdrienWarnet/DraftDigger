@@ -1,4 +1,5 @@
 import type { GameCatalog } from '../../data/catalog'
+import type { PatchIssue } from '../../engine/patchValidation'
 import type { Build } from '../../engine/types'
 import { POSITION_LABELS } from '../labels'
 import styles from './BuildView.module.css'
@@ -7,10 +8,12 @@ import { GameIcon } from './GameIcon'
 type BuildViewProps = {
   build: Build
   catalog: GameCatalog
+  /** Éléments du build introuvables ou déplacés dans le patch courant. */
+  issues?: PatchIssue[]
 }
 
 /** Un build lisible d'un coup d'œil : runes, sorts, premier item, ordre des items. */
-export function BuildView({ build, catalog }: BuildViewProps) {
+export function BuildView({ build, catalog, issues = [] }: BuildViewProps) {
   const champion = catalog.championsById.get(build.championId) ?? null
   const { runes } = build
   const keystone = catalog.runesById.get(runes.keystone) ?? null
@@ -41,6 +44,21 @@ export function BuildView({ build, catalog }: BuildViewProps) {
           </p>
         </div>
       </header>
+
+      {issues.length > 0 && (
+        <div className={styles.issues} role="alert">
+          <p>
+            {issues.length === 1
+              ? `1 élément à revoir pour le patch ${catalog.version} :`
+              : `${issues.length} éléments à revoir pour le patch ${catalog.version} :`}
+          </p>
+          <ul>
+            {issues.map((issue) => (
+              <li key={issue.path}>{issue.message}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <section className={styles.section} aria-label="Runes">
         <h3 className={styles.sectionTitle}>Runes</h3>

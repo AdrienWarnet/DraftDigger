@@ -1,3 +1,4 @@
+import { validateBuildAgainstData } from '../../engine/patchValidation'
 import { BuildView } from '../components/BuildView'
 import { EmptyState } from '../components/EmptyState'
 import { useCatalog } from '../data/gameDataContext'
@@ -39,7 +40,14 @@ export function BuildsScreen() {
           description="Tu pourras bientôt créer tes builds ici : runes, sorts et ordre des items."
         />
       ) : (
-        builds.map((build) => <BuildView key={build.id} build={build} catalog={catalog} />)
+        builds.map((build) => (
+          <BuildView
+            key={build.id}
+            build={build}
+            catalog={catalog}
+            issues={validateBuildAgainstData(build, catalog)}
+          />
+        ))
       )}
     </>
   )
