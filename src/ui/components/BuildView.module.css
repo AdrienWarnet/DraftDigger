@@ -113,3 +113,20 @@
   justify-content: center;
   gap: 2px;
 }
+
+/* Éléments introuvables dans le patch courant. */
+.issues {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+}
+
+.issues ul {
+  margin: 0;
+  padding-left: var(--space-4);
+  color: var(--color-text-muted);
+}
