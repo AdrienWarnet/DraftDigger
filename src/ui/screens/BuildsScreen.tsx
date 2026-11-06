@@ -26,7 +26,8 @@ export function BuildsScreen() {
   const status = useBuildsStore((s) => s.status)
   const error = useBuildsStore((s) => s.error)
   const load = useBuildsStore((s) => s.load)
-  const [page, id, sub] = useRouteParams()
+  const params = useRouteParams()
+  const [page, id] = params
   const builds = useBuildsStore((s) => s.list.builds)
 
   useEffect(() => {
@@ -51,14 +52,12 @@ export function BuildsScreen() {
   }
   if (page === 'voir' && id) return <BuildDetail id={id} catalog={catalog} />
   if (page === 'nouveau') {
-    return <BuildEditor catalog={catalog} existing={null} pickingChampion={id === 'champion'} />
+    return <BuildEditor catalog={catalog} existing={null} sheetParams={params.slice(1)} />
   }
   if (page === 'modifier' && id) {
     const existing = builds.find((b) => b.id === id)
     if (!existing) return <BuildDetail id={id} catalog={catalog} />
-    return (
-      <BuildEditor catalog={catalog} existing={existing} pickingChampion={sub === 'champion'} />
-    )
+    return <BuildEditor catalog={catalog} existing={existing} sheetParams={params.slice(2)} />
   }
   return <BuildList catalog={catalog} />
 }
