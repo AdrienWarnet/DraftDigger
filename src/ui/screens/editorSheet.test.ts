@@ -10,6 +10,9 @@ describe('panneau de l’éditeur dans l’URL', () => {
     { kind: 'slot', target: 5 },
     { kind: 'alternative', slot: 3, target: 'new' },
     { kind: 'alternative', slot: 0, target: 1 },
+    { kind: 'conditions', scope: { type: 'build' } },
+    { kind: 'conditions', scope: { type: 'firstItem', index: 2 } },
+    { kind: 'conditions', scope: { type: 'alternative', slot: 4, index: 1 } },
   ]
 
   it.each(sheets)('aller-retour : %o', (sheet) => {
@@ -23,6 +26,8 @@ describe('panneau de l’éditeur dans l’URL', () => {
     [['item', 'alt-1']],
     [['item', 'autre-1']],
     [['runes']],
+    [['conditions']],
+    [['conditions', 'alt-1']],
   ])('absent ou invalide : %o', (params) => {
     expect(parseEditorSheet(params)).toBeNull()
   })

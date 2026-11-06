@@ -1,12 +1,14 @@
 import type { GameCatalog } from '../../data/catalog'
 import {
+  conditionLabel,
+  isProvisionalAlternative,
   moveSlot,
   removeAlternative,
   removeFirstItemOption,
   removeSlot,
 } from '../../engine/buildEditing'
-import { BUILD_EDITOR_LIMITS, PROVISIONAL_ALTERNATIVE } from '../../engine/config'
-import type { Build } from '../../engine/types'
+import { BUILD_EDITOR_LIMITS } from '../../engine/config'
+import type { Build, ConditionPreset } from '../../engine/types'
 import { GameIcon } from '../components/GameIcon'
 import type { EditorSheet } from './editorSheet'
 import styles from './BuildEditorItems.module.css'
@@ -14,12 +16,21 @@ import styles from './BuildEditorItems.module.css'
 type BuildEditorItemsProps = {
   build: Build
   catalog: GameCatalog
+  presets: readonly ConditionPreset[]
   change: (fn: (b: Build) => Build) => void
   openSheet: (sheet: EditorSheet) => void
 }
 
 /** Partie « items » de l'éditeur : options de premier item et ordre d'achat avec alternatives. */
-export function BuildEditorItems({ build, catalog, change, openSheet }: BuildEditorItemsProps) {
+export function BuildEditorItems({
+  build,
+  catalog,
+  presets,
+  change,
+  openSheet,
+}: BuildEditorItemsProps) {
+  const labels = (conditions: Parameters<typeof conditionLabel>[1][]) =>
+    conditions.map((c) => conditionLabel(presets, c)).join(', ')
   const item = (id: string) => {
     const found = catalog.itemsById.get(id)
     return found ? { name: found.name, icon: found.image } : null
@@ -35,28 +46,41 @@ export function BuildEditorItems({ build, catalog, change, openSheet }: BuildEdi
         <p className={styles.hint}>1 à 3 options : l'app choisira selon la partie.</p>
         <ul className={styles.list}>
           {build.firstItemOptions.map((option, index) => (
-            <li key={option.itemId} className={styles.row}>
-              <button
-                type="button"
-                className={styles.item}
-                onClick={() => openSheet({ kind: 'firstItem', target: index })}
-                aria-label={`${name(option.itemId)}, changer`}
-              >
-                <GameIcon
-                  entry={item(option.itemId)}
-                  fallbackId={option.itemId}
-                  size={40}
-                  label=""
-                />
-                <span className={styles.itemName}>{name(option.itemId)}</span>
-              </button>
-              {build.firstItemOptions.length > 1 && (
-                <IconButton
-                  label={`Retirer ${name(option.itemId)}`}
-                  onClick={() => change((b) => removeFirstItemOption(b, index))}
-                  icon="remove"
-                />
-              )}
+            <li key={option.itemId} className={styles.block}>
+              <div className={styles.row}>
+                <button
+                  type="button"
+                  className={styles.item}
+                  onClick={() => openSheet({ kind: 'firstItem', target: index })}
+                  aria-label={`${name(option.itemId)}, changer`}
+                >
+                  <GameIcon
+                    entry={item(option.itemId)}
+                    fallbackId={option.itemId}
+                    size={40}
+                    label=""
+                  />
+                  <span className={styles.itemName}>{name(option.itemId)}</span>
+                </button>
+                {build.firstItemOptions.length > 1 && (
+                  <IconButton
+                    label={`Retirer ${name(option.itemId)}`}
+                    onClick={() => change((b) => removeFirstItemOption(b, index))}
+                    icon="remove"
+                  />
+                )}
+              </div>
+              <ConditionButton
+                onClick={() =>
+                  openSheet({ kind: 'conditions', scope: { type: 'firstItem', index } })
+                }
+                text={
+                  option.useWhen.length > 0
+                    ? `Plutôt si : ${labels(option.useWhen.map((w) => w.condition))}`
+                    : 'Choisir quand le proposer'
+                }
+                empty={option.useWhen.length === 0}
+              />
             </li>
           ))}
         </ul>
@@ -116,35 +140,44 @@ export function BuildEditorItems({ build, catalog, change, openSheet }: BuildEdi
                   aria-label={`Alternatives à ${name(slot.default)}`}
                 >
                   {slot.alternatives.map((alt, altIndex) => (
-                    <li key={alt.itemId} className={styles.row}>
-                      <button
-                        type="button"
-                        className={styles.alternative}
-                        onClick={() =>
-                          openSheet({ kind: 'alternative', slot: index, target: altIndex })
-                        }
-                        aria-label={`Alternative ${name(alt.itemId)}, changer`}
-                      >
-                        <span className={styles.or}>ou</span>
-                        <GameIcon
-                          entry={item(alt.itemId)}
-                          fallbackId={alt.itemId}
-                          size={28}
-                          label=""
-                        />
-                        <span className={styles.altText}>
+                    <li key={alt.itemId} className={styles.block}>
+                      <div className={styles.row}>
+                        <button
+                          type="button"
+                          className={styles.alternative}
+                          onClick={() =>
+                            openSheet({ kind: 'alternative', slot: index, target: altIndex })
+                          }
+                          aria-label={`Alternative ${name(alt.itemId)}, changer`}
+                        >
+                          <span className={styles.or}>ou</span>
+                          <GameIcon
+                            entry={item(alt.itemId)}
+                            fallbackId={alt.itemId}
+                            size={28}
+                            label=""
+                          />
                           <span className={styles.itemName}>{name(alt.itemId)}</span>
-                          <span className={styles.condition}>
-                            {alt.explain === PROVISIONAL_ALTERNATIVE.explain
-                              ? 'Condition à préciser (en retard pour l’instant)'
-                              : alt.explain}
-                          </span>
-                        </span>
-                      </button>
-                      <IconButton
-                        label={`Retirer l'alternative ${name(alt.itemId)}`}
-                        onClick={() => change((b) => removeAlternative(b, index, altIndex))}
-                        icon="remove"
+                        </button>
+                        <IconButton
+                          label={`Retirer l'alternative ${name(alt.itemId)}`}
+                          onClick={() => change((b) => removeAlternative(b, index, altIndex))}
+                          icon="remove"
+                        />
+                      </div>
+                      <ConditionButton
+                        onClick={() =>
+                          openSheet({
+                            kind: 'conditions',
+                            scope: { type: 'alternative', slot: index, index: altIndex },
+                          })
+                        }
+                        text={
+                          isProvisionalAlternative(alt)
+                            ? 'Condition à préciser (en retard pour l’instant)'
+                            : `Si : ${labels(alt.when)}`
+                        }
+                        empty={isProvisionalAlternative(alt)}
                       />
                     </li>
                   ))}
@@ -168,6 +201,28 @@ export function BuildEditorItems({ build, catalog, change, openSheet }: BuildEdi
         )}
       </section>
     </>
+  )
+}
+
+function ConditionButton({
+  onClick,
+  text,
+  empty,
+}: {
+  onClick: () => void
+  text: string
+  empty: boolean
+}) {
+  return (
+    <button
+      type="button"
+      className={styles.conditionButton}
+      data-empty={empty || undefined}
+      onClick={onClick}
+    >
+      <span className={styles.conditionText}>{text}</span>
+      <span className={styles.conditionAction}>Conditions</span>
+    </button>
   )
 }
 
