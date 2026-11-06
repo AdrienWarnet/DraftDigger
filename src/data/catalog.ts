@@ -3,6 +3,7 @@ import type { Champion, Item } from '../engine/types'
 import { buildChampions, DEFAULT_TAG_THREATS, type TagThreats } from './champions'
 import type { DDragonData } from './ddragonTypes'
 import { DEFAULT_POSITION_RATES } from './positionRates'
+import { buildRuneCatalog, type RuneCatalog } from './runes'
 import { buildItems, DEFAULT_ITEM_CATEGORY_RULES, type ItemCategoryRules } from './items'
 import {
   applyChampionOverrides,
@@ -15,7 +16,7 @@ import {
 } from './overrides'
 
 /** Champions et items du patch, enrichis et corrigés : ce que le reste de l'app utilise. */
-export type GameCatalog = {
+export type GameCatalog = RuneCatalog & {
   version: string
   champions: Champion[]
   items: Item[]
@@ -52,5 +53,6 @@ export function buildCatalog(data: DDragonData, options: CatalogOptions = {}): G
     championsById: new Map(champions.map((c) => [c.id, c])),
     itemsById: new Map(items.map((i) => [i.id, i])),
     positionRates: options.positionRates ?? DEFAULT_POSITION_RATES,
+    ...buildRuneCatalog(data),
   }
 }
