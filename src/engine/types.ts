@@ -21,6 +21,17 @@ export type Champion = {
   /** Répartition des dégâts infligés ; la somme vaut 1. */
   damage: { ad: number; ap: number; true: number }
   threats: Threats
+  /** Statistiques de base au niveau 1 et gain par niveau (Data Dragon). */
+  baseStats: BaseStats
+}
+
+export type BaseStats = {
+  hp: number
+  hpPerLevel: number
+  armor: number
+  armorPerLevel: number
+  mr: number
+  mrPerLevel: number
 }
 
 export type ItemStats = { armor?: number; mr?: number; hp?: number; ad?: number; ap?: number }

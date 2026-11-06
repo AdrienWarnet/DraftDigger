@@ -189,7 +189,7 @@ type Recommendation<T> = {
 ## 4. Règles de calcul de référence
 
 - **Réduction de dégâts** : dégâts reçus = dégâts × 100 / (100 + résistance). Exemple : 100 d'armure divise les dégâts physiques par 2, soit 50 % de réduction.
-- **Gain d'un item défensif** : pour un item donné et une compo ennemie, `gain = enemyAdShare × (réduction AD apportée) + enemyApShare × (réduction AP apportée)`, mesuré par rapport aux résistances de départ du build à ce moment.
+- **Gain d'un item défensif** : pour un item donné et une compo ennemie, `gain = enemyAdShare × (réduction AD apportée) + enemyApShare × (réduction AP apportée)`, mesuré par rapport aux résistances du joueur à ce moment (base au niveau de référence, 9 par défaut, + items possédés). « Réduction apportée » = part des dégâts reçus en moins : passer de `r0` à `r1` de résistance réduit les dégâts reçus de `(r1 − r0) / (100 + r1)` (ex : de 50 à 100 d'armure, −25 %).
 - **Choix d'un build** : `score = somme des weight des useWhen dont la condition est vraie`. Seuls les builds du champion joué **et du poste joué** sont candidats. Le plus haut score gagne. En cas d'égalité en tête : si le favori en fait partie, il l'emporte ; sinon les builds à égalité sont tous proposés (ex aequo). Sans aucune condition vraie, le favori est proposé. Les `explain` des conditions vraies forment les `reasons`.
 - **Situation** (`ahead` / `even` / `behind`) : voir T4.5. Avant la partie, la situation vaut toujours `even`.
 

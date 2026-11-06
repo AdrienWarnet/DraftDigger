@@ -12,6 +12,7 @@ function champ(id: string, ad: number, threats: Partial<Threats> = {}): Champion
     tags: [],
     damage: { ad, ap: 1 - ad, true: 0 },
     threats: { cc: 0, burst: 0, engage: 0, heal: 0, tank: 0, ...threats },
+    baseStats: { hp: 600, hpPerLevel: 100, armor: 30, armorPerLevel: 4, mr: 30, mrPerLevel: 2 },
   }
 }
 

@@ -15,6 +15,14 @@
       },
       "image": {
         "full": "Malphite.png"
+      },
+      "stats": {
+        "hp": 665,
+        "hpperlevel": 104,
+        "armor": 40,
+        "armorperlevel": 4.95,
+        "spellblock": 28,
+        "spellblockperlevel": 2.05
       }
     },
     "Lux": {
@@ -31,6 +39,14 @@
       },
       "image": {
         "full": "Lux.png"
+      },
+      "stats": {
+        "hp": 580,
+        "hpperlevel": 99,
+        "armor": 21,
+        "armorperlevel": 5.2,
+        "spellblock": 30,
+        "spellblockperlevel": 1.3
       }
     },
     "Jinx": {
@@ -47,6 +63,14 @@
       },
       "image": {
         "full": "Jinx.png"
+      },
+      "stats": {
+        "hp": 610,
+        "hpperlevel": 105,
+        "armor": 26,
+        "armorperlevel": 4.2,
+        "spellblock": 33,
+        "spellblockperlevel": 1.1
       }
     },
     "Zed": {
@@ -63,6 +87,14 @@
       },
       "image": {
         "full": "Zed.png"
+      },
+      "stats": {
+        "hp": 654,
+        "hpperlevel": 99,
+        "armor": 32,
+        "armorperlevel": 4.7,
+        "spellblock": 29,
+        "spellblockperlevel": 2.05
       }
     },
     "Soraka": {
@@ -79,6 +111,14 @@
       },
       "image": {
         "full": "Soraka.png"
+      },
+      "stats": {
+        "hp": 605,
+        "hpperlevel": 88,
+        "armor": 32,
+        "armorperlevel": 5,
+        "spellblock": 30,
+        "spellblockperlevel": 1.3
       }
     }
   }
