@@ -34,6 +34,10 @@ export type Item = {
   /** "armor", "mr", "hp", "ad", "ap", "antiheal", "antitank", "mobility", "boots"... */
   categories: string[]
   buildsFrom: string[] // ids des composants
+  /** Items que celui-ci sert à fabriquer (vide = item complet). */
+  buildsInto: string[]
+  /** Autres noms pour la recherche (abréviations, nom anglais). */
+  aliases: string[]
 }
 
 // --- Conditions (docs/TICKETS.md, section 3) ------------------------------------

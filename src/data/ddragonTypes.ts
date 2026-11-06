@@ -18,6 +18,7 @@ export type RawChampion = {
 export type RawItem = {
   name: string
   description?: string // HTML
+  colloq?: string // alias de recherche séparés par « ; » (ex : « ;bork;botrk;Blade of the Ruined King »)
   from?: string[]
   into?: string[]
   gold: { base: number; total: number; sell: number; purchasable: boolean }

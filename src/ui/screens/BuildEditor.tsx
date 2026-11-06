@@ -10,6 +10,9 @@ import {
   chooseShard,
   missingChoices,
   newBuild,
+  setAlternative,
+  setFirstItemOption,
+  setSlotItem,
   toggleSecondaryRune,
   toggleSpell,
   type RuneLocator,
@@ -25,22 +28,25 @@ import { Button } from '../components/Button'
 import { ChampionPicker } from '../components/ChampionPicker'
 import { DraftCell } from '../components/DraftCell'
 import { IconChoice } from '../components/IconChoice'
+import { ItemPicker } from '../components/ItemPicker'
 import { Sheet } from '../components/Sheet'
 import { Tabs } from '../components/Tabs'
 import { POSITION_LABELS } from '../labels'
 import { goBack, navigate } from '../navigation/useRoute'
 import styles from './BuildEditor.module.css'
+import { BuildEditorItems } from './BuildEditorItems'
+import { encodeEditorSheet, parseEditorSheet, type EditorSheet } from './editorSheet'
 
 type BuildEditorProps = {
   catalog: GameCatalog
   /** Build à modifier, ou `null` pour en créer un. */
   existing: Build | null
-  /** Sélecteur de champion ouvert (`#/builds/…/champion`). */
-  pickingChampion: boolean
+  /** Paramètres d'URL après le build : panneau ouvert (sélecteur de champion ou d'item). */
+  sheetParams: readonly string[]
 }
 
 /** Éditeur de build : identité, runes, fragments et sorts (les items arrivent en T3.7). */
-export function BuildEditor({ catalog, existing, pickingChampion }: BuildEditorProps) {
+export function BuildEditor({ catalog, existing, sheetParams }: BuildEditorProps) {
   const target = existing?.id ?? 'nouveau'
   const draftForPlayer = useDraftStore((s) => s.draft)
   const open = useBuildEditorStore((s) => s.open)
@@ -88,6 +94,9 @@ export function BuildEditor({ catalog, existing, pickingChampion }: BuildEditorP
     ? () => navigate('builds', 'voir', existing.id)
     : () => goBack('builds')
   const pickerBase = existing ? ['modifier', existing.id] : ['nouveau']
+  const sheet = parseEditorSheet(sheetParams)
+  const openSheet = (s: EditorSheet) => navigate('builds', ...pickerBase, ...encodeEditorSheet(s))
+  const closeSheet = () => goBack('builds')
 
   async function handleSave() {
     if (!build) return
@@ -159,7 +168,7 @@ export function BuildEditor({ catalog, existing, pickingChampion }: BuildEditorP
           champion={champion}
           emptyLabel="Choisir le champion"
           ariaLabel={champion ? `Champion : ${champion.name}, changer` : 'Choisir le champion'}
-          onPick={() => navigate('builds', ...pickerBase, 'champion')}
+          onPick={() => openSheet({ kind: 'champion' })}
         />
         <span className={styles.label}>Poste</span>
         <Tabs<Position>
@@ -289,9 +298,7 @@ export function BuildEditor({ catalog, existing, pickingChampion }: BuildEditorP
         />
       </section>
 
-      <p className={styles.hint}>
-        Les items et leurs conditions se règlent à l'étape suivante (bientôt).
-      </p>
+      <BuildEditorItems build={build} catalog={catalog} change={change} openSheet={openSheet} />
 
       <div className={styles.footer}>
         {errors.length > 0 && (
@@ -309,17 +316,63 @@ export function BuildEditor({ catalog, existing, pickingChampion }: BuildEditorP
         </div>
       </div>
 
-      {pickingChampion && (
-        <Sheet title="Champion du build" onClose={() => goBack('builds')}>
+      {sheet?.kind === 'champion' && (
+        <Sheet title="Champion du build" onClose={closeSheet}>
           <ChampionPicker
             champions={catalog.champions}
             onSelect={(c) => {
               change((b) => ({ ...b, championId: c.id }))
-              goBack('builds')
+              closeSheet()
+            }}
+          />
+        </Sheet>
+      )}
+      {sheet && sheet.kind !== 'champion' && (
+        <Sheet title={itemSheetTitle(sheet, build)} onClose={closeSheet}>
+          <ItemPicker
+            items={catalog.items}
+            excludedIds={excludedItemIds(sheet, build)}
+            onSelect={(item) => {
+              change((b) => applyItemChoice(b, sheet, item.id))
+              closeSheet()
             }}
           />
         </Sheet>
       )}
     </div>
   )
+}
+
+type ItemSheet = Exclude<EditorSheet, { kind: 'champion' }>
+
+function itemSheetTitle(sheet: ItemSheet, build: Build): string {
+  switch (sheet.kind) {
+    case 'firstItem':
+      return sheet.target === 'new' ? 'Option de premier item' : 'Changer le premier item'
+    case 'slot':
+      return `Item ${sheet.target === 'new' ? build.itemOrder.length + 1 : sheet.target + 1}`
+    case 'alternative':
+      return `Alternative à l'item ${sheet.slot + 1}`
+  }
+}
+
+/** Items déjà présents à cet endroit : pas proposés une deuxième fois. */
+function excludedItemIds(sheet: ItemSheet, build: Build): string[] {
+  if (sheet.kind === 'firstItem') return build.firstItemOptions.map((o) => o.itemId)
+  if (sheet.kind === 'alternative') {
+    const slot = build.itemOrder[sheet.slot]
+    return slot ? [slot.default, ...slot.alternatives.map((a) => a.itemId)] : []
+  }
+  return []
+}
+
+function applyItemChoice(build: Build, sheet: ItemSheet, itemId: string): Build {
+  switch (sheet.kind) {
+    case 'firstItem':
+      return setFirstItemOption(build, sheet.target, itemId)
+    case 'slot':
+      return setSlotItem(build, sheet.target, itemId)
+    case 'alternative':
+      return setAlternative(build, sheet.slot, sheet.target, itemId)
+  }
 }
