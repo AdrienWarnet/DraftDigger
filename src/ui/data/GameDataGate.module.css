@@ -10,3 +10,13 @@
   color: var(--color-text-muted);
   font-size: var(--text-sm);
 }
+
+/* Version des données, discrète, en fin de chaque écran. */
+.version {
+  margin-top: auto;
+  padding-top: var(--space-5);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  text-align: center;
+  opacity: 0.8;
+}

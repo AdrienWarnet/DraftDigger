@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import example from '../../data/builds/example.json'
-import { validateBuildAgainstData, type PatchIndex } from './patchValidation'
+import { buildAlerts, validateBuildAgainstData, type PatchIndex } from './patchValidation'
 import type { Build } from './types'
 
 // Index de patch minimal contenant tout ce qu'utilise le build d'exemple (ids réels 16.22.1).
@@ -128,5 +128,18 @@ describe('validateBuildAgainstData', () => {
     expect(validateBuildAgainstData(build, named).map((i) => i.message)).toEqual([
       "Rune Rune-8010 : n'appartient plus à l'arbre Volonté.",
     ])
+  })
+})
+
+describe('buildAlerts', () => {
+  it('garde seulement les builds à revoir, avec leurs problèmes', () => {
+    const ok = exampleCopy()
+    const broken = { ...exampleCopy(), id: 'ancien' }
+    broken.itemOrder[0]!.default = '9999'
+    const alerts = buildAlerts([ok, broken], patch)
+    expect(alerts.map((a) => [a.build.id, a.issues.map((i) => i.id)])).toEqual([
+      ['ancien', ['9999']],
+    ])
+    expect(buildAlerts([ok], patch)).toEqual([])
   })
 })

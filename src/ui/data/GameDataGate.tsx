@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Button } from '../components/Button'
 import { EmptyState } from '../components/EmptyState'
+import { POSITION_RATES_PATCH } from '../../data/positionRates'
 import { useGameDataState } from './gameDataContext'
 import styles from './GameDataGate.module.css'
 
@@ -35,6 +36,10 @@ export function GameDataGate({ children }: { children: ReactNode }) {
         </p>
       )}
       {children}
+      <p className={styles.version}>
+        Données du jeu : patch {state.result.data.version} (postes des ennemis : patch{' '}
+        {POSITION_RATES_PATCH})
+      </p>
     </>
   )
 }
