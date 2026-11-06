@@ -1,0 +1,19 @@
+.icon,
+.missing {
+  flex: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+}
+
+.icon[data-shape='round'],
+.missing[data-shape='round'] {
+  border-radius: 50%;
+}
+
+.missing {
+  display: inline-grid;
+  place-items: center;
+  border: 1px dashed var(--color-danger);
+  color: var(--color-danger);
+  font-weight: 600;
+}

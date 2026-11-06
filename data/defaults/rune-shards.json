@@ -1,0 +1,65 @@
+{
+  "_source": "Fragments de rune (absents de Data Dragon) : lignes et ids de CommunityDragon perkstyles.json (slots kStatMod), noms fr_FR, icônes Data Dragon. Vérifié le 2026-11-06 (patch 16.22).",
+  "rows": [
+    {
+      "label": "Attaque",
+      "shards": [
+        {
+          "id": "5008",
+          "name": "Force adaptative",
+          "icon": "perk-images/StatMods/StatModsAdaptiveForceIcon.png"
+        },
+        {
+          "id": "5005",
+          "name": "Vitesse d'attaque",
+          "icon": "perk-images/StatMods/StatModsAttackSpeedIcon.png"
+        },
+        {
+          "id": "5007",
+          "name": "Accélération de compétence",
+          "icon": "perk-images/StatMods/StatModsCDRScalingIcon.png"
+        }
+      ]
+    },
+    {
+      "label": "Flexible",
+      "shards": [
+        {
+          "id": "5008",
+          "name": "Force adaptative",
+          "icon": "perk-images/StatMods/StatModsAdaptiveForceIcon.png"
+        },
+        {
+          "id": "5010",
+          "name": "Vitesse de déplacement",
+          "icon": "perk-images/StatMods/StatModsMovementSpeedIcon.png"
+        },
+        {
+          "id": "5001",
+          "name": "PV croissants",
+          "icon": "perk-images/StatMods/StatModsHealthPlusIcon.png"
+        }
+      ]
+    },
+    {
+      "label": "Défense",
+      "shards": [
+        {
+          "id": "5011",
+          "name": "PV",
+          "icon": "perk-images/StatMods/StatModsHealthScalingIcon.png"
+        },
+        {
+          "id": "5013",
+          "name": "Ténacité et résistance aux ralentissements",
+          "icon": "perk-images/StatMods/StatModsTenacityIcon.png"
+        },
+        {
+          "id": "5001",
+          "name": "PV croissants",
+          "icon": "perk-images/StatMods/StatModsHealthPlusIcon.png"
+        }
+      ]
+    }
+  ]
+}
