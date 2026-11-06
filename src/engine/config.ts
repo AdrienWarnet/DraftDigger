@@ -38,3 +38,6 @@ export const WEIGHT_LEVELS = [
 
 /** Poids d'une condition qu'on vient de cocher. */
 export const DEFAULT_CONDITION_WEIGHT = 2
+
+/** Rappel d'export dans « Mes builds » : jours sans export avant de le proposer. */
+export const EXPORT_REMINDER_DAYS = 7

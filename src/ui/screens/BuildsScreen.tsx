@@ -7,6 +7,8 @@ import { POSITIONS, type Build, type Position } from '../../engine/types'
 import { useBuildsStore } from '../../store/buildsStore'
 import { BuildView } from '../components/BuildView'
 import { BuildEditor } from './BuildEditor'
+import { exportBuilds } from '../exportBuilds'
+import { BuildExchangeBar } from './BuildExchange'
 import { Button } from '../components/Button'
 import { ConfirmPanel } from '../components/ConfirmPanel'
 import { EmptyState } from '../components/EmptyState'
@@ -99,6 +101,7 @@ function BuildList({ catalog }: { catalog: GameCatalog }) {
       <Button block onClick={() => navigate('builds', 'nouveau')}>
         Créer un build
       </Button>
+      <BuildExchangeBar />
 
       {invalid.length > 0 && (
         <p className={styles.warning} role="status">
@@ -349,6 +352,7 @@ function BuildDetail({ id, catalog }: { id: string; catalog: GameCatalog }) {
   const duplicate = useBuildsStore((s) => s.duplicate)
   const remove = useBuildsStore((s) => s.remove)
   const [confirmingDelete, setConfirmingDelete] = useState(false)
+  const [exportMessage, setExportMessage] = useState<string | null>(null)
 
   if (!build) {
     return (
@@ -378,10 +382,21 @@ function BuildDetail({ id, catalog }: { id: string; catalog: GameCatalog }) {
         >
           Dupliquer
         </Button>
+        <Button
+          variant="secondary"
+          onClick={async () => setExportMessage(await exportBuilds([build]))}
+        >
+          Exporter
+        </Button>
         <Button variant="secondary" onClick={() => setConfirmingDelete(true)}>
           Supprimer
         </Button>
       </div>
+      {exportMessage && (
+        <p className="muted" role="status">
+          {exportMessage}
+        </p>
+      )}
       {confirmingDelete && (
         <ConfirmPanel
           message={`Supprimer « ${build.name} » ? Cette action est définitive.`}

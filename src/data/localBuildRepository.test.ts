@@ -68,6 +68,14 @@ describe('création, modification, suppression', () => {
     expect(await repo.get('b')).toEqual(b)
   })
 
+  it('import : la date de modification d’origine peut être conservée', async () => {
+    const { repo } = setup()
+    const saved = await repo.save(testBuild({ id: 'a', updatedAt: '2026-01-01T00:00:00.000Z' }), {
+      keepUpdatedAt: true,
+    })
+    expect(saved.updatedAt).toBe('2026-01-01T00:00:00.000Z')
+  })
+
   it('modifie un build existant sans changer son ordre ni dupliquer', async () => {
     const { repo } = setup()
     await repo.save(testBuild({ id: 'a' }))

@@ -116,12 +116,12 @@ export function createLocalBuildRepository({
       return readAll().list.builds.find((b) => b.id === id) ?? null
     },
 
-    async save(input) {
+    async save(input, options = {}) {
       const { file, list } = readAll()
       const existing = list.builds.find((b) => b.id === input.id)
       const candidate: Build = {
         ...input,
-        updatedAt: now().toISOString(),
+        updatedAt: options.keepUpdatedAt ? input.updatedAt : now().toISOString(),
         order:
           existing &&
           existing.championId === input.championId &&

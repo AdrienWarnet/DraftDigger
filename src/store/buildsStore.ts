@@ -16,6 +16,8 @@ export type BuildsStore = {
   duplicate: (id: string) => Promise<Build | null>
   /** Fait de ce build le favori de son champion à ce poste (ou le retire s'il l'était). */
   toggleFavorite: (id: string) => Promise<void>
+  /** Enregistre des builds importés ; renvoie le nombre enregistré. */
+  importBuilds: (builds: Build[]) => Promise<number>
 }
 
 /**
@@ -56,6 +58,11 @@ export function createBuildsStore(repository: () => BuildRepository) {
         const copy = await repository().save(duplicateBuild(original, createBuildId(), names))
         await refresh()
         return copy
+      },
+      importBuilds: async (builds) => {
+        for (const build of builds) await repository().save(build, { keepUpdatedAt: true })
+        await refresh()
+        return builds.length
       },
       toggleFavorite: async (id) => {
         const build = await repository().get(id)
