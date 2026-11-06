@@ -113,6 +113,11 @@ export function toItem(
     stats: itemStats(raw),
     categories: itemCategories(raw, rules),
     buildsFrom: [...(raw.from ?? [])],
+    buildsInto: [...(raw.into ?? [])],
+    aliases: (raw.colloq ?? '')
+      .split(';')
+      .map((alias) => alias.trim())
+      .filter((alias) => alias && alias !== raw.name),
   }
 }
 

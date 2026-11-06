@@ -82,20 +82,3 @@
   justify-content: space-between;
   gap: var(--space-3);
 }
-
-/* Confirmation avant d'effacer la draft. */
-.confirm {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-}
-
-.confirmActions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-2);
-}

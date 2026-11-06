@@ -1,0 +1,175 @@
+{
+  "_format": "Presets de conditions de l'éditeur de builds. id unique, label affiché, condition { metric, op, value } (voir docs/TICKETS.md section 3), explain = texte proposé par défaut, modifiable par le joueur. Les clés qui commencent par _ sont ignorées.",
+  "presets": [
+    {
+      "id": "compo-ad",
+      "label": "Compo majoritairement AD",
+      "condition": {
+        "metric": "enemyAdShare",
+        "op": ">=",
+        "value": 0.6
+      },
+      "explain": "Leur équipe fait surtout des dégâts physiques."
+    },
+    {
+      "id": "compo-tres-ad",
+      "label": "Compo très AD",
+      "condition": {
+        "metric": "enemyAdShare",
+        "op": ">=",
+        "value": 0.75
+      },
+      "explain": "Leur équipe fait presque uniquement des dégâts physiques."
+    },
+    {
+      "id": "compo-ap",
+      "label": "Compo majoritairement AP",
+      "condition": {
+        "metric": "enemyApShare",
+        "op": ">=",
+        "value": 0.6
+      },
+      "explain": "Leur équipe fait surtout des dégâts magiques."
+    },
+    {
+      "id": "compo-tres-ap",
+      "label": "Compo très AP",
+      "condition": {
+        "metric": "enemyApShare",
+        "op": ">=",
+        "value": 0.75
+      },
+      "explain": "Leur équipe fait presque uniquement des dégâts magiques."
+    },
+    {
+      "id": "soin",
+      "label": "Ils se soignent",
+      "condition": {
+        "metric": "enemyHealCount",
+        "op": ">=",
+        "value": 2
+      },
+      "explain": "Ils ont du soin : l'anti-soin est utile."
+    },
+    {
+      "id": "beaucoup-soin",
+      "label": "Beaucoup de soin",
+      "condition": {
+        "metric": "enemyHealCount",
+        "op": ">=",
+        "value": 4
+      },
+      "explain": "Beaucoup de soin en face : l'anti-soin est prioritaire."
+    },
+    {
+      "id": "beaucoup-cc",
+      "label": "Beaucoup de CC",
+      "condition": {
+        "metric": "enemyCcCount",
+        "op": ">=",
+        "value": 5
+      },
+      "explain": "Beaucoup de contrôles en face : la ténacité aide."
+    },
+    {
+      "id": "beaucoup-burst",
+      "label": "Beaucoup de burst",
+      "condition": {
+        "metric": "enemyBurstCount",
+        "op": ">=",
+        "value": 4
+      },
+      "explain": "Ils peuvent te tuer très vite : la survie compte."
+    },
+    {
+      "id": "beaucoup-engage",
+      "label": "Beaucoup d'engage",
+      "condition": {
+        "metric": "enemyEngageCount",
+        "op": ">=",
+        "value": 4
+      },
+      "explain": "Ils engagent fort : mieux vaut être solide."
+    },
+    {
+      "id": "tanks",
+      "label": "2 tanks ou plus",
+      "condition": {
+        "metric": "enemyTankCount",
+        "op": ">=",
+        "value": 2
+      },
+      "explain": "Au moins 2 tanks en face : il faut percer les résistances."
+    },
+    {
+      "id": "vis-a-vis-ad",
+      "label": "Vis-à-vis AD",
+      "condition": {
+        "metric": "laneOpponentDamage",
+        "op": "==",
+        "value": "ad"
+      },
+      "explain": "Ton adversaire de lane fait des dégâts physiques."
+    },
+    {
+      "id": "vis-a-vis-ap",
+      "label": "Vis-à-vis AP",
+      "condition": {
+        "metric": "laneOpponentDamage",
+        "op": "==",
+        "value": "ap"
+      },
+      "explain": "Ton adversaire de lane fait des dégâts magiques."
+    },
+    {
+      "id": "vis-a-vis-mixte",
+      "label": "Vis-à-vis mixte",
+      "condition": {
+        "metric": "laneOpponentDamage",
+        "op": "==",
+        "value": "mixed"
+      },
+      "explain": "Ton adversaire de lane fait des dégâts mixtes."
+    },
+    {
+      "id": "vis-a-vis-tank",
+      "label": "Vis-à-vis tank",
+      "condition": {
+        "metric": "laneOpponentIsTank",
+        "op": "==",
+        "value": 1
+      },
+      "explain": "Ton adversaire de lane est un tank."
+    },
+    {
+      "id": "devant",
+      "label": "Devant",
+      "condition": {
+        "metric": "situation",
+        "op": "==",
+        "value": "ahead"
+      },
+      "explain": "Tu es en avance."
+    },
+    {
+      "id": "egalite",
+      "label": "À égalité",
+      "condition": {
+        "metric": "situation",
+        "op": "==",
+        "value": "even"
+      },
+      "explain": "La partie est équilibrée."
+    },
+    {
+      "id": "en-retard",
+      "label": "En retard",
+      "condition": {
+        "metric": "situation",
+        "op": "==",
+        "value": "behind"
+      },
+      "explain": "Tu es en retard."
+    }
+  ]
+}

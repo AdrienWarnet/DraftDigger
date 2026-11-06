@@ -32,6 +32,10 @@ La branche `gh-pages` est générée par la CI : ne jamais la modifier à la mai
 
 En dev uniquement, `#/composants` affiche tous les composants de base (boutons, cartes, onglets, bandeau « Pourquoi »). Les couleurs, tailles et espacements sont dans [src/ui/theme/tokens.css](src/ui/theme/tokens.css).
 
+### Sauvegarder ses builds
+
+Les builds ne sont enregistrés que sur le téléphone. Dans l'onglet **Builds** : **Exporter** crée un fichier JSON (partage Android vers Drive, mail… ou téléchargement), **Importer** le relit (aperçu, puis « Garder les deux » ou « Remplacer » si un build existe déjà). Un rappel s'affiche si des builds n'ont pas été exportés depuis 7 jours. Chaque fiche de build a aussi son bouton **Exporter**.
+
 ### Corriger les données du jeu
 
 Data Dragon ne dit pas tout (soins, anti-tank, répartition AD/AP de certains champions). Les corrections se font sans toucher au code :
@@ -39,6 +43,7 @@ Data Dragon ne dit pas tout (soins, anti-tank, répartition AD/AP de certains ch
 - [data/overrides/champions.json](data/overrides/champions.json) : par id de champion, `damage`, `threats` (`cc`, `burst`, `engage`, `heal`, `tank` de 0 à 3), `tags`.
 - [data/overrides/items.json](data/overrides/items.json) : par id d'item, `addCategories` / `removeCategories` (ex : `antitank`).
 - [data/defaults/](data/defaults/) : règles par défaut (menaces par classe de champion, catégories d'items).
+- [data/presets/conditions.json](data/presets/conditions.json) : conditions proposées dans l'éditeur de builds (« Compo majoritairement AP »…) et leurs seuils.
 
 Le format est rappelé dans la clé `_format` de chaque fichier. Un id inconnu ou une valeur invalide produit un avertissement dans la console du navigateur, sans bloquer l'app.
 

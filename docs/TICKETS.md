@@ -134,7 +134,8 @@ type Build = {
   name: string;                 // "Duelliste"
   championId: string;           // "Yorick"
   position: Position;           // "top" : un build est propre à un champion ET un poste
-  order: number;                // ordre d'affichage, sert aussi au départage
+  order: number;                // ordre de création dans son groupe, sert à l'affichage
+  favorite?: boolean;           // un seul favori par champion + poste : choisi en cas d'égalité
   updatedAt: string;            // date ISO de dernière modification
   runes: {
     primaryTree: string;
@@ -189,7 +190,7 @@ type Recommendation<T> = {
 
 - **Réduction de dégâts** : dégâts reçus = dégâts × 100 / (100 + résistance). Exemple : 100 d'armure divise les dégâts physiques par 2, soit 50 % de réduction.
 - **Gain d'un item défensif** : pour un item donné et une compo ennemie, `gain = enemyAdShare × (réduction AD apportée) + enemyApShare × (réduction AP apportée)`, mesuré par rapport aux résistances de départ du build à ce moment.
-- **Choix d'un build** : `score = somme des weight des useWhen dont la condition est vraie`. Seuls les builds du champion joué **et du poste joué** sont candidats. Le plus haut score gagne ; en cas d'égalité, le build avec le plus petit `order`. Les `explain` des conditions vraies forment les `reasons`.
+- **Choix d'un build** : `score = somme des weight des useWhen dont la condition est vraie`. Seuls les builds du champion joué **et du poste joué** sont candidats. Le plus haut score gagne. En cas d'égalité en tête : si le favori en fait partie, il l'emporte ; sinon les builds à égalité sont tous proposés (ex aequo). Sans aucune condition vraie, le favori est proposé. Les `explain` des conditions vraies forment les `reasons`.
 - **Situation** (`ahead` / `even` / `behind`) : voir T4.5. Avant la partie, la situation vaut toujours `even`.
 
 ### Échelle unique des scores : les « points »
@@ -379,13 +380,13 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 
 **Quoi** : enregistrer les builds sur le téléphone, de façon remplaçable par un backend plus tard.
 **À faire**
-- [ ] Interface `BuildRepository` (`list`, `listByChampion`, `get`, `save`, `delete`, `reorder`), asynchrone (prête pour un futur appel réseau).
+- [ ] Interface `BuildRepository` (`list`, `listByChampion`, `get`, `save`, `delete`), asynchrone (prête pour un futur appel réseau). `save` garantit un seul favori par champion et par poste (le réordonnancement manuel a été remplacé par le favori en T3.5).
 - [ ] Implémentation `LocalBuildRepository` sur `localStorage`, avec validation Zod à la lecture (un build invalide est signalé, pas un crash).
 - [ ] Au premier lancement (stockage vide), charger le build d'exemple.
 - [ ] Appeler `navigator.storage.persist()` si disponible.
 - [ ] Version de schéma stockée avec les données, pour pouvoir migrer plus tard.
 
-**Terminé quand** : tests sur l'implémentation locale (création, modification, suppression, ordre, premier lancement, donnée corrompue).
+**Terminé quand** : tests sur l'implémentation locale (création, modification, suppression, ordre, favori, premier lancement, donnée corrompue).
 **Dépend de** : T3.1.
 
 ### T3.3 – Affichage d'un build (M)
@@ -402,8 +403,8 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 
 **Quoi** : vérifier que les ids existent dans le patch courant.
 **À faire**
-- [ ] Fonction `validateBuildAgainstData(build, data)` qui renvoie la liste des ids inconnus (champion, items, runes, sorts).
-- [ ] Appelée au chargement des builds et à l'enregistrement dans l'éditeur.
+- [ ] Fonction `validateBuildAgainstData(build, data)` qui renvoie la liste des ids inconnus (champion, items, runes, sorts ; fragments via `data/defaults/rune-shards.json` dès T3.6).
+- [ ] Appelée au chargement des builds (onglet Builds : encadré « éléments à revoir pour le patch ») et à l'enregistrement dans l'éditeur (branché en T3.6 : un id inconnu bloque l'enregistrement avec le message).
 
 **Terminé quand** : test avec un item inexistant → l'erreur est listée.
 **Dépend de** : T3.1, T1.1.
@@ -413,18 +414,20 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 **Quoi** : gérer la liste de ses builds.
 **À faire**
 - [ ] Liste groupée par champion puis par poste (icône, poste, nom du build), filtres par champion et par poste.
-- [ ] Actions : créer, ouvrir, dupliquer, supprimer (avec confirmation), réordonner au sein d'un champion.
+- [ ] Actions : créer, ouvrir, dupliquer, supprimer (avec confirmation), marquer comme favori (une étoile, un seul favori par champion et par poste).
+- [ ] Aperçu sur chaque ligne : rune clé, arbre secondaire, 3 premiers items ; nom sur une ligne.
 - [ ] Un build en erreur (T3.4) est signalé par un badge.
 
-**Terminé quand** : on peut créer, dupliquer, réordonner et supprimer un build ; tout est conservé après rechargement.
+**Terminé quand** : on peut créer, dupliquer, marquer un favori et supprimer un build ; tout est conservé après rechargement.
 **Dépend de** : T3.2, T3.3, T0.4.
 
 ### T3.6 – Éditeur : identité, runes et sorts (M)
 
 **Quoi** : remplir la partie « fixe » d'un build.
 **À faire**
-- [ ] Champs : nom, champion (`ChampionPicker` de T2.1), poste.
+- [ ] Champs : nom (24 caractères max, `MAX_BUILD_NAME_LENGTH` : tient sur une ligne à 360 px ; compteur de caractères), champion (`ChampionPicker` de T2.1), poste.
 - [ ] Sélection des runes en suivant la structure Data Dragon : arbre principal → keystone → 3 runes, arbre secondaire (différent du principal) → 2 runes de lignes différentes, 3 fragments.
+- [x] Fragments de rune : absents de Data Dragon. `data/defaults/rune-shards.json` (3 lignes de fragments : id, nom, icône) créé en T3.3, ids vérifiés au patch 16.22 ; l'éditeur et la validation T3.4 s'en servent.
 - [ ] Sélection des 2 sorts d'invocateur (distincts, sorts de la Faille uniquement).
 - [ ] Brouillon conservé si on quitte l'éditeur sans enregistrer ; validation Zod + T3.4 à l'enregistrement.
 
@@ -563,7 +566,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 **Quoi** : appeler le moteur pour choisir parmi les builds du champion et du poste joués.
 **À faire**
 - [ ] `recommendBuild(builds, metrics)` utilisant les `useWhen` des builds (l'appelant passe les builds de `playerChampionId` + `playerPosition`).
-- [ ] Départage par `order`.
+- [ ] Départage : le favori l'emporte s'il est à égalité en tête ; sinon les builds ex aequo sont tous proposés. Sans condition vraie, le favori est proposé.
 - [ ] Un seul build : il est retenu, confiance selon les ennemis connus.
 - [ ] Aucun build pour ce champion à ce poste, mais des builds à d'autres postes : ils sont proposés avec la mention « build prévu pour <poste> », confiance « low ».
 - [ ] Aucun build pour ce champion : message « Aucun build pour X » + bouton « Créer un build » (ouvre l'éditeur avec champion et poste pré-remplis).
@@ -742,8 +745,8 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 1. **Socle** : T0.1 → T0.4, puis T1.1 → T1.4.
 2. **Saisie** : T2.1 → T2.5.
-3. **Builds et moteur** : T3.1 → T3.4, puis T4.1 → T4.6.
-4. **Éditeur de builds** : T3.5 → T3.10.
+3. **Builds et éditeur** : T3.1 → T3.10 (epic 3 terminée et fermée avant le moteur : Git plus simple, et le joueur crée ses vrais builds tôt).
+4. **Moteur** : T4.1 → T4.6.
 5. **Usage** : T5.1 → T5.4, puis T6.1 → T6.5.
 6. **Finition** : T7.1 → T7.5.
 7. **Plus tard** : epic 8 (quêtes de rôle).
