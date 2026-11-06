@@ -55,3 +55,13 @@ export const METRIC_THRESHOLDS = {
  * TODO(joueur) : ajuster si les gains défensifs semblent sur ou sous-estimés.
  */
 export const DEFENSE_REFERENCE_LEVEL = 9
+
+/**
+ * Confiance d'une recommandation (docs/TICKETS.md section 4) selon l'écart de points entre
+ * le 1er et le 2e choix et le nombre d'ennemis connus. Avec une seule option, seul le nombre
+ * d'ennemis compte. TODO(joueur) : ajuster après les premières parties (T7.2).
+ */
+export const CONFIDENCE_THRESHOLDS = {
+  high: { minGap: 3, minEnemies: 4 },
+  medium: { minGap: 1, minEnemies: 2 },
+} as const

@@ -207,7 +207,8 @@ Tous les scores du moteur sont exprimés en **points**, la même unité que les 
 - **Confiance** (`Recommendation.confidence`), à partir de l'écart de points entre le 1er et le 2e et du nombre d'ennemis connus :
   - `high` : écart ≥ 3 et ≥ 4 ennemis connus ;
   - `medium` : écart ≥ 1 et ≥ 2 ennemis connus ;
-  - `low` : sinon (dont 0 ennemi connu, ou une seule option).
+  - `low` : sinon (dont 0 ennemi connu).
+  - Une seule option (ex : un seul build pour ce champion) : pas d'écart à mesurer, la confiance dépend seulement des ennemis connus (≥ 4 : `high`, ≥ 2 : `medium`, sinon `low`).
 
 Toutes ces valeurs (poids, `bonusAlternative`, `gainToPoints`, modificateurs, seuils de confiance, seuils des items de situation) vivent dans **un seul fichier** : `src/engine/config.ts`. Valeurs de départ à ajuster en T7.2 (`TODO(joueur)`).
 
