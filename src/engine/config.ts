@@ -65,3 +65,9 @@ export const CONFIDENCE_THRESHOLDS = {
   high: { minGap: 3, minEnemies: 4 },
   medium: { minGap: 1, minEnemies: 2 },
 } as const
+
+/** Nombre maximum de raisons affichées sous une recommandation (T4.4). */
+export const MAX_REASONS = 3
+
+/** En dessous de cette part de dégâts reçus en moins (pondérée), un item n'a pas d'argument défensif. */
+export const MIN_DEFENSIVE_GAIN_TO_EXPLAIN = 0.05
