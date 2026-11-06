@@ -6,6 +6,7 @@ import { validateBuildAgainstData } from '../../engine/patchValidation'
 import { POSITIONS, type Build, type Position } from '../../engine/types'
 import { useBuildsStore } from '../../store/buildsStore'
 import { BuildView } from '../components/BuildView'
+import { BuildEditor } from './BuildEditor'
 import { Button } from '../components/Button'
 import { ConfirmPanel } from '../components/ConfirmPanel'
 import { EmptyState } from '../components/EmptyState'
@@ -16,13 +17,17 @@ import { POSITION_LABELS } from '../labels'
 import { goBack, navigate, useRouteParams } from '../navigation/useRoute'
 import styles from './BuildsScreen.module.css'
 
-/** Sous-pages de l'onglet : liste, `#/builds/voir/<id>`, `#/builds/nouveau`. */
+/**
+ * Sous-pages de l'onglet : liste, `#/builds/voir/<id>`, `#/builds/nouveau`,
+ * `#/builds/modifier/<id>` (et `/champion` pour le sélecteur de champion de l'éditeur).
+ */
 export function BuildsScreen() {
   const catalog = useCatalog()
   const status = useBuildsStore((s) => s.status)
   const error = useBuildsStore((s) => s.error)
   const load = useBuildsStore((s) => s.load)
-  const [page, id] = useRouteParams()
+  const [page, id, sub] = useRouteParams()
+  const builds = useBuildsStore((s) => s.list.builds)
 
   useEffect(() => {
     void load()
@@ -45,7 +50,16 @@ export function BuildsScreen() {
     )
   }
   if (page === 'voir' && id) return <BuildDetail id={id} catalog={catalog} />
-  if (page === 'nouveau') return <NewBuildPlaceholder />
+  if (page === 'nouveau') {
+    return <BuildEditor catalog={catalog} existing={null} pickingChampion={id === 'champion'} />
+  }
+  if (page === 'modifier' && id) {
+    const existing = builds.find((b) => b.id === id)
+    if (!existing) return <BuildDetail id={id} catalog={catalog} />
+    return (
+      <BuildEditor catalog={catalog} existing={existing} pickingChampion={sub === 'champion'} />
+    )
+  }
   return <BuildList catalog={catalog} />
 }
 
@@ -352,6 +366,9 @@ function BuildDetail({ id, catalog }: { id: string; catalog: GameCatalog }) {
       <Button variant="ghost" className={styles.back} onClick={() => goBack('builds')}>
         Retour à mes builds
       </Button>
+      <Button block onClick={() => navigate('builds', 'modifier', build.id)}>
+        Modifier
+      </Button>
       <div className={styles.actions}>
         <Button
           variant="secondary"
@@ -383,15 +400,5 @@ function BuildDetail({ id, catalog }: { id: string; catalog: GameCatalog }) {
         issues={validateBuildAgainstData(build, catalog)}
       />
     </>
-  )
-}
-
-function NewBuildPlaceholder() {
-  return (
-    <EmptyState
-      title="Nouveau build"
-      description="L'éditeur arrive bientôt : choix du champion, du poste, des runes, des sorts et des items."
-      action={<Button onClick={() => goBack('builds')}>Retour à mes builds</Button>}
-    />
   )
 }
