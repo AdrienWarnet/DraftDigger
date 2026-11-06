@@ -131,11 +131,19 @@ export function createLocalBuildRepository({
       }
       const result = validateBuild(candidate)
       if (!result.ok) throw new BuildValidationError(result.errors)
-      const builds = existing
-        ? list.builds.map((b) => (b.id === input.id ? result.value : b))
-        : [...list.builds, result.value]
+      const saved = result.value
+      const sameGroup = (b: Build) =>
+        b.championId === saved.championId && b.position === saved.position
+      const builds = (
+        existing ? list.builds.map((b) => (b.id === saved.id ? saved : b)) : [...list.builds, saved]
+      ).map((b) =>
+        // Un seul favori par champion et par poste.
+        saved.favorite && b.id !== saved.id && sameGroup(b) && b.favorite
+          ? { ...b, favorite: false }
+          : b,
+      )
       writeBuilds(file, builds)
-      return result.value
+      return saved
     },
 
     async delete(id) {
@@ -143,15 +151,6 @@ export function createLocalBuildRepository({
       writeBuilds(
         file,
         list.builds.filter((b) => b.id !== id),
-      )
-    },
-
-    async reorder(ids) {
-      const { file, list } = readAll()
-      const rank = new Map(ids.map((id, index) => [id, index]))
-      writeBuilds(
-        file,
-        list.builds.map((b) => (rank.has(b.id) ? { ...b, order: rank.get(b.id)! } : b)),
       )
     },
   }
@@ -198,6 +197,7 @@ function compareBuilds(a: Build, b: Build): number {
   return (
     a.championId.localeCompare(b.championId) ||
     POSITIONS.indexOf(a.position) - POSITIONS.indexOf(b.position) ||
+    Number(b.favorite ?? false) - Number(a.favorite ?? false) ||
     a.order - b.order ||
     a.name.localeCompare(b.name, 'fr')
   )

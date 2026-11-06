@@ -10,6 +10,7 @@ import { POSITIONS, type Champion, type Position } from '../../engine/types'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
 import { ChampionPicker } from '../components/ChampionPicker'
+import { ConfirmPanel } from '../components/ConfirmPanel'
 import { DraftCell } from '../components/DraftCell'
 import { Sheet } from '../components/Sheet'
 import { Tabs } from '../components/Tabs'
@@ -166,28 +167,15 @@ export function DraftScreen() {
         )}
         {hasDraftContent(draft) &&
           (confirmingReset ? (
-            <div
-              className={styles.confirm}
-              role="group"
-              aria-labelledby="confirmer-nouvelle-partie"
-            >
-              <p id="confirmer-nouvelle-partie">
-                Effacer cette draft ? Ton poste et ton champion sont gardés.
-              </p>
-              <div className={styles.confirmActions}>
-                <Button variant="secondary" onClick={() => setConfirmingReset(false)}>
-                  Annuler
-                </Button>
-                <Button
-                  onClick={() => {
-                    startNewGame()
-                    setConfirmingReset(false)
-                  }}
-                >
-                  Nouvelle partie
-                </Button>
-              </div>
-            </div>
+            <ConfirmPanel
+              message="Effacer cette draft ? Ton poste et ton champion sont gardés."
+              confirmLabel="Nouvelle partie"
+              onCancel={() => setConfirmingReset(false)}
+              onConfirm={() => {
+                startNewGame()
+                setConfirmingReset(false)
+              }}
+            />
           ) : (
             <Button variant="ghost" block onClick={() => setConfirmingReset(true)}>
               Nouvelle partie

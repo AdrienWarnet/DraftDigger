@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { conditionValueError } from './conditionSpecs'
 import {
   CONDITION_OPS,
+  MAX_BUILD_NAME_LENGTH,
   METRICS,
   POSITIONS,
   type Build,
@@ -85,13 +86,14 @@ export const buildSchema = z
       .string({ error: 'nom attendu' })
       .trim()
       .min(1, 'nom vide')
-      .max(40, 'nom trop long (40 caractères max)'),
+      .max(MAX_BUILD_NAME_LENGTH, `nom trop long (${MAX_BUILD_NAME_LENGTH} caractères max)`),
     championId: id('champion'),
     position: z.enum(POSITIONS, { error: `poste inconnu (attendu : ${POSITIONS.join(', ')})` }),
     order: z
       .number({ error: 'ordre attendu' })
       .int('ordre entier attendu')
       .min(0, 'ordre positif attendu'),
+    favorite: z.boolean({ error: 'vrai ou faux attendu' }).optional(),
     updatedAt: z.iso.datetime({ error: 'date ISO attendue (ex : 2026-11-06T10:00:00.000Z)' }),
     runes: runesSchema,
     summonerSpells: z.tuple([id('sort'), id('sort')], { error: '2 sorts d’invocateur attendus' }),

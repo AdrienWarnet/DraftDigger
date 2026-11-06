@@ -128,11 +128,25 @@ describe('ordre et filtres', () => {
     ])
   })
 
-  it('réordonne les builds', async () => {
+  it('un seul favori par champion et par poste ; le favori passe en tête', async () => {
     const { repo } = setup()
-    for (const id of ['a', 'b', 'c']) await repo.save(testBuild({ id }))
-    await repo.reorder(['c', 'a', 'b'])
-    expect((await repo.listByChampion('Yorick', 'top')).map((b) => b.id)).toEqual(['c', 'a', 'b'])
+    for (const id of ['a', 'b']) await repo.save(testBuild({ id }))
+    await repo.save(testBuild({ id: 'jungle', position: 'jungle', favorite: true }))
+    await repo.save({ ...(await repo.get('b'))!, favorite: true })
+    expect(
+      (await repo.listByChampion('Yorick', 'top')).map((x) => [x.id, x.favorite ?? false]),
+    ).toEqual([
+      ['b', true],
+      ['a', false],
+    ])
+    await repo.save({ ...(await repo.get('a'))!, favorite: true })
+    expect(
+      (await repo.listByChampion('Yorick', 'top')).map((x) => [x.id, x.favorite ?? false]),
+    ).toEqual([
+      ['a', true],
+      ['b', false],
+    ])
+    expect((await repo.get('jungle'))?.favorite).toBe(true) // autre poste : non touché
   })
 })
 
