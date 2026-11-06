@@ -404,7 +404,7 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 **Quoi** : vérifier que les ids existent dans le patch courant.
 **À faire**
 - [ ] Fonction `validateBuildAgainstData(build, data)` qui renvoie la liste des ids inconnus (champion, items, runes, sorts ; fragments via `data/defaults/rune-shards.json` dès T3.6).
-- [ ] Appelée au chargement des builds (onglet Builds : encadré « éléments à revoir pour le patch ») et à l'enregistrement dans l'éditeur (branchement en T3.6).
+- [ ] Appelée au chargement des builds (onglet Builds : encadré « éléments à revoir pour le patch ») et à l'enregistrement dans l'éditeur (branché en T3.6 : un id inconnu bloque l'enregistrement avec le message).
 
 **Terminé quand** : test avec un item inexistant → l'erreur est listée.
 **Dépend de** : T3.1, T1.1.
