@@ -1,5 +1,19 @@
-import { BUILD_EDITOR_LIMITS, NEW_BUILD_DEFAULTS, PROVISIONAL_ALTERNATIVE } from './config'
-import type { Build, BuildRunes, Condition, ItemSlot, Position } from './types'
+import {
+  BUILD_EDITOR_LIMITS,
+  DEFAULT_CONDITION_WEIGHT,
+  NEW_BUILD_DEFAULTS,
+  PROVISIONAL_ALTERNATIVE,
+} from './config'
+import type {
+  Build,
+  BuildRunes,
+  Condition,
+  ConditionPreset,
+  ItemAlternative,
+  ItemSlot,
+  Position,
+  WeightedCondition,
+} from './types'
 
 /**
  * Règles de saisie de l'éditeur de builds : chaque fonction renvoie un état toujours cohérent
@@ -253,4 +267,105 @@ export function removeAlternative(build: Build, slotIndex: number, altIndex: num
     ...build,
     itemOrder: build.itemOrder.map((s, i) => (i === slotIndex ? { ...s, alternatives } : s)),
   }
+}
+
+// --- Conditions (presets) -----------------------------------------------------------
+
+export function sameCondition(a: Condition, b: Condition): boolean {
+  return a.metric === b.metric && a.op === b.op && a.value === b.value
+}
+
+/** Preset correspondant exactement à une condition, ou `undefined` (« condition personnalisée »). */
+export function findPreset(
+  presets: readonly ConditionPreset[],
+  condition: Condition,
+): ConditionPreset | undefined {
+  return presets.find((p) => sameCondition(p.condition, condition))
+}
+
+/**
+ * Coche ou décoche un preset dans une liste pondérée (`useWhen` d'un build ou d'un premier item).
+ * Coché : ajouté avec le poids par défaut et l'explication du preset (modifiables ensuite).
+ */
+export function toggleWeightedPreset(
+  list: readonly WeightedCondition[],
+  preset: ConditionPreset,
+): WeightedCondition[] {
+  if (list.some((w) => sameCondition(w.condition, preset.condition))) {
+    return list.filter((w) => !sameCondition(w.condition, preset.condition))
+  }
+  return [
+    ...list,
+    {
+      condition: { ...preset.condition },
+      weight: DEFAULT_CONDITION_WEIGHT,
+      explain: preset.explain,
+    },
+  ]
+}
+
+export function updateWeighted(
+  list: readonly WeightedCondition[],
+  index: number,
+  change: Partial<Pick<WeightedCondition, 'weight' | 'explain'>>,
+): WeightedCondition[] {
+  return list.map((w, i) => (i === index ? { ...w, ...change } : w))
+}
+
+/** `true` si l'alternative a encore la condition provisoire posée à sa création. */
+export function isProvisionalAlternative(alt: ItemAlternative): boolean {
+  return alt.explain === PROVISIONAL_ALTERNATIVE.explain
+}
+
+/**
+ * Coche ou décoche un preset dans les conditions d'une alternative (toutes doivent être vraies).
+ * - La condition provisoire disparaît dès le premier vrai choix, avec son texte.
+ * - La dernière condition ne peut pas être retirée (une alternative en a toujours au moins une).
+ * - Sans texte personnel, l'explication suit le premier preset coché.
+ */
+export function toggleAlternativePreset(
+  alt: ItemAlternative,
+  preset: ConditionPreset,
+  presets: readonly ConditionPreset[],
+): ItemAlternative {
+  const provisional = isProvisionalAlternative(alt)
+  const current = provisional ? [] : alt.when
+  const checked = current.some((c) => sameCondition(c, preset.condition))
+  const when = checked
+    ? current.filter((c) => !sameCondition(c, preset.condition))
+    : [...current, { ...preset.condition }]
+  if (when.length === 0) return alt
+  const automatic =
+    provisional || presets.some((p) => p.explain === alt.explain) || !alt.explain.trim()
+  const firstPreset = findPreset(presets, when[0]!)
+  return {
+    ...alt,
+    when,
+    explain: automatic && firstPreset ? firstPreset.explain : alt.explain,
+  }
+}
+
+/** Remplace l'alternative `altIndex` du slot `slotIndex`. */
+export function updateAlternative(
+  build: Build,
+  slotIndex: number,
+  altIndex: number,
+  change: (alt: ItemAlternative) => ItemAlternative,
+): Build {
+  const slot = build.itemOrder[slotIndex]
+  const alt = slot?.alternatives[altIndex]
+  if (!slot || !alt) return build
+  const alternatives = slot.alternatives.map((a, i) => (i === altIndex ? change(a) : a))
+  return {
+    ...build,
+    itemOrder: build.itemOrder.map((s, i) => (i === slotIndex ? { ...s, alternatives } : s)),
+  }
+}
+
+/** Libellé court d'une condition : celui du preset, sinon la condition brute. */
+export function conditionLabel(presets: readonly ConditionPreset[], condition: Condition): string {
+  return (
+    findPreset(presets, condition)?.label ??
+    `${condition.metric} ${condition.op} ${String(condition.value)}`
+  )
 }

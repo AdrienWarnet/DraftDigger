@@ -2,14 +2,21 @@ import { useEffect, useId, useState } from 'react'
 import type { GameCatalog } from '../../data/catalog'
 import { BuildValidationError } from '../../data/buildRepository'
 import { createBuildId } from '../../data/localBuildRepository'
+import { DEFAULT_PRESETS } from '../../data/presets'
 import {
   chooseKeystone,
   choosePrimaryRune,
   choosePrimaryTree,
   chooseSecondaryTree,
   chooseShard,
+  conditionLabel,
+  isProvisionalAlternative,
   missingChoices,
   newBuild,
+  toggleAlternativePreset,
+  toggleWeightedPreset,
+  updateAlternative,
+  updateWeighted,
   setAlternative,
   setFirstItemOption,
   setSlotItem,
@@ -26,6 +33,7 @@ import { useDraftStore } from '../../store/draftStore'
 import { playerChampionId } from '../../engine/draft'
 import { Button } from '../components/Button'
 import { ChampionPicker } from '../components/ChampionPicker'
+import { ConditionsEditor } from '../components/ConditionsEditor'
 import { DraftCell } from '../components/DraftCell'
 import { IconChoice } from '../components/IconChoice'
 import { ItemPicker } from '../components/ItemPicker'
@@ -35,7 +43,12 @@ import { POSITION_LABELS } from '../labels'
 import { goBack, navigate } from '../navigation/useRoute'
 import styles from './BuildEditor.module.css'
 import { BuildEditorItems } from './BuildEditorItems'
-import { encodeEditorSheet, parseEditorSheet, type EditorSheet } from './editorSheet'
+import {
+  encodeEditorSheet,
+  parseEditorSheet,
+  type ConditionScope,
+  type EditorSheet,
+} from './editorSheet'
 
 type BuildEditorProps = {
   catalog: GameCatalog
@@ -298,7 +311,35 @@ export function BuildEditor({ catalog, existing, sheetParams }: BuildEditorProps
         />
       </section>
 
-      <BuildEditorItems build={build} catalog={catalog} change={change} openSheet={openSheet} />
+      <section className={styles.section} aria-labelledby="editeur-quand">
+        <h3 id="editeur-quand" className={styles.sectionTitle}>
+          Quand jouer ce build
+        </h3>
+        <p className={styles.hint}>
+          {build.useWhen.length > 0
+            ? build.useWhen
+                .map(
+                  (w) =>
+                    `${conditionLabel(DEFAULT_PRESETS, w.condition)} (${weightName(w.weight)})`,
+                )
+                .join(', ')
+            : "Aucune condition : utile si c'est ton seul build, ou ton favori."}
+        </p>
+        <Button
+          variant="secondary"
+          onClick={() => openSheet({ kind: 'conditions', scope: { type: 'build' } })}
+        >
+          Choisir les conditions
+        </Button>
+      </section>
+
+      <BuildEditorItems
+        build={build}
+        catalog={catalog}
+        presets={DEFAULT_PRESETS}
+        change={change}
+        openSheet={openSheet}
+      />
 
       <div className={styles.footer}>
         {errors.length > 0 && (
@@ -327,7 +368,17 @@ export function BuildEditor({ catalog, existing, sheetParams }: BuildEditorProps
           />
         </Sheet>
       )}
-      {sheet && sheet.kind !== 'champion' && (
+      {sheet?.kind === 'conditions' && (
+        <Sheet title={conditionsTitle(sheet.scope, build, catalog)} onClose={closeSheet}>
+          <ConditionsSheetContent build={build} scope={sheet.scope} change={change} />
+          <div className={styles.sheetDone}>
+            <Button block onClick={closeSheet}>
+              Terminé
+            </Button>
+          </div>
+        </Sheet>
+      )}
+      {sheet && isItemSheet(sheet) && (
         <Sheet title={itemSheetTitle(sheet, build)} onClose={closeSheet}>
           <ItemPicker
             items={catalog.items}
@@ -343,7 +394,89 @@ export function BuildEditor({ catalog, existing, sheetParams }: BuildEditorProps
   )
 }
 
-type ItemSheet = Exclude<EditorSheet, { kind: 'champion' }>
+type ItemSheet = Extract<EditorSheet, { kind: 'firstItem' | 'slot' | 'alternative' }>
+
+function isItemSheet(sheet: EditorSheet): sheet is ItemSheet {
+  return sheet.kind === 'firstItem' || sheet.kind === 'slot' || sheet.kind === 'alternative'
+}
+
+function weightName(weight: number): string {
+  return weight <= 1 ? 'faible' : weight >= 3 ? 'fort' : 'moyen'
+}
+
+function conditionsTitle(scope: ConditionScope, build: Build, catalog: GameCatalog): string {
+  const itemName = (id: string | undefined) => (id && catalog.itemsById.get(id)?.name) ?? 'cet item'
+  if (scope.type === 'build') return 'Quand jouer ce build'
+  if (scope.type === 'firstItem') {
+    return `Quand prendre ${itemName(build.firstItemOptions[scope.index]?.itemId)}`
+  }
+  return `Quand prendre ${itemName(build.itemOrder[scope.slot]?.alternatives[scope.index]?.itemId)}`
+}
+
+/** Contenu du panneau « conditions » selon ce qu'on règle. */
+function ConditionsSheetContent({
+  build,
+  scope,
+  change,
+}: {
+  build: Build
+  scope: ConditionScope
+  change: (fn: (b: Build) => Build) => void
+}) {
+  if (scope.type === 'build') {
+    return (
+      <ConditionsEditor
+        mode="weighted"
+        presets={DEFAULT_PRESETS}
+        value={build.useWhen}
+        onTogglePreset={(p) =>
+          change((b) => ({ ...b, useWhen: toggleWeightedPreset(b.useWhen, p) }))
+        }
+        onChange={(i, c) => change((b) => ({ ...b, useWhen: updateWeighted(b.useWhen, i, c) }))}
+      />
+    )
+  }
+  if (scope.type === 'firstItem') {
+    const option = build.firstItemOptions[scope.index]
+    if (!option) return <p className="muted">Cette option n'existe plus.</p>
+    const updateOption = (fn: (list: Build['useWhen']) => Build['useWhen']) =>
+      change((b) => ({
+        ...b,
+        firstItemOptions: b.firstItemOptions.map((o, i) =>
+          i === scope.index ? { ...o, useWhen: fn(o.useWhen) } : o,
+        ),
+      }))
+    return (
+      <ConditionsEditor
+        mode="weighted"
+        presets={DEFAULT_PRESETS}
+        value={option.useWhen}
+        onTogglePreset={(p) => updateOption((list) => toggleWeightedPreset(list, p))}
+        onChange={(i, c) => updateOption((list) => updateWeighted(list, i, c))}
+      />
+    )
+  }
+  const alt = build.itemOrder[scope.slot]?.alternatives[scope.index]
+  if (!alt) return <p className="muted">Cette alternative n'existe plus.</p>
+  return (
+    <ConditionsEditor
+      mode="allOf"
+      presets={DEFAULT_PRESETS}
+      value={isProvisionalAlternative(alt) ? [] : alt.when}
+      explain={isProvisionalAlternative(alt) ? '' : alt.explain}
+      onTogglePreset={(p) =>
+        change((b) =>
+          updateAlternative(b, scope.slot, scope.index, (a) =>
+            toggleAlternativePreset(a, p, DEFAULT_PRESETS),
+          ),
+        )
+      }
+      onExplainChange={(explain) =>
+        change((b) => updateAlternative(b, scope.slot, scope.index, (a) => ({ ...a, explain })))
+      }
+    />
+  )
+}
 
 function itemSheetTitle(sheet: ItemSheet, build: Build): string {
   switch (sheet.kind) {

@@ -16,23 +16,38 @@
   "summonerSpells": ["SummonerFlash", "SummonerTeleport"],
   "useWhen": [
     {
-      "condition": { "metric": "laneOpponentIsTank", "op": "==", "value": 1 },
+      "condition": {
+        "metric": "laneOpponentIsTank",
+        "op": "==",
+        "value": 1
+      },
       "weight": 2,
       "explain": "Contre un tank en lane, la Poigne de l'immortel et Démolition gagnent l'échange et la tour."
     }
   ],
   "firstItemOptions": [
-    { "itemId": "1055", "useWhen": [] },
+    {
+      "itemId": "1055",
+      "useWhen": []
+    },
     {
       "itemId": "1054",
       "useWhen": [
         {
-          "condition": { "metric": "laneOpponentDamage", "op": "==", "value": "ap" },
+          "condition": {
+            "metric": "laneOpponentDamage",
+            "op": "==",
+            "value": "ap"
+          },
           "weight": 3,
           "explain": "Contre un vis-à-vis AP, le Bouclier de Doran encaisse mieux le harcèlement."
         },
         {
-          "condition": { "metric": "situation", "op": "==", "value": "behind" },
+          "condition": {
+            "metric": "situation",
+            "op": "==",
+            "value": "behind"
+          },
           "weight": 1,
           "explain": "En difficulté en lane, le Bouclier de Doran aide à tenir."
         }
@@ -46,7 +61,13 @@
       "alternatives": [
         {
           "itemId": "3078",
-          "when": [{ "metric": "situation", "op": "==", "value": "ahead" }],
+          "when": [
+            {
+              "metric": "situation",
+              "op": "==",
+              "value": "ahead"
+            }
+          ],
           "explain": "En avance, la Force de la trinité accélère les dégâts sur les tours."
         }
       ]
@@ -57,7 +78,13 @@
       "alternatives": [
         {
           "itemId": "3111",
-          "when": [{ "metric": "enemyApShare", "op": ">=", "value": 0.55 }],
+          "when": [
+            {
+              "metric": "enemyApShare",
+              "op": ">=",
+              "value": 0.6
+            }
+          ],
           "explain": "Compo majoritairement AP : les Sandales de Mercure réduisent dégâts et contrôles."
         }
       ]
@@ -68,7 +95,13 @@
       "alternatives": [
         {
           "itemId": "3065",
-          "when": [{ "metric": "enemyApShare", "op": ">=", "value": 0.6 }],
+          "when": [
+            {
+              "metric": "enemyApShare",
+              "op": ">=",
+              "value": 0.6
+            }
+          ],
           "explain": "Beaucoup de dégâts magiques : le Visage spirituel protège et renforce les soins."
         }
       ]
@@ -79,19 +112,35 @@
       "alternatives": [
         {
           "itemId": "3075",
-          "when": [{ "metric": "enemyHealCount", "op": ">=", "value": 2 }],
+          "when": [
+            {
+              "metric": "enemyHealCount",
+              "op": ">=",
+              "value": 2
+            }
+          ],
           "explain": "Ils se soignent beaucoup : la Cotte épineuse applique l'Hémorragie."
         }
       ]
     },
-    { "slot": 5, "default": "6333", "alternatives": [] },
+    {
+      "slot": 5,
+      "default": "6333",
+      "alternatives": []
+    },
     {
       "slot": 6,
       "default": "6694",
       "alternatives": [
         {
           "itemId": "3742",
-          "when": [{ "metric": "enemyAdShare", "op": ">=", "value": 0.65 }],
+          "when": [
+            {
+              "metric": "enemyAdShare",
+              "op": ">=",
+              "value": 0.75
+            }
+          ],
           "explain": "Compo très AD : la Plaque du mort ajoute armure et mobilité."
         }
       ]

@@ -28,3 +28,13 @@ export const PROVISIONAL_ALTERNATIVE = {
   when: [{ metric: 'situation', op: '==', value: 'behind' }],
   explain: 'Condition à préciser : pour l’instant, proposé quand tu es en retard.',
 } as const
+
+/** Poids proposés pour une condition dans l'éditeur (points ajoutés quand elle est vraie). */
+export const WEIGHT_LEVELS = [
+  { label: 'Faible', value: 1 },
+  { label: 'Moyen', value: 2 },
+  { label: 'Fort', value: 3 },
+] as const
+
+/** Poids d'une condition qu'on vient de cocher. */
+export const DEFAULT_CONDITION_WEIGHT = 2

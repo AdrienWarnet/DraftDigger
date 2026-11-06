@@ -39,6 +39,7 @@ Data Dragon ne dit pas tout (soins, anti-tank, répartition AD/AP de certains ch
 - [data/overrides/champions.json](data/overrides/champions.json) : par id de champion, `damage`, `threats` (`cc`, `burst`, `engage`, `heal`, `tank` de 0 à 3), `tags`.
 - [data/overrides/items.json](data/overrides/items.json) : par id d'item, `addCategories` / `removeCategories` (ex : `antitank`).
 - [data/defaults/](data/defaults/) : règles par défaut (menaces par classe de champion, catégories d'items).
+- [data/presets/conditions.json](data/presets/conditions.json) : conditions proposées dans l'éditeur de builds (« Compo majoritairement AP »…) et leurs seuils.
 
 Le format est rappelé dans la clé `_format` de chaque fichier. Un id inconnu ou une valeur invalide produit un avertissement dans la console du navigateur, sans bloquer l'app.
 
