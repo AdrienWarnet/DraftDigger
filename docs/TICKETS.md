@@ -402,7 +402,7 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 
 **Quoi** : vérifier que les ids existent dans le patch courant.
 **À faire**
-- [ ] Fonction `validateBuildAgainstData(build, data)` qui renvoie la liste des ids inconnus (champion, items, runes, sorts).
+- [ ] Fonction `validateBuildAgainstData(build, data)` qui renvoie la liste des ids inconnus (champion, items, runes, sorts ; fragments via `data/defaults/rune-shards.json` dès T3.6).
 - [ ] Appelée au chargement des builds et à l'enregistrement dans l'éditeur.
 
 **Terminé quand** : test avec un item inexistant → l'erreur est listée.
@@ -425,6 +425,7 @@ Le joueur crée et modifie ses builds dans l'app, pour n'importe quel champion. 
 **À faire**
 - [ ] Champs : nom, champion (`ChampionPicker` de T2.1), poste.
 - [ ] Sélection des runes en suivant la structure Data Dragon : arbre principal → keystone → 3 runes, arbre secondaire (différent du principal) → 2 runes de lignes différentes, 3 fragments.
+- [ ] Fragments de rune : absents de Data Dragon. Créer `data/defaults/rune-shards.json` (3 lignes de fragments : id, nom, icône), avec les ids vérifiés au patch courant ; l'éditeur et la validation T3.4 s'en servent.
 - [ ] Sélection des 2 sorts d'invocateur (distincts, sorts de la Faille uniquement).
 - [ ] Brouillon conservé si on quitte l'éditeur sans enregistrer ; validation Zod + T3.4 à l'enregistrement.
 
