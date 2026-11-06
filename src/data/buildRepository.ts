@@ -17,8 +17,13 @@ export interface BuildRepository {
    * S'il est favori, les autres builds du même champion à ce poste ne le sont plus.
    * Lève `BuildValidationError` si le build est invalide.
    */
-  save(build: Build): Promise<Build>
+  save(build: Build, options?: SaveOptions): Promise<Build>
   delete(id: string): Promise<void>
+}
+
+export type SaveOptions = {
+  /** Garde `updatedAt` tel quel (import d'un fichier : ce n'est pas une modification). */
+  keepUpdatedAt?: boolean
 }
 
 export type InvalidBuild = {
