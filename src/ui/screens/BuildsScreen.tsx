@@ -2,13 +2,14 @@ import { useEffect, useId, useState, type ReactNode } from 'react'
 import { create } from 'zustand'
 import type { GameCatalog } from '../../data/catalog'
 import { filterBuilds, groupBuilds } from '../../engine/buildList'
-import { validateBuildAgainstData } from '../../engine/patchValidation'
+import { buildAlerts, validateBuildAgainstData } from '../../engine/patchValidation'
 import { POSITIONS, type Build, type Position } from '../../engine/types'
 import { useBuildsStore } from '../../store/buildsStore'
 import { BuildView } from '../components/BuildView'
 import { BuildEditor } from './BuildEditor'
 import { exportBuilds } from '../exportBuilds'
 import { BuildExchangeBar } from './BuildExchange'
+import { DataAlerts } from './DataAlerts'
 import { Button } from '../components/Button'
 import { ConfirmPanel } from '../components/ConfirmPanel'
 import { EmptyState } from '../components/EmptyState'
@@ -20,7 +21,7 @@ import { goBack, navigate, useRouteParams } from '../navigation/useRoute'
 import styles from './BuildsScreen.module.css'
 
 /**
- * Sous-pages de l'onglet : liste, `#/builds/voir/<id>`, `#/builds/nouveau`,
+ * Sous-pages de l'onglet : liste, `#/builds/voir/<id>`, `#/builds/alertes`, `#/builds/nouveau`,
  * `#/builds/modifier/<id>` (et `/champion` pour le sélecteur de champion de l'éditeur).
  */
 export function BuildsScreen() {
@@ -31,6 +32,7 @@ export function BuildsScreen() {
   const params = useRouteParams()
   const [page, id] = params
   const builds = useBuildsStore((s) => s.list.builds)
+  const invalid = useBuildsStore((s) => s.list.invalid)
 
   useEffect(() => {
     void load()
@@ -53,6 +55,9 @@ export function BuildsScreen() {
     )
   }
   if (page === 'voir' && id) return <BuildDetail id={id} catalog={catalog} />
+  if (page === 'alertes') {
+    return <DataAlerts catalog={catalog} alerts={buildAlerts(builds, catalog)} invalid={invalid} />
+  }
   if (page === 'nouveau') {
     return <BuildEditor catalog={catalog} existing={null} sheetParams={params.slice(1)} />
   }
@@ -79,6 +84,7 @@ const useExpandedChampion = create<{ id: string | null; toggle: (id: string) => 
 
 function BuildList({ catalog }: { catalog: GameCatalog }) {
   const { builds, invalid } = useBuildsStore((s) => s.list)
+  const alerts = buildAlerts(builds, catalog)
   const toggleFavorite = useBuildsStore((s) => s.toggleFavorite)
   const [championFilter, setChampionFilter] = useState('')
   const [positionFilter, setPositionFilter] = useState<PositionFilter>('all')
@@ -103,12 +109,17 @@ function BuildList({ catalog }: { catalog: GameCatalog }) {
       </Button>
       <BuildExchangeBar />
 
-      {invalid.length > 0 && (
-        <p className={styles.warning} role="status">
-          {invalid.length === 1 ? '1 build illisible' : `${invalid.length} builds illisibles`} :{' '}
-          {invalid.map((b) => b.name ?? b.id ?? 'sans nom').join(', ')}. Ils sont conservés tels
-          quels.
-        </p>
+      {(alerts.length > 0 || invalid.length > 0) && (
+        <button
+          type="button"
+          className={styles.alertBanner}
+          onClick={() => navigate('builds', 'alertes')}
+        >
+          <span>
+            {alertSummary(alerts.length, invalid.length)} pour le patch {catalog.version}
+          </span>
+          <span className={styles.alertAction}>Voir</span>
+        </button>
       )}
 
       {builds.length > 1 && (
@@ -415,4 +426,14 @@ function BuildDetail({ id, catalog }: { id: string; catalog: GameCatalog }) {
       />
     </>
   )
+}
+
+function alertSummary(alertCount: number, invalidCount: number): string {
+  const parts: string[] = []
+  if (alertCount > 0)
+    parts.push(alertCount === 1 ? '1 build à revoir' : `${alertCount} builds à revoir`)
+  if (invalidCount > 0) {
+    parts.push(invalidCount === 1 ? '1 build illisible' : `${invalidCount} builds illisibles`)
+  }
+  return parts.join(' et ')
 }

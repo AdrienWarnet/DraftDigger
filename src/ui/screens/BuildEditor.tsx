@@ -103,6 +103,9 @@ export function BuildEditor({ catalog, existing, sheetParams }: BuildEditorProps
   const primaryTree = catalog.treesById.get(build.runes.primaryTree)
   const secondaryTree = catalog.treesById.get(build.runes.secondaryTree)
   const missing = [...(build.championId ? [] : ['le champion']), ...missingChoices(build)]
+  // Éléments disparus du patch (ex : build d'un ancien patch) : signalés dès l'ouverture.
+  // Les choix encore vides d'un nouveau build ne sont pas des erreurs de patch.
+  const patchIssues = validateBuildAgainstData(build, catalog).filter((issue) => issue.id !== '')
   const backToList = existing
     ? () => navigate('builds', 'voir', existing.id)
     : () => goBack('builds')
@@ -151,6 +154,17 @@ export function BuildEditor({ catalog, existing, sheetParams }: BuildEditorProps
           <Button variant="ghost" onClick={handleDiscard}>
             Abandonner le brouillon
           </Button>
+        </div>
+      )}
+
+      {patchIssues.length > 0 && (
+        <div className={styles.errors} role="alert">
+          <p>À corriger pour le patch {catalog.version} :</p>
+          <ul className={styles.issueList}>
+            {patchIssues.map((issue) => (
+              <li key={issue.path}>{issue.message}</li>
+            ))}
+          </ul>
         </div>
       )}
 

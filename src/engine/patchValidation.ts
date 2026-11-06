@@ -139,3 +139,12 @@ function nameOf(id: string, map: ReadonlyMap<string, unknown>): string {
     ? entry.name
     : id
 }
+
+export type BuildAlert = { build: Build; issues: PatchIssue[] }
+
+/** Builds qui ont au moins un élément introuvable ou déplacé dans le patch courant. */
+export function buildAlerts(builds: readonly Build[], patch: PatchIndex): BuildAlert[] {
+  return builds
+    .map((build) => ({ build, issues: validateBuildAgainstData(build, patch) }))
+    .filter((alert) => alert.issues.length > 0)
+}
