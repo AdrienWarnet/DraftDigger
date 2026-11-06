@@ -41,3 +41,11 @@ export const DEFAULT_CONDITION_WEIGHT = 2
 
 /** Rappel d'export dans « Mes builds » : jours sans export avant de le proposer. */
 export const EXPORT_REMINDER_DAYS = 7
+
+/** Seuils des métriques de la compo ennemie (T4.1). */
+export const METRIC_THRESHOLDS = {
+  /** Part de dégâts au-delà de laquelle le vis-à-vis est « AD » ou « AP » (sinon « mixte »). */
+  laneDamageShare: 0.65,
+  /** Niveau de menace `tank` à partir duquel un champion compte comme tank. */
+  tankLevel: 2,
+} as const
