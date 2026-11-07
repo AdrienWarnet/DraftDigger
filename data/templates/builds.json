@@ -1,0 +1,4 @@
+{
+  "_format": "Modèles de build génériques, proposés quand le joueur n'a aucun build pour le champion joué. Un modèle = id, name, match (positions visées, tags Data Dragon visés : Fighter, Mage, Marksman, Tank, Support, Assassin, damage ad ou ap facultatif) + les champs d'un build : runes, summonerSpells, useWhen, firstItemOptions, itemOrder. Les clés qui commencent par _ sont ignorées.",
+  "templates": []
+}
