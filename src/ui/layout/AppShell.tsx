@@ -6,14 +6,21 @@ import styles from './AppShell.module.css'
 type AppShellProps = {
   route: Route
   title: string
+  /** Lien secondaire à droite du titre (ex : « Notes » sur l'écran Partie). */
+  action?: { label: string; href: string }
   children: ReactNode
 }
 
-export function AppShell({ route, title, children }: AppShellProps) {
+export function AppShell({ route, title, action, children }: AppShellProps) {
   return (
     <div className={styles.shell}>
       <header className={styles.header}>
         <h1 className={styles.title}>{title}</h1>
+        {action && (
+          <a className={styles.action} href={action.href}>
+            {action.label}
+          </a>
+        )}
       </header>
       <main className={styles.main}>{children}</main>
       <nav className={styles.nav} aria-label="Navigation principale">

@@ -1,7 +1,7 @@
 import { GameDataGate } from './data/GameDataGate'
 import { GameDataProvider } from './data/GameDataProvider'
 import { AppShell } from './layout/AppShell'
-import { ABOUT, DEV_SHOWCASE, SCREENS, type Route } from './navigation/routes'
+import { ABOUT, DEV_SHOWCASE, hashFor, SCREENS, type Route } from './navigation/routes'
 import { useRoute } from './navigation/useRoute'
 import { AboutScreen } from './screens/AboutScreen'
 import { BuildsScreen } from './screens/BuildsScreen'
@@ -37,7 +37,13 @@ function App() {
   const route = useRoute()
   return (
     <GameDataProvider>
-      <AppShell route={route} title={titleFor(route)}>
+      <AppShell
+        route={route}
+        title={titleFor(route)}
+        action={
+          route === 'partie' ? { label: 'Notes', href: hashFor('partie', 'notes') } : undefined
+        }
+      >
         <GameDataGate>
           <Screen route={route} />
         </GameDataGate>
