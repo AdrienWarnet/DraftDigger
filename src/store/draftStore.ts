@@ -14,8 +14,9 @@ import {
   unlockEnemy,
   type Draft,
 } from '../engine/draft'
+import { buyItem, parseOwnedItems, removeItem, replaceItem } from '../engine/inventory'
 import type { PositionRates } from '../engine/positions'
-import type { Position } from '../engine/types'
+import type { Item, Position } from '../engine/types'
 
 /** Clé de la partie en cours dans le stockage local. */
 export const GAME_STORAGE_KEY = 'draftdigger:partie'
@@ -41,6 +42,11 @@ type DraftStore = {
    */
   forcedBuildId: string | null
   forceBuild: (buildId: string | null) => void
+  /** Items achetés pendant la partie (T6.1), dans l'ordre d'achat. Vidés à la nouvelle partie. */
+  ownedItemIds: string[]
+  buyItem: (itemId: string, itemsById: ReadonlyMap<string, Item>) => void
+  removeItem: (index: number) => void
+  replaceItem: (index: number, itemId: string) => void
 }
 
 export const useDraftStore = create<DraftStore>()(
@@ -58,15 +64,26 @@ export const useDraftStore = create<DraftStore>()(
       removeEnemy: (index) => set((s) => ({ draft: removeEnemy(s.draft, index) })),
       moveEnemy: (from, to, rates) => set((s) => ({ draft: moveEnemy(s.draft, from, to, rates) })),
       unlockEnemy: (index) => set((s) => ({ draft: unlockEnemy(s.draft, index) })),
-      newGame: () => set((s) => ({ draft: newGame(s.draft), forcedBuildId: null })),
+      newGame: () =>
+        set((s) => ({ draft: newGame(s.draft), forcedBuildId: null, ownedItemIds: [] })),
       forcedBuildId: null,
       forceBuild: (buildId) => set({ forcedBuildId: buildId }),
+      ownedItemIds: [],
+      buyItem: (itemId, itemsById) =>
+        set((s) => ({ ownedItemIds: buyItem(s.ownedItemIds, itemId, itemsById) })),
+      removeItem: (index) => set((s) => ({ ownedItemIds: removeItem(s.ownedItemIds, index) })),
+      replaceItem: (index, itemId) =>
+        set((s) => ({ ownedItemIds: replaceItem(s.ownedItemIds, index, itemId) })),
     }),
     {
       name: GAME_STORAGE_KEY,
       version: 1,
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ draft: state.draft, forcedBuildId: state.forcedBuildId }),
+      partialize: (state) => ({
+        draft: state.draft,
+        forcedBuildId: state.forcedBuildId,
+        ownedItemIds: state.ownedItemIds,
+      }),
       // Sauvegarde relue et validée : une sauvegarde illisible repart d'une draft vide.
       merge: (persisted, current) => {
         const saved =
@@ -80,7 +97,13 @@ export const useDraftStore = create<DraftStore>()(
           typeof persisted.forcedBuildId === 'string'
             ? persisted.forcedBuildId
             : null
-        return saved ? { ...current, draft: saved, forcedBuildId: forced } : current
+        const owned =
+          typeof persisted === 'object' && persisted !== null && 'ownedItemIds' in persisted
+            ? parseOwnedItems(persisted.ownedItemIds)
+            : []
+        return saved
+          ? { ...current, draft: saved, forcedBuildId: forced, ownedItemIds: owned }
+          : current
       },
     },
   ),

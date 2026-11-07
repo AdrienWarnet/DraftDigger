@@ -1,7 +1,7 @@
 import itemCategoriesJson from '../../data/defaults/item-categories.json'
 import type { Item, ItemStats } from '../engine/types'
 import { ddragonUrls } from './ddragon'
-import type { DDragonData, RawItem } from './ddragonTypes'
+import type { DDragonData, ItemNameEn, RawItem } from './ddragonTypes'
 
 /** Identifiant de la Faille de l'invocateur dans `RawItem.maps`. */
 export const SUMMONERS_RIFT_MAP_ID = '11'
@@ -104,6 +104,7 @@ export function toItem(
   raw: RawItem,
   version: string,
   rules: ItemCategoryRules = DEFAULT_ITEM_CATEGORY_RULES,
+  english?: ItemNameEn,
 ): Item {
   return {
     id,
@@ -114,11 +115,17 @@ export function toItem(
     categories: itemCategories(raw, rules),
     buildsFrom: [...(raw.from ?? [])],
     buildsInto: [...(raw.into ?? [])],
-    aliases: (raw.colloq ?? '')
-      .split(';')
-      .map((alias) => alias.trim())
-      .filter((alias) => alias && alias !== raw.name),
+    aliases: itemAliases(raw, english),
   }
+}
+
+/** Surnoms français, puis nom et surnoms anglais : on trouve « Sunfire » comme « Égide ». */
+function itemAliases(raw: RawItem, english?: ItemNameEn): string[] {
+  const names = [raw.colloq ?? '', english?.name ?? '', english?.colloq ?? '']
+    .flatMap((text) => text.split(';'))
+    .map((alias) => alias.trim())
+    .filter((alias) => alias && alias !== raw.name)
+  return [...new Set(names)]
 }
 
 /**
@@ -127,7 +134,7 @@ export function toItem(
  * on garde le plus petit id.
  */
 export function buildItems(
-  data: Pick<DDragonData, 'version' | 'items'>,
+  data: Pick<DDragonData, 'version' | 'items' | 'itemNamesEn'>,
   rules: ItemCategoryRules = DEFAULT_ITEM_CATEGORY_RULES,
 ): Item[] {
   const byName = new Map<string, [string, RawItem]>()
@@ -137,7 +144,7 @@ export function buildItems(
     if (!kept || isPreferredId(id, kept[0])) byName.set(raw.name, [id, raw])
   }
   return [...byName.values()]
-    .map(([id, raw]) => toItem(id, raw, data.version, rules))
+    .map(([id, raw]) => toItem(id, raw, data.version, rules, data.itemNamesEn?.[id]))
     .sort((a, b) => a.name.localeCompare(b.name, 'fr'))
 }
 

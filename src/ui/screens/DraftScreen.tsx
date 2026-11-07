@@ -36,6 +36,7 @@ export function DraftScreen() {
   const moveEnemy = useDraftStore((s) => s.moveEnemy)
   const unlockEnemy = useDraftStore((s) => s.unlockEnemy)
   const startNewGame = useDraftStore((s) => s.newGame)
+  const hasItems = useDraftStore((s) => s.ownedItemIds.length > 0)
   const [confirmingReset, setConfirmingReset] = useState(false)
 
   const layout = enemyLayout(draft, positionRates)
@@ -165,10 +166,10 @@ export function DraftScreen() {
             Ajouter un ennemi
           </Button>
         )}
-        {hasDraftContent(draft) &&
+        {(hasDraftContent(draft) || hasItems) &&
           (confirmingReset ? (
             <ConfirmPanel
-              message="Effacer cette draft ? Ton poste et ton champion sont gardés."
+              message="Effacer cette draft et tes items ? Ton poste et ton champion sont gardés."
               confirmLabel="Nouvelle partie"
               onCancel={() => setConfirmingReset(false)}
               onConfirm={() => {

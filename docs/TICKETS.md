@@ -620,7 +620,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 **Quoi** : noter les achats en quelques taps.
 **À faire**
-- [ ] Écran Partie : liste des items possédés (jusqu'à 6 + bottes), bouton « + » ouvrant le sélecteur d'items de T3.7 (recherche + suggestions du build en premier).
+- [ ] Écran Partie : liste des items possédés (6 emplacements, bottes comprises), bouton « + » ouvrant le sélecteur d'items de T3.7 (recherche + suggestions du build en premier).
 - [ ] Suppression et remplacement d'un item.
 - [ ] Un item acheté qui est un composant compte pour la progression vers son item final.
 
