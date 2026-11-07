@@ -3,11 +3,13 @@ import { Button } from '../components/Button'
 import { EmptyState } from '../components/EmptyState'
 import { useGameDataState } from './gameDataContext'
 import styles from './GameDataGate.module.css'
+import { promptInstall, useCanInstall } from '../install'
 import { ABOUT, hashFor } from '../navigation/routes'
 
 /** Affiche le chargement ou l'erreur tant que les données du patch ne sont pas prêtes. */
 export function GameDataGate({ children }: { children: ReactNode }) {
   const { state, retry } = useGameDataState()
+  const canInstall = useCanInstall()
 
   if (state.status === 'loading') {
     return (
@@ -36,9 +38,17 @@ export function GameDataGate({ children }: { children: ReactNode }) {
         </p>
       )}
       {children}
-      <a className={styles.version} href={hashFor(ABOUT)}>
-        Patch {state.result.data.version} · À propos
-      </a>
+      <p className={styles.version}>
+        <a href={hashFor(ABOUT)}>Patch {state.result.data.version} · À propos</a>
+        {canInstall && (
+          <>
+            {' · '}
+            <button type="button" className={styles.install} onClick={() => void promptInstall()}>
+              Installer l’app
+            </button>
+          </>
+        )}
+      </p>
     </>
   )
 }

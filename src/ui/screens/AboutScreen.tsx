@@ -1,8 +1,10 @@
 import { useEffect } from 'react'
 import { POSITION_RATES_PATCH } from '../../data/positionRates'
 import { useBuildsStore } from '../../store/buildsStore'
+import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { useCatalog } from '../data/gameDataContext'
+import { promptInstall, useCanInstall } from '../install'
 import styles from './AboutScreen.module.css'
 
 /** Mode d'emploi complet : section « Utiliser l'app » du README. */
@@ -14,6 +16,7 @@ export function AboutScreen() {
   const status = useBuildsStore((s) => s.status)
   const buildCount = useBuildsStore((s) => s.list.builds.length)
   const load = useBuildsStore((s) => s.load)
+  const canInstall = useCanInstall()
 
   useEffect(() => {
     void load()
@@ -30,6 +33,17 @@ export function AboutScreen() {
           Mode d’emploi complet
         </a>
       </Card>
+
+      {canInstall && (
+        <Card title="Installer l’app">
+          <p>
+            Une icône sur ton téléphone, ouverture instantanée, et l’app marche même sans réseau.
+          </p>
+          <Button block onClick={() => void promptInstall()}>
+            Installer l’app
+          </Button>
+        </Card>
+      )}
 
       <Card title="Données">
         <dl className={styles.facts}>
