@@ -3,8 +3,15 @@ import { INVENTORY } from '../../engine/config'
 import { enemyLayout } from '../../engine/draft'
 import { POSITIONS, type Position, type Situation } from '../../engine/types'
 import { nextItemFallbackReason } from '../../engine/explain'
-import { buildSuggestions, componentTarget } from '../../engine/inventory'
+import {
+  buildSuggestions,
+  componentTarget,
+  freeSlots,
+  questSlotItemIndex,
+} from '../../engine/inventory'
+import { activeQuestEffects } from '../../engine/roleQuests'
 import { gameSnapshotText } from '../../engine/testNotes'
+import { ROLE_QUESTS } from '../../data/roleQuests'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
 import { EmptyState } from '../components/EmptyState'
@@ -38,11 +45,11 @@ const ENEMY_PARAM = 'ennemi'
 const NOTES_PARAM = 'notes'
 
 /** Panneau ouvert d'après l'URL : `#/partie/ajouter`, `#/partie/item/2` ou `#/partie/ennemi/mid`. */
-function parseSheet(params: readonly string[], ownedCount: number) {
+function parseSheet(params: readonly string[], ownedCount: number, canAdd: boolean) {
   if (params[0] === NOTES_PARAM) return { kind: 'notes' } as const
   const position = POSITIONS.find((p) => p === params[1])
   if (params[0] === ENEMY_PARAM && position) return { kind: 'enemy', position } as const
-  if (params[0] === ADD_PARAM && ownedCount < INVENTORY.maxItems) return { kind: 'add' } as const
+  if (params[0] === ADD_PARAM && canAdd) return { kind: 'add' } as const
   if (params[0] === ITEM_PARAM) {
     const index = Number(params[1])
     if (Number.isInteger(index) && index >= 0 && index < ownedCount) {
@@ -61,9 +68,18 @@ export function GameScreen() {
   const replace = useDraftStore((s) => s.replaceItem)
   const situation = useDraftStore((s) => s.situation)
   const setSituation = useDraftStore((s) => s.setSituation)
-  const sheet = parseSheet(useRouteParams(), owned.length)
-  const next = useGameRecommendation(result, owned, situation)
   const draft = useDraftStore((s) => s.draft)
+  const questCompleted = useDraftStore((s) => s.questCompleted)
+  const setQuestCompleted = useDraftStore((s) => s.setQuestCompleted)
+  // Quête de rôle du poste joué (epic 8) : ses effets ne s'appliquent qu'une fois terminée.
+  const quest = ROLE_QUESTS?.quests[draft.playerPosition] ?? null
+  const questEffects = activeQuestEffects(ROLE_QUESTS, draft.playerPosition, questCompleted)
+  const questIndex = questSlotItemIndex(owned, catalog.itemsById, questEffects)
+  const free = Math.max(0, freeSlots(owned, catalog.itemsById, questEffects))
+  const questSlotShown = Boolean(questEffects.dedicatedSlot)
+  const questSlotFree = questSlotShown && questIndex === null
+  const sheet = parseSheet(useRouteParams(), owned.length, free > 0 || questSlotFree)
+  const next = useGameRecommendation(result, owned, situation, questEffects)
   // Pendant la partie, l'écran reste allumé (le téléphone est posé à côté du clavier).
   useWakeLock(result.status === 'ready')
 
@@ -100,7 +116,53 @@ export function GameScreen() {
 
   const closeSheet = () => goBack('partie')
   const itemName = (id: string) => catalog.itemsById.get(id)?.name ?? id
-  const emptySlots = INVENTORY.maxItems - owned.length
+  const itemCell = (id: string, index: number, inQuestSlot = false) => {
+    const item = catalog.itemsById.get(id)
+    const target = build ? componentTarget(id, build, owned, catalog.itemsById) : null
+    const where = inQuestSlot ? ', emplacement de quête' : ''
+    return (
+      <li key={`${index}-${id}`}>
+        <button
+          type="button"
+          className={styles.slot}
+          data-quest={inQuestSlot || undefined}
+          onClick={() => navigate('partie', ITEM_PARAM, String(index))}
+          aria-label={`${itemName(id)}${target ? `, vers ${itemName(target)}` : ''}${where} : modifier`}
+          title={target ? `${itemName(id)} → ${itemName(target)}` : itemName(id)}
+        >
+          <GameIcon
+            entry={item ? { name: item.name, icon: item.image } : null}
+            fallbackId={id}
+            size={40}
+            label=""
+          />
+          {target && (
+            <span className={styles.progress} aria-hidden="true">
+              →
+            </span>
+          )}
+        </button>
+      </li>
+    )
+  }
+  const emptyCell = (key: string, inQuestSlot = false) => (
+    <li key={key}>
+      <button
+        type="button"
+        className={styles.slot}
+        data-empty
+        data-quest={inQuestSlot || undefined}
+        onClick={() => navigate('partie', ADD_PARAM)}
+        aria-label={
+          inQuestSlot ? 'Ajouter des bottes (emplacement de quête)' : 'Ajouter un item acheté'
+        }
+      >
+        <span className={styles.plus} aria-hidden="true">
+          +
+        </span>
+      </button>
+    </li>
+  )
 
   return (
     <>
@@ -124,56 +186,43 @@ export function GameScreen() {
       <section className={styles.items} aria-labelledby="partie-items">
         <div className={styles.itemsHeader}>
           <h2 id="partie-items" className={styles.itemsTitle}>
-            Mes items {owned.length}/{INVENTORY.maxItems}
+            Mes items {INVENTORY.maxItems - free}/{INVENTORY.maxItems}
           </h2>
-          {build && <span className={styles.buildName}>{build.name}</span>}
+          {questSlotShown ? (
+            // Emplacement de quête (ex : les bottes, quête Bot) : à côté de l'interrupteur.
+            <ul className={styles.questSlot} aria-label="Emplacement de quête">
+              {questIndex === null
+                ? emptyCell('quete', true)
+                : itemCell(owned[questIndex]!, questIndex, true)}
+            </ul>
+          ) : (
+            build && <span className={styles.buildName}>{build.name}</span>
+          )}
+          {quest && (
+            <button
+              type="button"
+              className={styles.questToggle}
+              aria-pressed={questCompleted}
+              aria-label={`Quête de rôle ${POSITION_LABELS[draft.playerPosition]} terminée`}
+              title={quest.reward}
+              onClick={() => setQuestCompleted(!questCompleted)}
+            >
+              Quête
+            </button>
+          )}
         </div>
         <ul className={styles.inventory}>
-          {owned.map((id, index) => {
-            const item = catalog.itemsById.get(id)
-            const target = build ? componentTarget(id, build, owned, catalog.itemsById) : null
-            return (
-              <li key={`${index}-${id}`}>
-                <button
-                  type="button"
-                  className={styles.slot}
-                  onClick={() => navigate('partie', ITEM_PARAM, String(index))}
-                  aria-label={`${itemName(id)}${target ? `, vers ${itemName(target)}` : ''} : modifier`}
-                  title={target ? `${itemName(id)} → ${itemName(target)}` : itemName(id)}
-                >
-                  <GameIcon
-                    entry={item ? { name: item.name, icon: item.image } : null}
-                    fallbackId={id}
-                    size={44}
-                    label=""
-                  />
-                  {target && (
-                    <span className={styles.progress} aria-hidden="true">
-                      →
-                    </span>
-                  )}
-                </button>
-              </li>
-            )
-          })}
-          {Array.from({ length: emptySlots }, (_, i) => (
-            <li key={`vide-${i}`}>
-              <button
-                type="button"
-                className={styles.slot}
-                data-empty
-                onClick={() => navigate('partie', ADD_PARAM)}
-                aria-label="Ajouter un item acheté"
-              >
-                <span className={styles.plus} aria-hidden="true">
-                  +
-                </span>
-              </button>
-            </li>
-          ))}
+          {owned.map((id, index) => (index === questIndex ? null : itemCell(id, index)))}
+          {Array.from({ length: free }, (_, i) => emptyCell(`vide-${i}`))}
         </ul>
-        {owned.length === 0 && (
-          <p className={styles.hint}>Touche « + » à chaque achat, un item pour le changer.</p>
+        {questCompleted && quest && !questSlotShown ? (
+          <p className={styles.questReward}>
+            Quête {POSITION_LABELS[draft.playerPosition]} : {quest.reward}
+          </p>
+        ) : (
+          owned.length === 0 && (
+            <p className={styles.hint}>Touche « + » à chaque achat, un item pour le changer.</p>
+          )
         )}
       </section>
 
@@ -215,7 +264,7 @@ export function GameScreen() {
             suggestedLabel="Ton build"
             autoFocus={false}
             onSelect={(item) => {
-              buy(item.id, catalog.itemsById)
+              buy(item.id, catalog.itemsById, questEffects)
               closeSheet()
             }}
           />

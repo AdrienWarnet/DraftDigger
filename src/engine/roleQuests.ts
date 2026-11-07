@@ -49,11 +49,13 @@ export function parseRoleQuests(
   return null
 }
 
+const NO_EFFECTS: RoleQuestEffects = Object.freeze({})
+
 /** Effets de la quête du poste joué, ou aucun si la quête n'est pas terminée. */
 export function activeQuestEffects(
   quests: RoleQuests | null,
   position: Position,
   completed: boolean,
 ): RoleQuestEffects {
-  return completed && quests ? quests.quests[position].effects : {}
+  return completed && quests ? quests.quests[position].effects : NO_EFFECTS
 }

@@ -6,6 +6,7 @@ import {
   buildChoiceFallbackReason,
   buildReasons,
   defensiveReason,
+  inventoryReason,
   nextItemFallbackReason,
   toSentence,
 } from './explain'
@@ -141,5 +142,13 @@ describe('toSentence : espaces insécables', () => {
   it('garde l’espace insécable avant « % » (pas de « % » seul en début de ligne)', () => {
     expect(toSentence('réduit les dégâts de 12\u202f%')).toBe('Réduit les dégâts de 12\u202f%.')
     expect(toSentence('  deux   espaces\n')).toBe('Deux espaces.')
+  })
+})
+
+describe('inventoryReason', () => {
+  it('plein, place libérée par la quête, ou rien à dire', () => {
+    expect(inventoryReason(0, 0)).toContain('Inventaire plein')
+    expect(inventoryReason(1, 0)).toContain('Quête de rôle terminée')
+    expect(inventoryReason(2, 1)).toBeNull()
   })
 })

@@ -104,7 +104,7 @@
 
 .itemsHeader {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
 }
@@ -280,4 +280,65 @@
 .enemiesHint {
   color: var(--color-text-muted);
   font-size: 0.75rem;
+}
+
+/* Quête de rôle (epic 8) : interrupteur dans l'en-tête des items. */
+.questToggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 36px;
+  margin: calc(-1 * var(--space-1)) 0;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Case à cocher dessinée : vide, puis cochée. */
+.questToggle::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+}
+
+.questToggle[aria-pressed='true'] {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.questToggle[aria-pressed='true']::before {
+  border: none;
+  background: currentColor;
+  clip-path: polygon(14% 52%, 0 66%, 38% 100%, 100% 22%, 86% 8%, 38% 72%);
+}
+
+/* Emplacement de quête : une case à bord doré dans l'en-tête, à côté de l'interrupteur. */
+.questSlot {
+  flex: none;
+  width: 48px;
+  margin: calc(-1 * var(--space-1)) 0 calc(-1 * var(--space-1)) auto;
+  padding: 0;
+  list-style: none;
+}
+
+.slot[data-quest] {
+  border-color: var(--color-accent);
+}
+
+.questReward {
+  overflow: hidden;
+  color: var(--color-accent-strong);
+  font-size: var(--text-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -10,6 +10,7 @@ import {
   type BuildRecommendation,
   type NextItemRecommendation,
 } from '../../engine/recommend'
+import type { RoleQuestEffects } from '../../engine/roleQuests'
 import type { Recommendation, Situation } from '../../engine/types'
 import { useBuildsStore } from '../../store/buildsStore'
 import { useDraftStore } from '../../store/draftStore'
@@ -72,6 +73,7 @@ export function useGameRecommendation(
   pre: PreGameRecommendation,
   ownedItemIds: readonly string[],
   situation: Situation,
+  questEffects: RoleQuestEffects,
 ): GameRecommendation | null {
   const catalog = useCatalog()
   return useMemo(() => {
@@ -83,7 +85,8 @@ export function useGameRecommendation(
       itemsById: catalog.itemsById,
       baseStats: champion.baseStats,
       playerDamage: mainDamage(champion),
+      questEffects,
     })
     return { ...next, categories: situationalCategories(pre.metrics) }
-  }, [pre, ownedItemIds, situation, catalog])
+  }, [pre, ownedItemIds, situation, catalog, questEffects])
 }
