@@ -21,7 +21,7 @@ export function ComponentsShowcase() {
         onChange={setSituation}
         options={[
           { value: 'ahead', label: 'Devant', tone: 'ahead' },
-          { value: 'even', label: 'Égalité' },
+          { value: 'even', label: 'Égalité', tone: 'even' },
           { value: 'behind', label: 'En retard', tone: 'behind' },
         ]}
       />

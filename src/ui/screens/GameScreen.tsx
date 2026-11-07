@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { INVENTORY } from '../../engine/config'
+import type { Situation } from '../../engine/types'
 import { buildSuggestions, componentTarget } from '../../engine/inventory'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
@@ -8,10 +9,18 @@ import { EmptyState } from '../components/EmptyState'
 import { GameIcon } from '../components/GameIcon'
 import { ItemPicker } from '../components/ItemPicker'
 import { Sheet } from '../components/Sheet'
+import { Tabs, type TabOption } from '../components/Tabs'
 import { useCatalog } from '../data/gameDataContext'
 import { usePreGameRecommendation } from '../data/useRecommendation'
+import { SITUATION_LABELS } from '../labels'
 import { goBack, navigate, useRouteParams } from '../navigation/useRoute'
 import styles from './GameScreen.module.css'
+
+const SITUATION_OPTIONS: TabOption<Situation>[] = [
+  { value: 'ahead', label: SITUATION_LABELS.ahead, tone: 'ahead' },
+  { value: 'even', label: SITUATION_LABELS.even, tone: 'even' },
+  { value: 'behind', label: SITUATION_LABELS.behind, tone: 'behind' },
+]
 
 const ADD_PARAM = 'ajouter'
 const ITEM_PARAM = 'item'
@@ -35,6 +44,8 @@ export function GameScreen() {
   const buy = useDraftStore((s) => s.buyItem)
   const remove = useDraftStore((s) => s.removeItem)
   const replace = useDraftStore((s) => s.replaceItem)
+  const situation = useDraftStore((s) => s.situation)
+  const setSituation = useDraftStore((s) => s.setSituation)
   const sheet = parseSheet(useRouteParams(), owned.length)
 
   const build =
@@ -74,6 +85,15 @@ export function GameScreen() {
 
   return (
     <>
+      <div className={styles.situation}>
+        <Tabs
+          label="Ta situation dans la partie"
+          options={SITUATION_OPTIONS}
+          value={situation}
+          onChange={setSituation}
+        />
+      </div>
+
       <p className="muted">
         {build
           ? `Build : ${build.name}`
