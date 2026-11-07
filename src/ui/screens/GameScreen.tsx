@@ -4,6 +4,7 @@ import { enemyLayout } from '../../engine/draft'
 import { POSITIONS, type Position, type Situation } from '../../engine/types'
 import { nextItemFallbackReason } from '../../engine/explain'
 import { buildSuggestions, componentTarget } from '../../engine/inventory'
+import { gameSnapshotText } from '../../engine/testNotes'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
 import { EmptyState } from '../components/EmptyState'
@@ -22,6 +23,7 @@ import { POSITION_LABELS, SITUATION_LABELS } from '../labels'
 import { goBack, navigate, useRouteParams } from '../navigation/useRoute'
 import { useWakeLock } from '../useWakeLock'
 import styles from './GameScreen.module.css'
+import { NotesSheet } from './NotesSheet'
 
 const SITUATION_OPTIONS: TabOption<Situation>[] = [
   { value: 'ahead', label: SITUATION_LABELS.ahead, tone: 'ahead' },
@@ -32,9 +34,12 @@ const SITUATION_OPTIONS: TabOption<Situation>[] = [
 const ADD_PARAM = 'ajouter'
 const ITEM_PARAM = 'item'
 const ENEMY_PARAM = 'ennemi'
+/** Notes de test (T7.1), ouvertes depuis le lien « Notes » de l'en-tête. */
+const NOTES_PARAM = 'notes'
 
 /** Panneau ouvert d'après l'URL : `#/partie/ajouter`, `#/partie/item/2` ou `#/partie/ennemi/mid`. */
 function parseSheet(params: readonly string[], ownedCount: number) {
+  if (params[0] === NOTES_PARAM) return { kind: 'notes' } as const
   const position = POSITIONS.find((p) => p === params[1])
   if (params[0] === ENEMY_PARAM && position) return { kind: 'enemy', position } as const
   if (params[0] === ADD_PARAM && ownedCount < INVENTORY.maxItems) return { kind: 'add' } as const
@@ -60,7 +65,7 @@ export function GameScreen() {
   const next = useGameRecommendation(result, owned, situation)
   const draft = useDraftStore((s) => s.draft)
   // Pendant la partie, l'écran reste allumé (le téléphone est posé à côté du clavier).
-  const wakeLock = useWakeLock(result.status === 'ready')
+  useWakeLock(result.status === 'ready')
 
   const build =
     result.status === 'ready' && result.build.kind === 'ok'
@@ -178,10 +183,29 @@ export function GameScreen() {
         playerPosition={draft.playerPosition}
       />
 
-      {wakeLock === 'active' && (
-        <p className={styles.hint}>Écran gardé allumé pendant la partie.</p>
+      {sheet?.kind === 'notes' && (
+        <NotesSheet
+          onClose={closeSheet}
+          snapshot={() => {
+            const championName = (id: string) => catalog.championsById.get(id)?.name ?? id
+            const layout = enemyLayout(draft, catalog.positionRates)
+            const player = result.championId
+            return gameSnapshotText({
+              now: new Date(),
+              player: `${championName(player)} (${POSITION_LABELS[draft.playerPosition]})`,
+              situation: SITUATION_LABELS[situation],
+              enemies: POSITIONS.flatMap((p) => {
+                const index = layout[p]
+                const enemy = index === null ? undefined : draft.enemies[index]
+                return enemy ? [`${POSITION_LABELS[p]} ${championName(enemy.championId)}`] : []
+              }),
+              items: owned.map(itemName),
+              nextItem: next?.recommendation?.choice.name ?? null,
+              alternative: next?.recommendation?.alternatives[0]?.choice.name ?? null,
+            })
+          }}
+        />
       )}
-
       {sheet?.kind === 'enemy' && <EnemySheet target={sheet.position} onClose={closeSheet} />}
       {sheet?.kind === 'add' && (
         <Sheet title="Item acheté" onClose={closeSheet}>

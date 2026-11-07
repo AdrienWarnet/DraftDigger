@@ -26,6 +26,11 @@ export function navigate(route: Route, ...params: string[]) {
   window.location.hash = hashFor(route, ...params)
 }
 
+/** Change d'écran sans nouvelle entrée d'historique (ex : saisie enchaînée dans un sélecteur). */
+export function replaceRoute(route: Route, ...params: string[]) {
+  window.location.replace(hashFor(route, ...params))
+}
+
 /**
  * Revient à l'entrée précédente (ex : fermer le sélecteur).
  * Si l'historique ne contient que cette page (app rouverte directement dessus), remplace par `fallback`.

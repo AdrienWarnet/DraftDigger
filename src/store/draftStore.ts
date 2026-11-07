@@ -7,6 +7,7 @@ import {
   newGame,
   parseDraft,
   playerChampionId,
+  rememberChampion,
   removeEnemy,
   replaceEnemy,
   setAlly,
@@ -14,7 +15,8 @@ import {
   unlockEnemy,
   type Draft,
 } from '../engine/draft'
-import { buyItem, parseOwnedItems, removeItem, replaceItem } from '../engine/inventory'
+import { INPUT_SHORTCUTS } from '../engine/config'
+import { buyItem, parseIdList, parseOwnedItems, removeItem, replaceItem } from '../engine/inventory'
 import type { PositionRates } from '../engine/positions'
 import { parseSituation } from '../engine/situation'
 import type { Item, Position, Situation } from '../engine/types'
@@ -51,6 +53,8 @@ type DraftStore = {
   /** Situation en partie (T6.2) : « à égalité » au début de chaque partie. */
   situation: Situation
   setSituation: (situation: Situation) => void
+  /** Derniers champions choisis dans la draft (T7.3), proposés en tête du sélecteur. */
+  recentChampionIds: string[]
 }
 
 export const useDraftStore = create<DraftStore>()(
@@ -60,11 +64,20 @@ export const useDraftStore = create<DraftStore>()(
       setPlayerPosition: (position) =>
         set((s) => withPlayerChange(s, setPlayerPosition(s.draft, position))),
       setAlly: (position, championId) =>
-        set((s) => withPlayerChange(s, setAlly(s.draft, position, championId))),
+        set((s) => ({
+          ...withPlayerChange(s, setAlly(s.draft, position, championId)),
+          ...remember(s, championId),
+        })),
       addEnemy: (championId, lockedPosition = null) =>
-        set((s) => ({ draft: addEnemy(s.draft, championId, lockedPosition) })),
+        set((s) => ({
+          draft: addEnemy(s.draft, championId, lockedPosition),
+          ...remember(s, championId),
+        })),
       replaceEnemy: (index, championId) =>
-        set((s) => ({ draft: replaceEnemy(s.draft, index, championId) })),
+        set((s) => ({
+          draft: replaceEnemy(s.draft, index, championId),
+          ...remember(s, championId),
+        })),
       removeEnemy: (index) => set((s) => ({ draft: removeEnemy(s.draft, index) })),
       moveEnemy: (from, to, rates) => set((s) => ({ draft: moveEnemy(s.draft, from, to, rates) })),
       unlockEnemy: (index) => set((s) => ({ draft: unlockEnemy(s.draft, index) })),
@@ -85,6 +98,7 @@ export const useDraftStore = create<DraftStore>()(
         set((s) => ({ ownedItemIds: replaceItem(s.ownedItemIds, index, itemId) })),
       situation: 'even',
       setSituation: (situation) => set({ situation }),
+      recentChampionIds: [],
     }),
     {
       name: GAME_STORAGE_KEY,
@@ -95,6 +109,7 @@ export const useDraftStore = create<DraftStore>()(
         forcedBuildId: state.forcedBuildId,
         ownedItemIds: state.ownedItemIds,
         situation: state.situation,
+        recentChampionIds: state.recentChampionIds,
       }),
       // Sauvegarde relue et validée : une sauvegarde illisible repart d'une draft vide.
       merge: (persisted, current) => {
@@ -118,8 +133,19 @@ export const useDraftStore = create<DraftStore>()(
             ? persisted.situation
             : undefined,
         )
+        const recent =
+          typeof persisted === 'object' && persisted !== null && 'recentChampionIds' in persisted
+            ? parseIdList(persisted.recentChampionIds, INPUT_SHORTCUTS.recentChampions)
+            : []
         return saved
-          ? { ...current, draft: saved, forcedBuildId: forced, ownedItemIds: owned, situation }
+          ? {
+              ...current,
+              draft: saved,
+              forcedBuildId: forced,
+              ownedItemIds: owned,
+              situation,
+              recentChampionIds: recent,
+            }
           : current
       },
     },
@@ -132,4 +158,17 @@ function withPlayerChange(state: { draft: Draft; forcedBuildId: string | null },
     next.playerPosition !== state.draft.playerPosition ||
     playerChampionId(next) !== playerChampionId(state.draft)
   return { draft: next, forcedBuildId: playerChanged ? null : state.forcedBuildId }
+}
+
+/** Ajoute un champion choisi aux récents (rien pour un retrait). */
+function remember(state: { recentChampionIds: string[] }, championId: string | null) {
+  return championId
+    ? {
+        recentChampionIds: rememberChampion(
+          state.recentChampionIds,
+          championId,
+          INPUT_SHORTCUTS.recentChampions,
+        ),
+      }
+    : {}
 }

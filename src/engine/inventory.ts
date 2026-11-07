@@ -124,8 +124,11 @@ export function buildSuggestions(
 
 /** Relit une liste d'items sauvegardée ; tout ce qui n'est pas lisible est écarté. */
 export function parseOwnedItems(value: unknown): string[] {
+  return parseIdList(value, INVENTORY.maxItems)
+}
+
+/** Relit une liste d'ids sauvegardée (`max` au plus) ; tout ce qui n'est pas lisible est écarté. */
+export function parseIdList(value: unknown, max: number): string[] {
   if (!Array.isArray(value)) return []
-  return value
-    .filter((id): id is string => typeof id === 'string' && id.length > 0)
-    .slice(0, INVENTORY.maxItems)
+  return value.filter((id): id is string => typeof id === 'string' && id.length > 0).slice(0, max)
 }

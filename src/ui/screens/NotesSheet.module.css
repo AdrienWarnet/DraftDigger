@@ -1,0 +1,29 @@
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.text {
+  width: 100%;
+  min-height: 40dvh;
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  resize: vertical;
+}
+
+.text:focus-visible {
+  outline-offset: 0;
+  border-color: var(--color-accent);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+}
