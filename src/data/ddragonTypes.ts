@@ -13,6 +13,15 @@ export type RawChampion = {
   tags: string[] // Fighter, Tank, Mage...
   info: { attack: number; defense: number; magic: number; difficulty: number }
   image: RawImage
+  /** Statistiques de base et gain par niveau (absentes d'anciens caches : optionnel). */
+  stats?: {
+    hp: number
+    hpperlevel: number
+    armor: number
+    armorperlevel: number
+    spellblock: number
+    spellblockperlevel: number
+  }
 }
 
 export type RawItem = {

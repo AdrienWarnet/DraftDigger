@@ -73,6 +73,14 @@ export function toChampion(
     tags: [...raw.tags],
     damage: championDamage(raw.info),
     threats: defaultThreats(raw.tags, tagThreats),
+    baseStats: {
+      hp: raw.stats?.hp ?? 0,
+      hpPerLevel: raw.stats?.hpperlevel ?? 0,
+      armor: raw.stats?.armor ?? 0,
+      armorPerLevel: raw.stats?.armorperlevel ?? 0,
+      mr: raw.stats?.spellblock ?? 0,
+      mrPerLevel: raw.stats?.spellblockperlevel ?? 0,
+    },
   }
 }
 

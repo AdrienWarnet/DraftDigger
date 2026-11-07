@@ -41,3 +41,72 @@ export const DEFAULT_CONDITION_WEIGHT = 2
 
 /** Rappel d'export dans « Mes builds » : jours sans export avant de le proposer. */
 export const EXPORT_REMINDER_DAYS = 7
+
+/** Seuils des métriques de la compo ennemie (T4.1). */
+export const METRIC_THRESHOLDS = {
+  /** Part de dégâts au-delà de laquelle le vis-à-vis est « AD » ou « AP » (sinon « mixte »). */
+  laneDamageShare: 0.65,
+  /** Niveau de menace `tank` à partir duquel un champion compte comme tank. */
+  tankLevel: 2,
+} as const
+
+/**
+ * Niveau du champion pris pour ses résistances de base dans le calcul défensif (milieu de partie).
+ * TODO(joueur) : ajuster si les gains défensifs semblent sur ou sous-estimés.
+ */
+export const DEFENSE_REFERENCE_LEVEL = 9
+
+/**
+ * Confiance d'une recommandation (docs/TICKETS.md section 4) selon l'écart de points entre
+ * le 1er et le 2e choix et le nombre d'ennemis connus. Avec une seule option, seul le nombre
+ * d'ennemis compte. TODO(joueur) : ajuster après les premières parties (T7.2).
+ */
+export const CONFIDENCE_THRESHOLDS = {
+  high: { minGap: 3, minEnemies: 4 },
+  medium: { minGap: 1, minEnemies: 2 },
+} as const
+
+/** Nombre maximum de raisons affichées sous une recommandation (T4.4). */
+export const MAX_REASONS = 3
+
+/** En dessous de cette part de dégâts reçus en moins (pondérée), un item n'a pas d'argument défensif. */
+export const MIN_DEFENSIVE_GAIN_TO_EXPLAIN = 0.05
+
+/**
+ * Modificateurs de score selon la situation, en points (T4.5), pour les candidats du prochain item.
+ * TODO(joueur) : ajuster après les premières parties (T7.2).
+ */
+export const SITUATION_MODIFIERS = {
+  behind: {
+    /** Item défensif (armure, RM ou PV). */
+    defensive: 1,
+    /** Le moins cher des candidats (s'ils n'ont pas tous le même prix). */
+    cheapest: 1,
+    /** Le plus cher des candidats. */
+    mostExpensive: -1,
+    reason: 'En retard, on privilégie un item abordable et défensif.',
+  },
+  ahead: {
+    /** Item offensif (AD ou AP, sans armure, RM ni PV). */
+    offensive: 1,
+    reason: 'Devant, on accélère avec un item offensif.',
+  },
+} as const
+
+/** Score du prochain item (docs/TICKETS.md section 4 « Échelle unique des scores »). */
+export const NEXT_ITEM_SCORING = {
+  /** Points d'une alternative dont les conditions sont vraies (le défaut en a 0). */
+  alternativeBonus: 2,
+  /** Conversion du gain défensif (0 à 1) en points : 0,3 → 3 points. */
+  gainToPoints: 10,
+} as const
+
+/** Items de situation proposés quand tous les slots du build sont achetés (T6.3). */
+export const SITUATIONAL_ITEMS = {
+  /** Total de soin ennemi à partir duquel l'anti-soin est proposé. */
+  antihealMinHeal: 2,
+  /** Nombre de tanks ennemis à partir duquel l'anti-tank est proposé. */
+  antitankMinTanks: 2,
+  /** Nombre de propositions retenues (la meilleure et ses alternatives). */
+  count: 3,
+} as const

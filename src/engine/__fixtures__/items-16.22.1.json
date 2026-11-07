@@ -1,0 +1,3045 @@
+[
+  {
+    "id": "1083",
+    "name": "Abatteur",
+    "image": "",
+    "cost": 450,
+    "stats": {
+      "ad": 7
+    },
+    "categories": ["ad"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2522",
+    "name": "Actualisateur",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "ap": 90
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["3802", "1026"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3363",
+    "name": "Altération divinatoire",
+    "image": "",
+    "cost": 0,
+    "stats": {},
+    "categories": ["trinket", "vision"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3145",
+    "name": "Alternateur Hextech",
+    "image": "",
+    "cost": 1100,
+    "stats": {
+      "ap": 45
+    },
+    "categories": ["ap"],
+    "buildsFrom": ["1052", "1052"],
+    "buildsInto": ["4645", "4636", "3146", "6655", "3152", "4646"],
+    "aliases": []
+  },
+  {
+    "id": "3026",
+    "name": "Ange gardien",
+    "image": "",
+    "cost": 3200,
+    "stats": {
+      "armor": 45,
+      "ad": 55
+    },
+    "categories": ["ad", "armor"],
+    "buildsFrom": ["2019", "1038"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1056",
+    "name": "Anneau de Doran",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "hp": 90,
+      "ap": 18
+    },
+    "categories": ["ap", "hp"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3119",
+    "name": "Approche de l'hiver",
+    "image": "",
+    "cost": 2400,
+    "stats": {
+      "hp": 550
+    },
+    "categories": ["haste", "hp"],
+    "buildsFrom": ["3070", "1011", "3067"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6696",
+    "name": "Arc axiomatique",
+    "image": "",
+    "cost": 2750,
+    "stats": {
+      "ad": 55
+    },
+    "categories": ["ad", "armorpen", "haste"],
+    "buildsFrom": ["2020", "3133"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1043",
+    "name": "Arc courbe",
+    "image": "",
+    "cost": 700,
+    "stats": {},
+    "categories": ["attackspeed"],
+    "buildsFrom": ["1042"],
+    "buildsInto": ["3302", "3153", "3115", "6672", "3091", "3124"],
+    "aliases": []
+  },
+  {
+    "id": "1086",
+    "name": "Arc de Doran",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "ad": 7
+    },
+    "categories": ["ad", "attackspeed", "omnivamp"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6673",
+    "name": "Arc-bouclier immortel",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 55
+    },
+    "categories": ["ad", "crit"],
+    "buildsFrom": ["1037", "6670"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1029",
+    "name": "Armure d'étoffe",
+    "image": "",
+    "cost": 300,
+    "stats": {
+      "armor": 15
+    },
+    "categories": ["armor"],
+    "buildsFrom": [],
+    "buildsInto": [
+      "2421",
+      "2420",
+      "1031",
+      "323050",
+      "323190",
+      "2019",
+      "3193",
+      "3047",
+      "3024",
+      "3050",
+      "2524",
+      "3023",
+      "3076",
+      "3082",
+      "3105",
+      "3190"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "3083",
+    "name": "Armure de Warmog",
+    "image": "",
+    "cost": 3100,
+    "stats": {
+      "hp": 1000
+    },
+    "categories": ["hp"],
+    "buildsFrom": ["1011", "1011", "3801"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3076",
+    "name": "Armure roncière",
+    "image": "",
+    "cost": 800,
+    "stats": {
+      "armor": 30
+    },
+    "categories": ["antiheal", "armor"],
+    "buildsFrom": ["1029", "1029"],
+    "buildsInto": ["323075", "3075"],
+    "aliases": []
+  },
+  {
+    "id": "2501",
+    "name": "Armure sanguine",
+    "image": "",
+    "cost": 3300,
+    "stats": {
+      "hp": 550,
+      "ad": 40
+    },
+    "categories": ["ad", "hp"],
+    "buildsFrom": ["2021", "2021"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3865",
+    "name": "Atlas",
+    "image": "",
+    "cost": 400,
+    "stats": {},
+    "categories": ["hp", "vision"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3091",
+    "name": "Au bout du rouleau",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "mr": 45
+    },
+    "categories": ["attackspeed", "mr", "tenacity"],
+    "buildsFrom": ["1043", "1057", "1043"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2510",
+    "name": "Aube et crépuscule",
+    "image": "",
+    "cost": 3100,
+    "stats": {
+      "hp": 300,
+      "ap": 60
+    },
+    "categories": ["ap", "attackspeed", "haste", "hp"],
+    "buildsFrom": ["3057", "1026", "3067", "1042"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3174",
+    "name": "Avancée blindée",
+    "image": "",
+    "cost": 1200,
+    "stats": {
+      "armor": 35
+    },
+    "categories": ["armor", "boots"],
+    "buildsFrom": ["3047"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1026",
+    "name": "Baguette explosive",
+    "image": "",
+    "cost": 850,
+    "stats": {
+      "ap": 45
+    },
+    "categories": ["ap"],
+    "buildsFrom": [],
+    "buildsInto": [
+      "2522",
+      "3100",
+      "326621",
+      "4637",
+      "3135",
+      "3165",
+      "3115",
+      "324005",
+      "2510",
+      "3116",
+      "3118",
+      "326657",
+      "6621",
+      "6657"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "1058",
+    "name": "Baguette trop grosse",
+    "image": "",
+    "cost": 1200,
+    "stats": {
+      "ap": 65
+    },
+    "categories": ["ap"],
+    "buildsFrom": [],
+    "buildsInto": ["3157", "4645", "3089", "3102", "3128", "4403"],
+    "aliases": []
+  },
+  {
+    "id": "3340",
+    "name": "Balise camouflée",
+    "image": "",
+    "cost": 0,
+    "stats": {},
+    "categories": ["trinket", "vision"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2055",
+    "name": "Balise de contrôle",
+    "image": "",
+    "cost": 75,
+    "stats": {},
+    "categories": ["consumable", "vision"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "4632",
+    "name": "Barrière verdoyante",
+    "image": "",
+    "cost": 1600,
+    "stats": {
+      "mr": 25,
+      "ap": 40
+    },
+    "categories": ["ap", "mr"],
+    "buildsFrom": ["1052", "1033", "1052"],
+    "buildsInto": ["3102"],
+    "aliases": []
+  },
+  {
+    "id": "3003",
+    "name": "Bâton de l'archange",
+    "image": "",
+    "cost": 2900,
+    "stats": {
+      "ap": 70
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["3070", "3802", "3108"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6616",
+    "name": "Bâton des flots",
+    "image": "",
+    "cost": 2250,
+    "stats": {
+      "ap": 35
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["3108", "3114"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3135",
+    "name": "Bâton du vide",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ap": 95
+    },
+    "categories": ["antitank", "ap", "magicpen"],
+    "buildsFrom": ["4630", "1026"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6657",
+    "name": "Bâton séculaire",
+    "image": "",
+    "cost": 2600,
+    "stats": {
+      "hp": 350,
+      "ap": 45
+    },
+    "categories": ["ap", "hp"],
+    "buildsFrom": ["1026", "3803"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1101",
+    "name": "Bébé Chardent",
+    "image": "",
+    "cost": 450,
+    "stats": {},
+    "categories": [],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1103",
+    "name": "Bébé Ixamandre",
+    "image": "",
+    "cost": 450,
+    "stats": {},
+    "categories": [],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1102",
+    "name": "Bébé Saute-nuages",
+    "image": "",
+    "cost": 450,
+    "stats": {},
+    "categories": [],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3222",
+    "name": "Bénédiction de Mikael",
+    "image": "",
+    "cost": 2300,
+    "stats": {
+      "hp": 250
+    },
+    "categories": ["haste", "hp", "tenacity"],
+    "buildsFrom": ["3067", "3114"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1038",
+    "name": "BF Glaive",
+    "image": "",
+    "cost": 1300,
+    "stats": {
+      "ad": 40
+    },
+    "categories": ["ad"],
+    "buildsFrom": [],
+    "buildsInto": ["3031", "3026", "3032", "3072", "3095", "4403", "6671"],
+    "aliases": []
+  },
+  {
+    "id": "1001",
+    "name": "Bottes",
+    "image": "",
+    "cost": 300,
+    "stats": {},
+    "categories": ["boots"],
+    "buildsFrom": [],
+    "buildsInto": ["3005", "3047", "3008", "3006", "3009", "3010", "3020", "3111", "3117", "3158"],
+    "aliases": []
+  },
+  {
+    "id": "3009",
+    "name": "Bottes de célérité",
+    "image": "",
+    "cost": 1000,
+    "stats": {},
+    "categories": ["boots"],
+    "buildsFrom": ["1001"],
+    "buildsInto": ["3170"],
+    "aliases": []
+  },
+  {
+    "id": "3158",
+    "name": "Bottes de lucidité",
+    "image": "",
+    "cost": 900,
+    "stats": {},
+    "categories": ["boots"],
+    "buildsFrom": ["1001", "2022"],
+    "buildsInto": ["3171"],
+    "aliases": []
+  },
+  {
+    "id": "1054",
+    "name": "Bouclier de Doran",
+    "image": "",
+    "cost": 450,
+    "stats": {
+      "hp": 110
+    },
+    "categories": ["hp"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3024",
+    "name": "Bouclier glacial",
+    "image": "",
+    "cost": 900,
+    "stats": {
+      "armor": 25
+    },
+    "categories": ["armor", "haste"],
+    "buildsFrom": ["1029", "1027", "2022"],
+    "buildsInto": ["323110", "3110"],
+    "aliases": []
+  },
+  {
+    "id": "3801",
+    "name": "Bracelet cristallin",
+    "image": "",
+    "cost": 800,
+    "stats": {
+      "hp": 200
+    },
+    "categories": ["hp"],
+    "buildsFrom": ["1028", "1006"],
+    "buildsInto": ["3084", "3083"],
+    "aliases": []
+  },
+  {
+    "id": "3057",
+    "name": "Brillance",
+    "image": "",
+    "cost": 900,
+    "stats": {},
+    "categories": ["haste"],
+    "buildsFrom": ["2022"],
+    "buildsInto": ["3078", "3100", "2510", "3508", "6632", "6662"],
+    "aliases": []
+  },
+  {
+    "id": "3181",
+    "name": "Brise-coques",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "hp": 500,
+      "ad": 40
+    },
+    "categories": ["ad", "hp", "mobility"],
+    "buildsFrom": ["2021", "3066", "1037"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2520",
+    "name": "Briseur de bastion",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 55
+    },
+    "categories": ["ad", "armorpen", "haste"],
+    "buildsFrom": ["2020", "3134"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3364",
+    "name": "Brouilleur oraculaire",
+    "image": "",
+    "cost": 0,
+    "stats": {},
+    "categories": ["trinket", "vision"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3173",
+    "name": "Broyeuses à chaînes",
+    "image": "",
+    "cost": 1250,
+    "stats": {
+      "mr": 25
+    },
+    "categories": ["boots", "mr", "tenacity"],
+    "buildsFrom": ["3111"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2020",
+    "name": "Brutaliseur",
+    "image": "",
+    "cost": 1337,
+    "stats": {
+      "ad": 25
+    },
+    "categories": ["ad", "armorpen"],
+    "buildsFrom": ["2022", "1037"],
+    "buildsInto": ["6698", "2520", "6699", "6696"],
+    "aliases": []
+  },
+  {
+    "id": "3094",
+    "name": "Canon ultrarapide",
+    "image": "",
+    "cost": 2650,
+    "stats": {},
+    "categories": ["attackspeed", "crit", "mobility"],
+    "buildsFrom": ["3086", "3144"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1018",
+    "name": "Cape d'agilité",
+    "image": "",
+    "cost": 600,
+    "stats": {},
+    "categories": ["crit"],
+    "buildsFrom": [],
+    "buildsInto": [
+      "123430",
+      "667666",
+      "3031",
+      "3086",
+      "6670",
+      "3033",
+      "3039",
+      "3508",
+      "3095",
+      "6676"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "1033",
+    "name": "Cape de néant",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "mr": 20
+    },
+    "categories": ["mr"],
+    "buildsFrom": [],
+    "buildsInto": [
+      "1057",
+      "3140",
+      "323050",
+      "323190",
+      "3193",
+      "3050",
+      "3001",
+      "3211",
+      "2524",
+      "3155",
+      "3105",
+      "3111",
+      "3190",
+      "4632"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "6670",
+    "name": "Carquois zénithien",
+    "image": "",
+    "cost": 1300,
+    "stats": {
+      "ad": 15
+    },
+    "categories": ["ad", "crit"],
+    "buildsFrom": ["1036", "1018"],
+    "buildsInto": ["2523", "3036", "6673"],
+    "aliases": []
+  },
+  {
+    "id": "1120",
+    "name": "Casque de Doran",
+    "image": "",
+    "cost": 450,
+    "stats": {
+      "armor": 8,
+      "mr": 8,
+      "hp": 150
+    },
+    "categories": ["armor", "hp", "mr"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3803",
+    "name": "Catalyseur de l'éternité",
+    "image": "",
+    "cost": 1300,
+    "stats": {
+      "hp": 300
+    },
+    "categories": ["hp"],
+    "buildsFrom": ["1028", "1028", "1027"],
+    "buildsInto": ["4402", "326657", "6657"],
+    "aliases": []
+  },
+  {
+    "id": "3140",
+    "name": "Ceinture de mercure",
+    "image": "",
+    "cost": 1300,
+    "stats": {
+      "mr": 30
+    },
+    "categories": ["mr"],
+    "buildsFrom": ["1033"],
+    "buildsInto": ["3139", "6035"],
+    "aliases": []
+  },
+  {
+    "id": "1011",
+    "name": "Ceinture du géant",
+    "image": "",
+    "cost": 900,
+    "stats": {
+      "hp": 350
+    },
+    "categories": ["hp"],
+    "buildsFrom": ["1028"],
+    "buildsInto": [
+      "4637",
+      "3084",
+      "2525",
+      "3039",
+      "3083",
+      "3116",
+      "3119",
+      "3143",
+      "323119",
+      "3748",
+      "6665",
+      "6609",
+      "6667",
+      "8001"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "3152",
+    "name": "Ceinture-roquette Hextech",
+    "image": "",
+    "cost": 2650,
+    "stats": {
+      "hp": 350,
+      "ap": 60
+    },
+    "categories": ["ap", "haste", "hp", "mobility"],
+    "buildsFrom": ["3145", "3067", "1028"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3170",
+    "name": "Célérité martiale",
+    "image": "",
+    "cost": 1000,
+    "stats": {},
+    "categories": ["boots"],
+    "buildsFrom": ["3009"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6660",
+    "name": "Cendres de Bami",
+    "image": "",
+    "cost": 900,
+    "stats": {
+      "hp": 150
+    },
+    "categories": ["haste", "hp"],
+    "buildsFrom": ["1028", "2022"],
+    "buildsInto": ["3068", "6664"],
+    "aliases": []
+  },
+  {
+    "id": "2508",
+    "name": "Cendres fatidiques",
+    "image": "",
+    "cost": 900,
+    "stats": {
+      "ap": 30
+    },
+    "categories": ["ap"],
+    "buildsFrom": ["1052"],
+    "buildsInto": ["2503", "6653"],
+    "aliases": []
+  },
+  {
+    "id": "2065",
+    "name": "Chant de guerre de Shurelya",
+    "image": "",
+    "cost": 2200,
+    "stats": {
+      "ap": 50
+    },
+    "categories": ["ap", "haste", "mobility"],
+    "buildsFrom": ["3113", "4642"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3802",
+    "name": "Chapitre perdu",
+    "image": "",
+    "cost": 1200,
+    "stats": {
+      "ap": 40
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["1052", "1027", "2022"],
+    "buildsInto": ["2522", "323003", "6656", "3003", "6655", "2503", "3118", "4644"],
+    "aliases": []
+  },
+  {
+    "id": "1004",
+    "name": "Charme féérique",
+    "image": "",
+    "cost": 200,
+    "stats": {},
+    "categories": [],
+    "buildsFrom": [],
+    "buildsInto": ["3114", "3012", "4642"],
+    "aliases": []
+  },
+  {
+    "id": "2512",
+    "name": "Chasseur de monstres",
+    "image": "",
+    "cost": 2650,
+    "stats": {},
+    "categories": ["attackspeed", "crit", "haste", "mobility"],
+    "buildsFrom": ["3086", "3144"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3175",
+    "name": "Chaussures de lanceur de sorts",
+    "image": "",
+    "cost": 1100,
+    "stats": {},
+    "categories": ["boots", "magicpen"],
+    "buildsFrom": ["3020"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3020",
+    "name": "Chaussures de sorcier",
+    "image": "",
+    "cost": 1100,
+    "stats": {},
+    "categories": ["boots", "magicpen"],
+    "buildsFrom": ["1001"],
+    "buildsInto": ["3175"],
+    "aliases": []
+  },
+  {
+    "id": "6610",
+    "name": "Ciel éventré",
+    "image": "",
+    "cost": 3100,
+    "stats": {
+      "hp": 400,
+      "ad": 40
+    },
+    "categories": ["ad", "haste", "hp"],
+    "buildsFrom": ["2021", "3133"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3139",
+    "name": "Cimeterre mercuriel",
+    "image": "",
+    "cost": 3200,
+    "stats": {
+      "mr": 35,
+      "ad": 50
+    },
+    "categories": ["ad", "lifesteal", "mobility", "mr", "tenacity"],
+    "buildsFrom": ["3140", "1037", "1053"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3108",
+    "name": "Codex méphitique",
+    "image": "",
+    "cost": 850,
+    "stats": {
+      "ap": 25
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["1052", "2022"],
+    "buildsInto": [
+      "123430",
+      "4636",
+      "323003",
+      "3115",
+      "3003",
+      "326616",
+      "3107",
+      "3128",
+      "3137",
+      "8010",
+      "6616",
+      "4628",
+      "4629",
+      "4633"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "6621",
+    "name": "Cœur de l'aube",
+    "image": "",
+    "cost": 2500,
+    "stats": {
+      "ap": 45
+    },
+    "categories": ["ap"],
+    "buildsFrom": ["1026", "3114", "3114"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3110",
+    "name": "Cœur gelé",
+    "image": "",
+    "cost": 2500,
+    "stats": {
+      "armor": 75
+    },
+    "categories": ["armor", "haste"],
+    "buildsFrom": ["3082", "3024"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3084",
+    "name": "Cœuracier",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "hp": 900
+    },
+    "categories": ["hp"],
+    "buildsFrom": ["1011", "3801", "1011"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3089",
+    "name": "Coiffe de Rabadon",
+    "image": "",
+    "cost": 3500,
+    "stats": {
+      "ap": 130
+    },
+    "categories": ["ap"],
+    "buildsFrom": ["1058", "1058"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1006",
+    "name": "Collier rafraîchissant",
+    "image": "",
+    "cost": 300,
+    "stats": {},
+    "categories": [],
+    "buildsFrom": [],
+    "buildsInto": ["3109", "3211", "323109", "3801"],
+    "aliases": []
+  },
+  {
+    "id": "4628",
+    "name": "Concentration lointaine",
+    "image": "",
+    "cost": 2700,
+    "stats": {
+      "ap": 75
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["3108", "3108", "1052"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3050",
+    "name": "Convergence de Zeke",
+    "image": "",
+    "cost": 2200,
+    "stats": {
+      "armor": 25,
+      "mr": 25,
+      "hp": 300
+    },
+    "categories": ["armor", "haste", "hp", "mr"],
+    "buildsFrom": ["3067", "1029", "1033"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3047",
+    "name": "Coques en acier",
+    "image": "",
+    "cost": 1200,
+    "stats": {
+      "armor": 25
+    },
+    "categories": ["armor", "boots"],
+    "buildsFrom": ["1001", "1029"],
+    "buildsInto": ["3174"],
+    "aliases": []
+  },
+  {
+    "id": "2051",
+    "name": "Corne du gardien",
+    "image": "",
+    "cost": 950,
+    "stats": {
+      "hp": 150
+    },
+    "categories": ["hp"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1031",
+    "name": "Cotte de mailles",
+    "image": "",
+    "cost": 800,
+    "stats": {
+      "armor": 40
+    },
+    "categories": ["armor"],
+    "buildsFrom": ["1029"],
+    "buildsInto": [
+      "3742",
+      "3068",
+      "323002",
+      "3109",
+      "323075",
+      "2502",
+      "3002",
+      "3075",
+      "323109",
+      "6665",
+      "6662"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "3075",
+    "name": "Cotte épineuse",
+    "image": "",
+    "cost": 2450,
+    "stats": {
+      "armor": 75,
+      "hp": 150
+    },
+    "categories": ["antiheal", "armor", "hp"],
+    "buildsFrom": ["3076", "1031", "1028"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3071",
+    "name": "Couperet noir",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "hp": 400,
+      "ad": 45
+    },
+    "categories": ["ad", "antitank", "armorpen", "haste", "hp", "mobility"],
+    "buildsFrom": ["3044", "3067", "1037"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "4633",
+    "name": "Créateur de failles",
+    "image": "",
+    "cost": 3100,
+    "stats": {
+      "hp": 350,
+      "ap": 70
+    },
+    "categories": ["ap", "hp", "omnivamp"],
+    "buildsFrom": ["3147", "3108"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1028",
+    "name": "Cristal de rubis",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "hp": 150
+    },
+    "categories": ["hp"],
+    "buildsFrom": [],
+    "buildsInto": [
+      "3742",
+      "1011",
+      "3068",
+      "2021",
+      "323222",
+      "323075",
+      "326617",
+      "323107",
+      "3012",
+      "3147",
+      "3067",
+      "3211",
+      "2502",
+      "322526",
+      "2526",
+      "3023",
+      "3044",
+      "3053",
+      "3066",
+      "3075",
+      "3152",
+      "3161",
+      "3801",
+      "3803",
+      "4401",
+      "4635",
+      "6035",
+      "6660",
+      "6662"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "1027",
+    "name": "Cristal de saphir",
+    "image": "",
+    "cost": 300,
+    "stats": {},
+    "categories": [],
+    "buildsFrom": [],
+    "buildsInto": ["3024", "3802", "3803"],
+    "aliases": []
+  },
+  {
+    "id": "6695",
+    "name": "Crochet de serpent",
+    "image": "",
+    "cost": 2500,
+    "stats": {
+      "ad": 55
+    },
+    "categories": ["ad", "armorpen"],
+    "buildsFrom": ["3134", "1037"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6699",
+    "name": "Cyclosabre voltaïque",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 55
+    },
+    "categories": ["ad", "armorpen", "haste"],
+    "buildsFrom": ["2020", "1036", "1036"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1042",
+    "name": "Dague",
+    "image": "",
+    "cost": 250,
+    "stats": {},
+    "categories": ["attackspeed"],
+    "buildsFrom": [],
+    "buildsInto": [
+      "1043",
+      "3086",
+      "2510",
+      "3006",
+      "3046",
+      "3051",
+      "3073",
+      "3131",
+      "3144",
+      "6631",
+      "6675",
+      "6677"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "3134",
+    "name": "Dague dentelée",
+    "image": "",
+    "cost": 1000,
+    "stats": {
+      "ad": 20
+    },
+    "categories": ["ad", "armorpen"],
+    "buildsFrom": ["1036", "1036"],
+    "buildsInto": [
+      "3142",
+      "667666",
+      "126697",
+      "6697",
+      "6701",
+      "6693",
+      "2520",
+      "4004",
+      "6695",
+      "3814",
+      "3131",
+      "3179",
+      "6691",
+      "6676"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "6333",
+    "name": "Danse de la mort",
+    "image": "",
+    "cost": 3300,
+    "stats": {
+      "armor": 50,
+      "ad": 60
+    },
+    "categories": ["ad", "armor", "haste"],
+    "buildsFrom": ["2019", "1037", "3133"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3046",
+    "name": "Danseur fantôme",
+    "image": "",
+    "cost": 2650,
+    "stats": {},
+    "categories": ["attackspeed", "crit", "mobility"],
+    "buildsFrom": ["1042", "3086", "1042"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3147",
+    "name": "Déguisement hanté",
+    "image": "",
+    "cost": 1300,
+    "stats": {
+      "hp": 200,
+      "ap": 30
+    },
+    "categories": ["ap", "hp"],
+    "buildsFrom": ["1052", "1028"],
+    "buildsInto": ["8010", "4633", "6653"],
+    "aliases": []
+  },
+  {
+    "id": "3115",
+    "name": "Dent de Nashor",
+    "image": "",
+    "cost": 2900,
+    "stats": {
+      "ap": 80
+    },
+    "categories": ["ap", "attackspeed", "haste"],
+    "buildsFrom": ["1043", "1026", "3108"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3035",
+    "name": "Dernier souffle",
+    "image": "",
+    "cost": 1450,
+    "stats": {
+      "ad": 20
+    },
+    "categories": ["ad", "armorpen"],
+    "buildsFrom": ["1036", "1036"],
+    "buildsInto": ["3033", "3036", "6694"],
+    "aliases": []
+  },
+  {
+    "id": "2502",
+    "name": "Désespoir infini",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "armor": 50,
+      "hp": 400
+    },
+    "categories": ["armor", "haste", "hp"],
+    "buildsFrom": ["1031", "3067", "1028"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2526",
+    "name": "Diadème des murmures",
+    "image": "",
+    "cost": 2250,
+    "stats": {
+      "hp": 200
+    },
+    "categories": ["hp"],
+    "buildsFrom": ["3114", "1028", "3070"],
+    "buildsInto": ["2530"],
+    "aliases": []
+  },
+  {
+    "id": "6655",
+    "name": "Écho de Luden",
+    "image": "",
+    "cost": 2750,
+    "stats": {
+      "ap": 100
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["3802", "3145"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6620",
+    "name": "Échos d'Helia",
+    "image": "",
+    "cost": 2200,
+    "stats": {
+      "hp": 200,
+      "ap": 35
+    },
+    "categories": ["ap", "haste", "hp"],
+    "buildsFrom": ["3067", "4642"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6692",
+    "name": "Éclipse",
+    "image": "",
+    "cost": 2900,
+    "stats": {
+      "ad": 60
+    },
+    "categories": ["ad", "haste"],
+    "buildsFrom": ["3133", "1037", "1036"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3068",
+    "name": "Égide solaire",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "armor": 50,
+      "hp": 350
+    },
+    "categories": ["armor", "haste", "hp"],
+    "buildsFrom": ["6660", "1031", "1028"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2138",
+    "name": "Élixir de fer",
+    "image": "",
+    "cost": 500,
+    "stats": {},
+    "categories": ["consumable", "hp", "mobility", "tenacity"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2140",
+    "name": "Élixir de rage",
+    "image": "",
+    "cost": 500,
+    "stats": {},
+    "categories": ["ad", "consumable", "lifesteal", "omnivamp"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2139",
+    "name": "Élixir de sorcellerie",
+    "image": "",
+    "cost": 500,
+    "stats": {},
+    "categories": ["ap", "consumable"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3504",
+    "name": "Encensoir ardent",
+    "image": "",
+    "cost": 2200,
+    "stats": {
+      "ap": 45
+    },
+    "categories": ["ap", "attackspeed", "mobility"],
+    "buildsFrom": ["3113", "3114"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6609",
+    "name": "Épée dentelée chimico-punk",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "hp": 450,
+      "ad": 45
+    },
+    "categories": ["ad", "antiheal", "haste", "hp"],
+    "buildsFrom": ["3123", "1011", "3133"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1036",
+    "name": "Épée longue",
+    "image": "",
+    "cost": 350,
+    "stats": {
+      "ad": 10
+    },
+    "categories": ["ad"],
+    "buildsFrom": [],
+    "buildsInto": [
+      "1053",
+      "4003",
+      "6701",
+      "2015",
+      "2019",
+      "2021",
+      "3077",
+      "6670",
+      "3133",
+      "2517",
+      "323004",
+      "3142",
+      "3004",
+      "2523",
+      "3032",
+      "3035",
+      "3044",
+      "3051",
+      "3155",
+      "6690",
+      "3123",
+      "3134",
+      "6699",
+      "6671",
+      "6692"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "6631",
+    "name": "Estropieur",
+    "image": "",
+    "cost": 3300,
+    "stats": {
+      "hp": 450,
+      "ad": 40
+    },
+    "categories": ["ad", "attackspeed", "hp"],
+    "buildsFrom": ["3077", "3044", "1042"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2517",
+    "name": "Faim insatiable",
+    "image": "",
+    "cost": 3100,
+    "stats": {
+      "ad": 65
+    },
+    "categories": ["ad", "haste", "lifesteal", "omnivamp", "tenacity"],
+    "buildsFrom": ["3133", "1037", "1036"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3508",
+    "name": "Faux spectrale",
+    "image": "",
+    "cost": 3050,
+    "stats": {
+      "ad": 50
+    },
+    "categories": ["ad", "crit", "haste"],
+    "buildsFrom": ["3057", "3133", "1018"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3113",
+    "name": "Feu follet éthéré",
+    "image": "",
+    "cost": 900,
+    "stats": {
+      "ap": 30
+    },
+    "categories": ["ap", "mobility"],
+    "buildsFrom": ["1052"],
+    "buildsInto": ["123430", "3100", "2065", "322065", "3087", "323504", "3504", "4629", "4646"],
+    "aliases": []
+  },
+  {
+    "id": "4645",
+    "name": "Flamme-ombre",
+    "image": "",
+    "cost": 3200,
+    "stats": {
+      "ap": 110
+    },
+    "categories": ["ap", "magicpen"],
+    "buildsFrom": ["3145", "1058"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3100",
+    "name": "Fléau de liche",
+    "image": "",
+    "cost": 2900,
+    "stats": {
+      "ap": 100
+    },
+    "categories": ["ap", "haste", "mobility"],
+    "buildsFrom": ["3057", "3113", "1026"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3032",
+    "name": "Flèches des Yun Tal",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 50
+    },
+    "categories": ["ad", "attackspeed", "crit"],
+    "buildsFrom": ["1038", "3144", "1036"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3137",
+    "name": "Fleur de crypte",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ap": 75
+    },
+    "categories": ["antitank", "ap", "haste", "magicpen"],
+    "buildsFrom": ["4630", "3108", "3108"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2524",
+    "name": "Flûtes de Bandle",
+    "image": "",
+    "cost": 2300,
+    "stats": {
+      "armor": 20,
+      "mr": 20,
+      "hp": 200
+    },
+    "categories": ["armor", "attackspeed", "haste", "hp", "mobility", "mr"],
+    "buildsFrom": ["3067", "1029", "1033"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "4401",
+    "name": "Force de la nature",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "mr": 55,
+      "hp": 400
+    },
+    "categories": ["hp", "mobility", "mr"],
+    "buildsFrom": ["1057", "1028", "3066"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3078",
+    "name": "Force de la trinité",
+    "image": "",
+    "cost": 3333,
+    "stats": {
+      "hp": 333,
+      "ad": 36
+    },
+    "categories": ["ad", "attackspeed", "haste", "hp", "mobility"],
+    "buildsFrom": ["3057", "3044", "3051"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2021",
+    "name": "Foreuse",
+    "image": "",
+    "cost": 1150,
+    "stats": {
+      "hp": 250,
+      "ad": 15
+    },
+    "categories": ["ad", "hp"],
+    "buildsFrom": ["1036", "1028"],
+    "buildsInto": ["2501", "3053", "3073", "3814", "3181", "3161", "3748", "6610"],
+    "aliases": []
+  },
+  {
+    "id": "3144",
+    "name": "Fronde de l'éclaireur",
+    "image": "",
+    "cost": 600,
+    "stats": {},
+    "categories": ["attackspeed"],
+    "buildsFrom": ["1042", "1042"],
+    "buildsInto": ["2512", "3094", "3087", "3032", "3085", "3095"],
+    "aliases": []
+  },
+  {
+    "id": "3053",
+    "name": "Gage de Sterak",
+    "image": "",
+    "cost": 3200,
+    "stats": {
+      "hp": 400
+    },
+    "categories": ["ad", "hp", "tenacity"],
+    "buildsFrom": ["1037", "2021", "1028"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6662",
+    "name": "Gantelet givrant",
+    "image": "",
+    "cost": 2900,
+    "stats": {
+      "armor": 50,
+      "hp": 300
+    },
+    "categories": ["armor", "haste", "hp"],
+    "buildsFrom": ["3057", "1028", "1031"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3067",
+    "name": "Gemme exaltante",
+    "image": "",
+    "cost": 800,
+    "stats": {
+      "hp": 200
+    },
+    "categories": ["haste", "hp"],
+    "buildsFrom": ["1028", "2022"],
+    "buildsInto": [
+      "3071",
+      "8020",
+      "323050",
+      "328020",
+      "124011",
+      "323190",
+      "323222",
+      "3165",
+      "6620",
+      "3050",
+      "3109",
+      "6656",
+      "326617",
+      "323107",
+      "2502",
+      "2510",
+      "2524",
+      "2525",
+      "6617",
+      "3065",
+      "3152",
+      "3119",
+      "326620",
+      "3190",
+      "3222",
+      "323109",
+      "323119",
+      "4403",
+      "4629",
+      "4644",
+      "6630",
+      "6632",
+      "8001"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "3179",
+    "name": "Glaive d'ombre",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "ad": 60
+    },
+    "categories": ["ad", "armorpen", "haste", "vision"],
+    "buildsFrom": ["3134", "3133"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3156",
+    "name": "Gueule de Malmortius",
+    "image": "",
+    "cost": 3100,
+    "stats": {
+      "mr": 40,
+      "ad": 60
+    },
+    "categories": ["ad", "haste", "lifesteal", "mr", "omnivamp"],
+    "buildsFrom": ["3155", "3133"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3051",
+    "name": "Hache d'Âtrinsèque",
+    "image": "",
+    "cost": 1200,
+    "stats": {
+      "ad": 20
+    },
+    "categories": ["ad", "attackspeed"],
+    "buildsFrom": ["1036", "1042", "1036"],
+    "buildsInto": ["3078", "3302", "6672"],
+    "aliases": []
+  },
+  {
+    "id": "2525",
+    "name": "Harnais protoplasmique",
+    "image": "",
+    "cost": 2600,
+    "stats": {
+      "hp": 600
+    },
+    "categories": ["haste", "hp", "mobility", "tenacity"],
+    "buildsFrom": ["3067", "1011"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3073",
+    "name": "Hexplaque expérimentale",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "hp": 450,
+      "ad": 40
+    },
+    "categories": ["ad", "attackspeed", "haste", "hp", "mobility"],
+    "buildsFrom": ["2021", "1042", "3044"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3155",
+    "name": "Hexterminateur",
+    "image": "",
+    "cost": 1300,
+    "stats": {
+      "mr": 25,
+      "ad": 25
+    },
+    "categories": ["ad", "mr"],
+    "buildsFrom": ["1036", "1033", "1036"],
+    "buildsInto": ["3156"],
+    "aliases": []
+  },
+  {
+    "id": "6698",
+    "name": "Hydre profane",
+    "image": "",
+    "cost": 2850,
+    "stats": {
+      "ad": 55
+    },
+    "categories": ["ad", "armorpen", "haste"],
+    "buildsFrom": ["3077", "2020"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3748",
+    "name": "Hydre titanesque",
+    "image": "",
+    "cost": 3300,
+    "stats": {
+      "hp": 600,
+      "ad": 40
+    },
+    "categories": ["ad", "hp"],
+    "buildsFrom": ["3077", "2021", "1011"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3074",
+    "name": "Hydre vorace",
+    "image": "",
+    "cost": 3300,
+    "stats": {
+      "ad": 65
+    },
+    "categories": ["ad", "haste", "lifesteal"],
+    "buildsFrom": ["3077", "1053", "3133"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3114",
+    "name": "Idole interdite",
+    "image": "",
+    "cost": 600,
+    "stats": {},
+    "categories": [],
+    "buildsFrom": ["1004"],
+    "buildsInto": [
+      "124011",
+      "326621",
+      "223011",
+      "323222",
+      "323107",
+      "322526",
+      "2526",
+      "3011",
+      "326616",
+      "3107",
+      "3222",
+      "323504",
+      "3504",
+      "6616",
+      "6621"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "6665",
+    "name": "Jak'Sho, le Protéiforme",
+    "image": "",
+    "cost": 3200,
+    "stats": {
+      "armor": 45,
+      "mr": 45,
+      "hp": 350
+    },
+    "categories": ["armor", "hp", "mr"],
+    "buildsFrom": ["1011", "1031", "1057"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3172",
+    "name": "Jambières de métal",
+    "image": "",
+    "cost": 1100,
+    "stats": {},
+    "categories": ["attackspeed", "lifesteal", "mobility"],
+    "buildsFrom": ["3006"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3006",
+    "name": "Jambières du berzerker",
+    "image": "",
+    "cost": 1100,
+    "stats": {},
+    "categories": ["attackspeed", "boots"],
+    "buildsFrom": ["1001", "1042", "1042"],
+    "buildsInto": ["3172"],
+    "aliases": []
+  },
+  {
+    "id": "3008",
+    "name": "Jambières gloutonnes",
+    "image": "",
+    "cost": 1100,
+    "stats": {},
+    "categories": ["boots", "lifesteal", "omnivamp"],
+    "buildsFrom": ["1001"],
+    "buildsInto": ["3168"],
+    "aliases": []
+  },
+  {
+    "id": "4630",
+    "name": "Joyau putréfiant",
+    "image": "",
+    "cost": 1100,
+    "stats": {
+      "ap": 25
+    },
+    "categories": ["ap", "magicpen"],
+    "buildsFrom": ["1052"],
+    "buildsInto": ["3135", "3137"],
+    "aliases": []
+  },
+  {
+    "id": "2141",
+    "name": "Jus chapi-chapo",
+    "image": "",
+    "cost": 300,
+    "stats": {},
+    "categories": ["ad", "consumable"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3031",
+    "name": "Lame d'infini",
+    "image": "",
+    "cost": 3500,
+    "stats": {
+      "ad": 75
+    },
+    "categories": ["ad", "crit"],
+    "buildsFrom": ["1038", "1037", "1018"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1055",
+    "name": "Lame de Doran",
+    "image": "",
+    "cost": 450,
+    "stats": {
+      "hp": 80,
+      "ad": 10
+    },
+    "categories": ["ad", "hp", "lifesteal", "omnivamp"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3177",
+    "name": "Lame du gardien",
+    "image": "",
+    "cost": 950,
+    "stats": {
+      "hp": 150,
+      "ad": 30
+    },
+    "categories": ["ad", "haste", "hp"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3153",
+    "name": "Lame du roi déchu",
+    "image": "",
+    "cost": 3200,
+    "stats": {
+      "ad": 40
+    },
+    "categories": ["ad", "antitank", "attackspeed", "lifesteal"],
+    "buildsFrom": ["1053", "1043", "1037"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3124",
+    "name": "Lame enragée de Guinsoo",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 30,
+      "ap": 30
+    },
+    "categories": ["ad", "ap", "attackspeed"],
+    "buildsFrom": ["1052", "1043", "1037"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3142",
+    "name": "Lame spectre de Youmuu",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "ad": 55
+    },
+    "categories": ["ad", "armorpen", "mobility"],
+    "buildsFrom": ["3134", "6690", "1036"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3095",
+    "name": "Lame tempête",
+    "image": "",
+    "cost": 3200,
+    "stats": {
+      "ad": 50
+    },
+    "categories": ["ad", "attackspeed", "crit", "mobility"],
+    "buildsFrom": ["1038", "1018", "3144"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3161",
+    "name": "Lance de Shojin",
+    "image": "",
+    "cost": 3100,
+    "stats": {
+      "hp": 450,
+      "ad": 45
+    },
+    "categories": ["ad", "haste", "hp"],
+    "buildsFrom": ["1037", "2021", "1028"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3070",
+    "name": "Larme de la déesse",
+    "image": "",
+    "cost": 400,
+    "stats": {},
+    "categories": [],
+    "buildsFrom": [],
+    "buildsInto": ["3003", "3004", "2526", "3119"],
+    "aliases": []
+  },
+  {
+    "id": "3171",
+    "name": "Lucidité pourpre",
+    "image": "",
+    "cost": 900,
+    "stats": {},
+    "categories": ["boots"],
+    "buildsFrom": ["3158"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2523",
+    "name": "Lunettes Hextech C44",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "ad": 55
+    },
+    "categories": ["ad", "crit"],
+    "buildsFrom": ["1037", "6670", "1036"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3082",
+    "name": "Mailles du gardien",
+    "image": "",
+    "cost": 1000,
+    "stats": {
+      "armor": 40
+    },
+    "categories": ["armor"],
+    "buildsFrom": ["1029", "1029"],
+    "buildsInto": ["323110", "3110", "3143"],
+    "aliases": []
+  },
+  {
+    "id": "8010",
+    "name": "Malédiction du sanguinaire",
+    "image": "",
+    "cost": 2900,
+    "stats": {
+      "hp": 400,
+      "ap": 65
+    },
+    "categories": ["ap", "hp", "magicpen"],
+    "buildsFrom": ["3147", "3108"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3118",
+    "name": "Malfaisance",
+    "image": "",
+    "cost": 2700,
+    "stats": {
+      "ap": 90
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["3802", "1026"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3004",
+    "name": "Manamune",
+    "image": "",
+    "cost": 2900,
+    "stats": {
+      "ad": 35
+    },
+    "categories": ["ad", "haste"],
+    "buildsFrom": ["3070", "3133", "1036"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "4005",
+    "name": "Mandat impérial",
+    "image": "",
+    "cost": 2400,
+    "stats": {
+      "ap": 60
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["1052", "4642", "1052"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3814",
+    "name": "Manteau de la nuit",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "hp": 250,
+      "ad": 50
+    },
+    "categories": ["ad", "armorpen", "hp"],
+    "buildsFrom": ["3134", "2021"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1057",
+    "name": "Manteau de Négatron",
+    "image": "",
+    "cost": 850,
+    "stats": {
+      "mr": 45
+    },
+    "categories": ["mr"],
+    "buildsFrom": ["1033"],
+    "buildsInto": ["2504", "8020", "328020", "3091", "6665", "4401"],
+    "aliases": []
+  },
+  {
+    "id": "3211",
+    "name": "Manteau de spectre",
+    "image": "",
+    "cost": 1250,
+    "stats": {
+      "mr": 35,
+      "hp": 200
+    },
+    "categories": ["hp", "mr"],
+    "buildsFrom": ["1028", "1033", "1006"],
+    "buildsInto": ["2504", "3065", "6664"],
+    "aliases": []
+  },
+  {
+    "id": "3123",
+    "name": "Marque du bourreau",
+    "image": "",
+    "cost": 800,
+    "stats": {
+      "ad": 15
+    },
+    "categories": ["ad", "antiheal"],
+    "buildsFrom": ["1036"],
+    "buildsInto": ["3033", "6609"],
+    "aliases": []
+  },
+  {
+    "id": "3133",
+    "name": "Marteau de Caulfield",
+    "image": "",
+    "cost": 1050,
+    "stats": {
+      "ad": 20
+    },
+    "categories": ["ad", "haste"],
+    "buildsFrom": ["1036", "2022", "1036"],
+    "buildsInto": [
+      "6333",
+      "126697",
+      "6697",
+      "4402",
+      "3156",
+      "2517",
+      "323004",
+      "6693",
+      "3004",
+      "3508",
+      "3074",
+      "3179",
+      "6691",
+      "6609",
+      "6610",
+      "6632",
+      "6692",
+      "6694",
+      "6696"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "3184",
+    "name": "Marteau du gardien",
+    "image": "",
+    "cost": 950,
+    "stats": {
+      "hp": 150,
+      "ad": 25
+    },
+    "categories": ["ad", "hp", "lifesteal"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "8020",
+    "name": "Masque abyssal",
+    "image": "",
+    "cost": 2650,
+    "stats": {
+      "mr": 45,
+      "hp": 350
+    },
+    "categories": ["haste", "hp", "mr"],
+    "buildsFrom": ["3067", "1057"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3190",
+    "name": "Médaillon de l'Iron Solari",
+    "image": "",
+    "cost": 2200,
+    "stats": {
+      "armor": 30,
+      "mr": 30,
+      "hp": 200
+    },
+    "categories": ["armor", "haste", "hp", "mr"],
+    "buildsFrom": ["3067", "1029", "1033"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3877",
+    "name": "Mélodie du sang",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "hp": 200
+    },
+    "categories": ["hp", "vision"],
+    "buildsFrom": ["3867"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "4642",
+    "name": "Miroir en verre de Bandle",
+    "image": "",
+    "cost": 900,
+    "stats": {
+      "ap": 20
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["1004", "1052", "2022"],
+    "buildsInto": ["2065", "322065", "6620", "326617", "324005", "4005", "6617", "326620"],
+    "aliases": []
+  },
+  {
+    "id": "3165",
+    "name": "Morellonomicon",
+    "image": "",
+    "cost": 2850,
+    "stats": {
+      "hp": 350,
+      "ap": 75
+    },
+    "categories": ["antiheal", "ap", "haste", "hp"],
+    "buildsFrom": ["3916", "1026", "3067"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "4646",
+    "name": "Onde orageuse",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "ap": 90
+    },
+    "categories": ["ap", "magicpen", "mobility"],
+    "buildsFrom": ["3145", "3113"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3869",
+    "name": "Opposition céleste",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "hp": 200
+    },
+    "categories": ["hp", "vision"],
+    "buildsFrom": ["3867"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3916",
+    "name": "Orbe de l'oubli",
+    "image": "",
+    "cost": 800,
+    "stats": {
+      "ap": 25
+    },
+    "categories": ["antiheal", "ap"],
+    "buildsFrom": ["1052"],
+    "buildsInto": ["223011", "3165", "3011"],
+    "aliases": []
+  },
+  {
+    "id": "3112",
+    "name": "Orbe du gardien",
+    "image": "",
+    "cost": 950,
+    "stats": {
+      "hp": 150,
+      "ap": 50
+    },
+    "categories": ["ap", "hp"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6697",
+    "name": "Orgueil",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "ad": 55
+    },
+    "categories": ["ad", "armorpen", "haste"],
+    "buildsFrom": ["3134", "3133"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3085",
+    "name": "Ouragan de Runaan",
+    "image": "",
+    "cost": 2650,
+    "stats": {},
+    "categories": ["attackspeed", "crit", "mobility"],
+    "buildsFrom": ["3086", "3144"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6676",
+    "name": "Percepteur",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 50
+    },
+    "categories": ["ad", "armorpen", "crit"],
+    "buildsFrom": ["1037", "3134", "1018"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3044",
+    "name": "Phage",
+    "image": "",
+    "cost": 1100,
+    "stats": {
+      "hp": 200,
+      "ad": 15
+    },
+    "categories": ["ad", "hp", "mobility"],
+    "buildsFrom": ["1028", "1036"],
+    "buildsInto": ["3071", "3078", "3073", "6630", "6631"],
+    "aliases": []
+  },
+  {
+    "id": "1037",
+    "name": "Pioche",
+    "image": "",
+    "cost": 875,
+    "stats": {
+      "ad": 25
+    },
+    "categories": ["ad"],
+    "buildsFrom": [],
+    "buildsInto": [
+      "667666",
+      "3071",
+      "6333",
+      "3031",
+      "3153",
+      "6701",
+      "2020",
+      "2517",
+      "3087",
+      "6695",
+      "2523",
+      "3053",
+      "3072",
+      "3124",
+      "3181",
+      "3139",
+      "3161",
+      "6029",
+      "6035",
+      "6673",
+      "6676",
+      "6692"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "3871",
+    "name": "Pique dimensionnelle de Zaz'Zak",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "hp": 200
+    },
+    "categories": ["hp", "vision"],
+    "buildsFrom": ["3867"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3146",
+    "name": "Pistolame Hextech",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 40,
+      "ap": 80
+    },
+    "categories": ["ad", "ap", "lifesteal", "omnivamp"],
+    "buildsFrom": ["1053", "3145", "1052"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3066",
+    "name": "Plaque de lune ailée",
+    "image": "",
+    "cost": 800,
+    "stats": {
+      "hp": 200
+    },
+    "categories": ["hp", "mobility"],
+    "buildsFrom": ["1028"],
+    "buildsInto": ["3742", "323002", "3002", "3181", "4401"],
+    "aliases": []
+  },
+  {
+    "id": "3742",
+    "name": "Plaque du mort",
+    "image": "",
+    "cost": 2900,
+    "stats": {
+      "armor": 55,
+      "hp": 350
+    },
+    "categories": ["armor", "hp", "mobility"],
+    "buildsFrom": ["3066", "1028", "1031"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3087",
+    "name": "Poignard de Statikk",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 45,
+      "ap": 45
+    },
+    "categories": ["ad", "ap", "attackspeed", "mobility"],
+    "buildsFrom": ["3144", "3113", "1037"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2003",
+    "name": "Potion de soin",
+    "image": "",
+    "cost": 50,
+    "stats": {},
+    "categories": ["consumable"],
+    "buildsFrom": [],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2031",
+    "name": "Potion rechargeable",
+    "image": "",
+    "cost": 150,
+    "stats": {},
+    "categories": ["consumable"],
+    "buildsFrom": [],
+    "buildsInto": ["2033"],
+    "aliases": []
+  },
+  {
+    "id": "2022",
+    "name": "Poussière luisante",
+    "image": "",
+    "cost": 250,
+    "stats": {},
+    "categories": [],
+    "buildsFrom": [],
+    "buildsInto": ["2020", "3024", "3133", "3802", "3067", "3057", "3108", "3158", "4642", "6660"],
+    "aliases": []
+  },
+  {
+    "id": "3143",
+    "name": "Présage de Randuin",
+    "image": "",
+    "cost": 2700,
+    "stats": {
+      "armor": 75,
+      "hp": 350
+    },
+    "categories": ["armor", "hp"],
+    "buildsFrom": ["3082", "1011"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2420",
+    "name": "Protège-bras du savant",
+    "image": "",
+    "cost": 1600,
+    "stats": {
+      "armor": 25,
+      "ap": 40
+    },
+    "categories": ["ap", "armor"],
+    "buildsFrom": ["1052", "1029", "1052"],
+    "buildsInto": ["3157"],
+    "aliases": []
+  },
+  {
+    "id": "2421",
+    "name": "Protège-bras pulvérisé",
+    "image": "",
+    "cost": 1600,
+    "stats": {
+      "armor": 25,
+      "ap": 40
+    },
+    "categories": ["ap", "armor"],
+    "buildsFrom": ["1052", "1029", "1052"],
+    "buildsInto": ["3157"],
+    "aliases": []
+  },
+  {
+    "id": "6694",
+    "name": "Rancune de Serylda",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 45
+    },
+    "categories": ["ad", "antitank", "armorpen", "haste"],
+    "buildsFrom": ["3133", "3035"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3033",
+    "name": "Rappel mortel",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 35
+    },
+    "categories": ["ad", "antiheal", "antitank", "armorpen", "crit"],
+    "buildsFrom": ["3123", "3035", "1018"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6664",
+    "name": "Rayonnement du vide",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "mr": 40,
+      "hp": 400
+    },
+    "categories": ["haste", "hp", "mr"],
+    "buildsFrom": ["6660", "3211"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6690",
+    "name": "Rectrix",
+    "image": "",
+    "cost": 775,
+    "stats": {
+      "ad": 15
+    },
+    "categories": ["ad", "mobility"],
+    "buildsFrom": ["1036"],
+    "buildsInto": ["4003", "6700", "6672", "3142"],
+    "aliases": []
+  },
+  {
+    "id": "3107",
+    "name": "Rédemption",
+    "image": "",
+    "cost": 2300,
+    "stats": {
+      "ap": 30
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["3108", "3114"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6617",
+    "name": "Régénérateur de pierre de lune",
+    "image": "",
+    "cost": 2200,
+    "stats": {
+      "hp": 200,
+      "ap": 25
+    },
+    "categories": ["ap", "haste", "hp"],
+    "buildsFrom": ["3067", "4642"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3870",
+    "name": "Rêve éveillé",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "hp": 200
+    },
+    "categories": ["hp", "vision"],
+    "buildsFrom": ["3867"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "2504",
+    "name": "Rookern kaénique",
+    "image": "",
+    "cost": 2900,
+    "stats": {
+      "mr": 80,
+      "hp": 400
+    },
+    "categories": ["hp", "mr"],
+    "buildsFrom": ["3211", "1057"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3157",
+    "name": "Sablier de Zhonya",
+    "image": "",
+    "cost": 3250,
+    "stats": {
+      "armor": 50,
+      "ap": 105
+    },
+    "categories": ["ap", "armor"],
+    "buildsFrom": ["1058", "2420"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3036",
+    "name": "Salutations de Dominik",
+    "image": "",
+    "cost": 3300,
+    "stats": {
+      "ad": 35
+    },
+    "categories": ["ad", "antitank", "armorpen", "crit"],
+    "buildsFrom": ["3035", "6670"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3111",
+    "name": "Sandales de Mercure",
+    "image": "",
+    "cost": 1250,
+    "stats": {
+      "mr": 20
+    },
+    "categories": ["boots", "mr", "tenacity"],
+    "buildsFrom": ["1001", "1033"],
+    "buildsInto": ["3173"],
+    "aliases": []
+  },
+  {
+    "id": "2019",
+    "name": "Sceau d'acier",
+    "image": "",
+    "cost": 1100,
+    "stats": {
+      "armor": 30,
+      "ad": 15
+    },
+    "categories": ["ad", "armor"],
+    "buildsFrom": ["1029", "1036", "1029"],
+    "buildsInto": ["6333", "6700", "3026"],
+    "aliases": []
+  },
+  {
+    "id": "1082",
+    "name": "Sceau noir",
+    "image": "",
+    "cost": 350,
+    "stats": {
+      "hp": 50,
+      "ap": 15
+    },
+    "categories": ["ap", "hp"],
+    "buildsFrom": [],
+    "buildsInto": ["3041"],
+    "aliases": []
+  },
+  {
+    "id": "3116",
+    "name": "Sceptre de Rylai",
+    "image": "",
+    "cost": 2600,
+    "stats": {
+      "hp": 400,
+      "ap": 65
+    },
+    "categories": ["ap", "hp"],
+    "buildsFrom": ["1026", "1011", "1052"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "1053",
+    "name": "Sceptre vampirique",
+    "image": "",
+    "cost": 900,
+    "stats": {
+      "ad": 15
+    },
+    "categories": ["ad", "lifesteal"],
+    "buildsFrom": ["1036"],
+    "buildsInto": ["3153", "3146", "3072", "3074", "3139", "4403"],
+    "aliases": []
+  },
+  {
+    "id": "3072",
+    "name": "Soif-de-sang",
+    "image": "",
+    "cost": 3400,
+    "stats": {
+      "ad": 80
+    },
+    "categories": ["ad", "lifesteal"],
+    "buildsFrom": ["1038", "1037", "1053"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3302",
+    "name": "Terminus",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 30
+    },
+    "categories": ["ad", "armorpen", "attackspeed", "magicpen"],
+    "buildsFrom": ["3051", "1043"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3077",
+    "name": "Tiamat",
+    "image": "",
+    "cost": 1200,
+    "stats": {
+      "ad": 25
+    },
+    "categories": ["ad"],
+    "buildsFrom": ["1036", "1036"],
+    "buildsInto": ["3074", "3748", "6698", "6631"],
+    "aliases": []
+  },
+  {
+    "id": "1052",
+    "name": "Tome d'amplification",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "ap": 20
+    },
+    "categories": ["ap"],
+    "buildsFrom": [],
+    "buildsInto": [
+      "3113",
+      "2421",
+      "2420",
+      "3145",
+      "124011",
+      "4637",
+      "3916",
+      "6656",
+      "3147",
+      "3146",
+      "3802",
+      "4005",
+      "2508",
+      "326616",
+      "3108",
+      "3116",
+      "3124",
+      "4630",
+      "323504",
+      "4628",
+      "4632",
+      "4635",
+      "4642",
+      "4644"
+    ],
+    "aliases": []
+  },
+  {
+    "id": "2503",
+    "name": "Torche noire",
+    "image": "",
+    "cost": 2800,
+    "stats": {
+      "ap": 80
+    },
+    "categories": ["ap", "haste"],
+    "buildsFrom": ["3802", "2508"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6653",
+    "name": "Tourment de Liandry",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "hp": 300,
+      "ap": 60
+    },
+    "categories": ["antitank", "ap", "hp"],
+    "buildsFrom": ["3147", "2508"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3876",
+    "name": "Traîneau du solstice",
+    "image": "",
+    "cost": 400,
+    "stats": {
+      "hp": 200
+    },
+    "categories": ["hp", "vision"],
+    "buildsFrom": ["3867"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6675",
+    "name": "Tremblelame navori",
+    "image": "",
+    "cost": 2650,
+    "stats": {},
+    "categories": ["attackspeed", "crit", "mobility"],
+    "buildsFrom": ["1042", "3086", "1042"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "6672",
+    "name": "Tueur de krakens",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "ad": 45
+    },
+    "categories": ["ad", "attackspeed", "mobility"],
+    "buildsFrom": ["6690", "3051", "1043"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3065",
+    "name": "Visage spirituel",
+    "image": "",
+    "cost": 2700,
+    "stats": {
+      "mr": 50,
+      "hp": 400
+    },
+    "categories": ["haste", "hp", "mr"],
+    "buildsFrom": ["3211", "3067"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3109",
+    "name": "Vœu du chevalier",
+    "image": "",
+    "cost": 2300,
+    "stats": {
+      "armor": 40,
+      "hp": 200
+    },
+    "categories": ["armor", "haste", "hp"],
+    "buildsFrom": ["3067", "1031", "1006"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3168",
+    "name": "Voie immortelle",
+    "image": "",
+    "cost": 1100,
+    "stats": {},
+    "categories": ["boots", "lifesteal", "omnivamp"],
+    "buildsFrom": ["3008"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3102",
+    "name": "Voile de la banshee",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "mr": 40,
+      "ap": 105
+    },
+    "categories": ["ap", "mr"],
+    "buildsFrom": ["1058", "4632"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3041",
+    "name": "Voleur d'âmes de Mejai",
+    "image": "",
+    "cost": 1500,
+    "stats": {
+      "hp": 100,
+      "ap": 20
+    },
+    "categories": ["ap", "hp", "mobility"],
+    "buildsFrom": ["1082"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "4629",
+    "name": "Volonté cosmique",
+    "image": "",
+    "cost": 3000,
+    "stats": {
+      "hp": 350,
+      "ap": 70
+    },
+    "categories": ["ap", "haste", "hp", "mobility"],
+    "buildsFrom": ["3067", "3113", "3108"],
+    "buildsInto": [],
+    "aliases": []
+  },
+  {
+    "id": "3086",
+    "name": "Zèle",
+    "image": "",
+    "cost": 1200,
+    "stats": {},
+    "categories": ["attackspeed", "crit", "mobility"],
+    "buildsFrom": ["1018", "1042"],
+    "buildsInto": ["2512", "3094", "3046", "3085", "4403", "6671", "6675"],
+    "aliases": []
+  }
+]
