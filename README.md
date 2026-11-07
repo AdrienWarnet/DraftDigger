@@ -12,7 +12,7 @@ Plus tard : recommandation de pick, données automatiques, backend.
 ### Installer l'app sur le téléphone
 
 1. Sur le téléphone (Chrome Android), ouvrir **https://adrienwarnet.github.io/DraftDigger/**.
-2. Menu ⋮ → **Installer l'application** (ou « Ajouter à l'écran d'accueil »).
+2. Touche **Installer l'app** en bas de l'écran ou dans **À propos** (le lien n'apparaît que quand Chrome permet l'installation). Sinon : menu ⋮ → **Installer l'application** (ou « Ajouter à l'écran d'accueil »).
 3. L'icône DraftDigger apparaît avec les autres applis. L'app marche ensuite hors ligne et se met à jour toute seule à l'ouverture suivante d'une nouvelle version.
 
 ### Avant la partie
