@@ -77,3 +77,36 @@ export function buildChoiceFallbackReason(candidateCount: number, isFavorite: bo
   if (isFavorite) return 'Aucune condition ne départage tes builds : voici ton favori.'
   return "Aucune condition de tes builds ne s'applique à cette partie : voici le premier."
 }
+
+/**
+ * Explication du niveau de confiance (T5.4), ex : « 5/5 ennemis connus, et ce build devance
+ * le suivant de 3 points. » `gap` à `null` : une seule option.
+ */
+export function confidenceExplanation(
+  level: 'low' | 'medium' | 'high',
+  knownEnemies: number,
+  gap: number | null,
+  /** `true` si le choix est le favori du joueur (départage une égalité). */
+  favorite = false,
+): string {
+  const enemies =
+    knownEnemies === 0
+      ? 'Aucun ennemi connu'
+      : `${knownEnemies}/5 ennemi${knownEnemies > 1 ? 's' : ''} connu${knownEnemies > 1 ? 's' : ''}`
+  const points = (n: number) => `${n} point${n > 1 ? 's' : ''}`
+  const lead =
+    gap === null
+      ? 'un seul choix possible'
+      : gap === 0
+        ? favorite
+          ? 'égalité avec le choix suivant, départagée par ton favori'
+          : 'égalité avec le choix suivant'
+        : `ce choix devance le suivant de ${points(gap)}`
+  const advice =
+    level === 'high'
+      ? ''
+      : level === 'medium'
+        ? ' Plus d’ennemis saisis ou un écart plus net rendraient la recommandation plus sûre.'
+        : ' Recommandation peu sûre : complète la draft ou compare avec les autres choix.'
+  return `${enemies}, ${lead}.${advice}`
+}

@@ -1,9 +1,10 @@
-import { buildChoiceFallbackReason } from '../../engine/explain'
+import { buildChoiceFallbackReason, confidenceExplanation } from '../../engine/explain'
 import type { Metrics } from '../../engine/metrics'
 import type { Position } from '../../engine/types'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
+import { ConfidenceBadge } from '../components/ConfidenceBadge'
 import { EmptyState } from '../components/EmptyState'
 import { ExplanationBanner } from '../components/ExplanationBanner'
 import { GameIcon } from '../components/GameIcon'
@@ -16,6 +17,7 @@ import styles from './RecommendationScreen.module.css'
 export function RecommendationScreen() {
   const catalog = useCatalog()
   const playerPosition = useDraftStore((s) => s.draft.playerPosition)
+  const forceBuild = useDraftStore((s) => s.forceBuild)
   const result = usePreGameRecommendation()
 
   if (result.status === 'loading') {
@@ -67,12 +69,29 @@ export function RecommendationScreen() {
       )}
       {tied.length > 1 && (
         <p className={styles.notice}>
-          {tied.length} builds à égalité : {tied.map((b) => b.name).join(', ')}. Choisis ton favori
-          dans « Mes builds » pour trancher.
+          {tied.length} builds à égalité : {tied.map((b) => b.name).join(', ')}. Choisis-en un
+          ci-dessous, ou marque ton favori dans « Mes builds ».
         </p>
       )}
 
-      <Card title="Build recommandé">
+      <Card title={result.forced ? 'Build choisi par toi' : 'Build recommandé'}>
+        {result.forced ? (
+          <Button variant="ghost" className={styles.reset} onClick={() => forceBuild(null)}>
+            Revenir à la recommandation
+          </Button>
+        ) : (
+          <ConfidenceBadge
+            level={recommendation.confidence}
+            explanation={confidenceExplanation(
+              recommendation.confidence,
+              result.metrics.knownEnemies,
+              recommendation.alternatives[0]
+                ? recommendation.score - recommendation.alternatives[0].score
+                : null,
+              Boolean(build.favorite),
+            )}
+          />
+        )}
         <div className={styles.buildTitle}>
           <GameIcon
             entry={champion ? { name: champion.name, icon: champion.image } : null}
@@ -141,6 +160,33 @@ export function RecommendationScreen() {
         <Button variant="ghost" onClick={() => navigate('builds', 'voir', build.id)}>
           Voir le build complet
         </Button>
+        {recommendation.alternatives.length > 0 && (
+          <details className={styles.others}>
+            <summary>
+              {recommendation.alternatives.length === 1
+                ? 'Autre build possible'
+                : `${recommendation.alternatives.length} autres builds possibles`}
+            </summary>
+            <ul className={styles.otherList}>
+              {recommendation.alternatives.map((alt) => (
+                <li key={alt.choice.id} className={styles.other}>
+                  <div className={styles.otherHeader}>
+                    <span className={styles.otherName}>{alt.choice.name}</span>
+                    <span className={styles.points}>
+                      {alt.score} pt{alt.score > 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  <p className={styles.otherReasons}>
+                    {alt.reasons.length > 0 ? alt.reasons.join(' ') : 'Aucune condition vraie.'}
+                  </p>
+                  <Button variant="secondary" onClick={() => forceBuild(alt.choice.id)}>
+                    Jouer ce build
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
       </Card>
 
       {result.firstItem && (
