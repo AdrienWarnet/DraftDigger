@@ -12,6 +12,7 @@ import { Button } from '../components/Button'
 import { ChampionPicker } from '../components/ChampionPicker'
 import { ConfirmPanel } from '../components/ConfirmPanel'
 import { DraftCell } from '../components/DraftCell'
+import { EnemySheet } from '../components/EnemySheet'
 import { Sheet } from '../components/Sheet'
 import { Tabs } from '../components/Tabs'
 import { useCatalog } from '../data/gameDataContext'
@@ -30,11 +31,6 @@ export function DraftScreen() {
   const draft = useDraftStore((s) => s.draft)
   const setPlayerPosition = useDraftStore((s) => s.setPlayerPosition)
   const setAlly = useDraftStore((s) => s.setAlly)
-  const addEnemy = useDraftStore((s) => s.addEnemy)
-  const replaceEnemy = useDraftStore((s) => s.replaceEnemy)
-  const removeEnemy = useDraftStore((s) => s.removeEnemy)
-  const moveEnemy = useDraftStore((s) => s.moveEnemy)
-  const unlockEnemy = useDraftStore((s) => s.unlockEnemy)
   const startNewGame = useDraftStore((s) => s.newGame)
   const hasItems = useDraftStore((s) => s.ownedItemIds.length > 0)
   const [confirmingReset, setConfirmingReset] = useState(false)
@@ -50,32 +46,17 @@ export function DraftScreen() {
   const openPicker = (t: PickerTarget) => navigate('draft', PICKER_PARAM, encodePickerTarget(t))
   const closePicker = () => goBack('draft')
 
-  /** Champion actuellement dans la case ciblée (pour « changer » ou « retirer »). */
-  const currentId = (() => {
-    if (!target) return null
-    if (target.team === 'ally') return draft.allies[target.position]
-    return target.position === 'new' ? null : (enemyAt(target.position)?.championId ?? null)
-  })()
+  /** Allié actuellement dans la case ciblée (pour « changer » ou « retirer »). */
+  const currentId = target?.team === 'ally' ? draft.allies[target.position] : null
 
+  // Sélecteur d'un allié (les ennemis passent par EnemySheet, partagé avec l'écran Partie).
   function handleSelect(selected: Champion) {
-    if (!target) return
-    if (target.team === 'ally') setAlly(target.position, selected.id)
-    else if (target.position === 'new') addEnemy(selected.id)
-    else {
-      const index = layout[target.position]
-      if (index === null) addEnemy(selected.id, target.position)
-      else replaceEnemy(index, selected.id)
-    }
+    if (target?.team === 'ally') setAlly(target.position, selected.id)
     closePicker()
   }
 
   function handleRemove() {
-    if (!target) return
-    if (target.team === 'ally') setAlly(target.position, null)
-    else if (target.position !== 'new') {
-      const index = layout[target.position]
-      if (index !== null) removeEnemy(index)
-    }
+    if (target?.team === 'ally') setAlly(target.position, null)
     closePicker()
   }
 
@@ -83,20 +64,6 @@ export function DraftScreen() {
   const picked = pickedChampionIds(draft)
   const available = champions.filter((c) => !picked.has(c.id) || c.id === currentId)
   const currentName = champion(currentId)?.name
-
-  /** Ennemi ouvert dans le sélecteur : son poste peut être corrigé. */
-  const editedEnemy = (() => {
-    if (target?.team !== 'enemy' || target.position === 'new') return null
-    const index = layout[target.position]
-    const pick = index === null ? null : draft.enemies[index]
-    if (index === null || !pick) return null
-    return {
-      index,
-      position: target.position,
-      name: champion(pick.championId)?.name ?? pick.championId,
-      guessed: pick.lockedPosition === null,
-    }
-  })()
 
   return (
     <>
@@ -184,7 +151,7 @@ export function DraftScreen() {
           ))}
       </div>
 
-      {target && (
+      {target?.team === 'ally' && (
         <Sheet
           title={pickerTitle(target, draft)}
           onClose={closePicker}
@@ -196,43 +163,10 @@ export function DraftScreen() {
             )
           }
         >
-          {editedEnemy && (
-            <section className={styles.enemyPosition} aria-labelledby="poste-ennemi">
-              <h3 id="poste-ennemi" className={styles.sectionTitle}>
-                Poste de {editedEnemy.name}
-              </h3>
-              <Tabs<Position>
-                label={`Poste de ${editedEnemy.name}`}
-                value={editedEnemy.position}
-                onChange={(to) => {
-                  moveEnemy(editedEnemy.position, to, positionRates)
-                  closePicker()
-                }}
-                options={POSITIONS.map((p) => ({ value: p, label: POSITION_LABELS[p] }))}
-              />
-              <div className={styles.positionStatus}>
-                <p className="muted">
-                  {editedEnemy.guessed
-                    ? "Poste deviné par l'app. Choisis le bon poste si besoin."
-                    : 'Poste fixé par toi.'}
-                </p>
-                {!editedEnemy.guessed && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      unlockEnemy(editedEnemy.index)
-                      closePicker()
-                    }}
-                  >
-                    Laisser deviner
-                  </Button>
-                )}
-              </div>
-            </section>
-          )}
-          <ChampionPicker champions={available} onSelect={handleSelect} autoFocus={!editedEnemy} />
+          <ChampionPicker champions={available} onSelect={handleSelect} />
         </Sheet>
       )}
+      {target?.team === 'enemy' && <EnemySheet target={target.position} onClose={closePicker} />}
     </>
   )
 }
@@ -249,13 +183,8 @@ function validTarget(target: PickerTarget | null, draft: Draft): PickerTarget | 
   return target
 }
 
-function pickerTitle(target: PickerTarget, draft: Draft): string {
-  if (target.team === 'ally') {
-    return target.position === draft.playerPosition
-      ? 'Ton champion'
-      : `Allié ${POSITION_LABELS[target.position]}`
-  }
-  return target.position === 'new'
-    ? 'Ajouter un ennemi'
-    : `Ennemi ${POSITION_LABELS[target.position]}`
+function pickerTitle(target: { position: Position }, draft: Draft): string {
+  return target.position === draft.playerPosition
+    ? 'Ton champion'
+    : `Allié ${POSITION_LABELS[target.position]}`
 }
