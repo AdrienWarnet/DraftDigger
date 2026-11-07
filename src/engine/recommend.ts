@@ -90,6 +90,11 @@ export type NextItemContext = {
   itemsById: ReadonlyMap<string, Item>
   /** Statistiques de base du champion joué, pour ses résistances actuelles. */
   baseStats: BaseStats
+  /**
+   * Dégâts principaux du champion joué (`mainDamage`) : les items de situation offensifs de
+   * l'autre type sont écartés (pas de Bâton du vide pour un champion AD). Absent : aucun filtre.
+   */
+  playerDamage?: 'ad' | 'ap'
 }
 
 export type NextItemRecommendation = {
@@ -149,6 +154,7 @@ export function recommendNextItem(
     candidates = [...context.itemsById.values()]
       .filter((i) => !owned.has(i.id) && isCompletedItem(i))
       .filter((i) => wanted.some((c) => i.categories.includes(c)))
+      .filter((i) => suitsDamage(i, context.playerDamage))
       .map((i) => scoreItem(i, 0, []))
   }
 
@@ -167,6 +173,13 @@ export function recommendNextItem(
         : recommendation,
     componentsOwned: choice ? choice.buildsFrom.filter((id) => owned.has(id)) : [],
   }
+}
+
+/** `false` pour un item d'AP pur quand on joue AD, et inversement. */
+function suitsDamage(item: Item, damage: NextItemContext['playerDamage']): boolean {
+  if (!damage) return true
+  const other = damage === 'ad' ? 'ap' : 'ad'
+  return !item.categories.includes(other) || item.categories.includes(damage)
 }
 
 /** Catégories d'items de situation selon la compo (section 4, T6.3). */

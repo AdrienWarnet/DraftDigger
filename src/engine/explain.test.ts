@@ -2,7 +2,13 @@ import { describe, expect, it } from 'vitest'
 import example from '../../data/builds/example.json'
 import { defensiveGain } from './defense'
 import { scoreOptions } from './evaluate'
-import { buildChoiceFallbackReason, buildReasons, defensiveReason, toSentence } from './explain'
+import {
+  buildChoiceFallbackReason,
+  buildReasons,
+  defensiveReason,
+  nextItemFallbackReason,
+  toSentence,
+} from './explain'
 import type { Metrics } from './metrics'
 import type { Build, Item } from './types'
 
@@ -79,7 +85,7 @@ describe('cas types (snapshots)', () => {
     expect(reasons).toMatchInlineSnapshot(`
       [
         "Beaucoup de dégâts magiques : le Visage spirituel protège et renforce les soins.",
-        "Contre leurs dégâts surtout magiques (73 %), cet item réduit les dégâts magiques reçus de 26 %.",
+        "Contre leurs dégâts surtout magiques (73 %), cet item réduit les dégâts magiques reçus de 26 %.",
         "En retard, on privilégie un item abordable et défensif.",
       ]
     `)
@@ -119,5 +125,21 @@ describe('buildChoiceFallbackReason', () => {
       'Aucune condition ne départage tes builds : voici ton favori.',
     )
     expect(buildChoiceFallbackReason(3, false)).toContain('voici le premier')
+  })
+})
+
+describe('nextItemFallbackReason', () => {
+  it('item du build, sinon item de situation selon sa catégorie', () => {
+    expect(nextItemFallbackReason(3, [])).toBe("C'est l'item n° 3 de ton build.")
+    expect(nextItemFallbackReason(null, ['antiheal'])).toContain('anti-soin')
+    expect(nextItemFallbackReason(null, ['antitank'])).toContain('anti-tank')
+    expect(nextItemFallbackReason(null, ['armor', 'mr', 'hp'])).toContain('défensif')
+  })
+})
+
+describe('toSentence : espaces insécables', () => {
+  it('garde l’espace insécable avant « % » (pas de « % » seul en début de ligne)', () => {
+    expect(toSentence('réduit les dégâts de 12\u202f%')).toBe('Réduit les dégâts de 12\u202f%.')
+    expect(toSentence('  deux   espaces\n')).toBe('Deux espaces.')
   })
 })

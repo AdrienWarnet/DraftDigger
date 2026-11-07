@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { INVENTORY } from '../../engine/config'
 import type { Situation } from '../../engine/types'
+import { nextItemFallbackReason } from '../../engine/explain'
 import { buildSuggestions, componentTarget } from '../../engine/inventory'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
@@ -11,7 +12,7 @@ import { ItemPicker } from '../components/ItemPicker'
 import { Sheet } from '../components/Sheet'
 import { Tabs, type TabOption } from '../components/Tabs'
 import { useCatalog } from '../data/gameDataContext'
-import { usePreGameRecommendation } from '../data/useRecommendation'
+import { useGameRecommendation, usePreGameRecommendation } from '../data/useRecommendation'
 import { SITUATION_LABELS } from '../labels'
 import { goBack, navigate, useRouteParams } from '../navigation/useRoute'
 import styles from './GameScreen.module.css'
@@ -47,6 +48,7 @@ export function GameScreen() {
   const situation = useDraftStore((s) => s.situation)
   const setSituation = useDraftStore((s) => s.setSituation)
   const sheet = parseSheet(useRouteParams(), owned.length)
+  const next = useGameRecommendation(result, owned, situation)
 
   const build =
     result.status === 'ready' && result.build.kind === 'ok'
@@ -99,6 +101,60 @@ export function GameScreen() {
           ? `Build : ${build.name}`
           : `Aucun build pour ce champion : les achats sont notés sans suggestion.`}
       </p>
+
+      {next && (
+        <section className={styles.nextCard} aria-label="Prochain item">
+          {next.recommendation ? (
+            <>
+              <div className={styles.next}>
+                <GameIcon
+                  entry={{
+                    name: next.recommendation.choice.name,
+                    icon: next.recommendation.choice.image,
+                  }}
+                  size={48}
+                  label=""
+                />
+                <div className={styles.nextText}>
+                  <p className={styles.nextLabel}>
+                    Prochain item ·{' '}
+                    {next.slot !== null ? `n° ${next.slot} du build` : 'de situation'}
+                  </p>
+                  <p className={styles.nextName}>{next.recommendation.choice.name}</p>
+                </div>
+              </div>
+              <ul className={styles.reasons}>
+                {(next.recommendation.reasons.length > 0
+                  ? next.recommendation.reasons
+                  : [nextItemFallbackReason(next.slot, next.categories)]
+                ).map((reason) => (
+                  <li key={reason}>{reason}</li>
+                ))}
+              </ul>
+              {next.componentsOwned.length > 0 && (
+                <p className={styles.nextMeta}>
+                  Déjà : {next.componentsOwned.map(itemName).join(', ')}.
+                </p>
+              )}
+              {next.recommendation.alternatives[0] && (
+                <p className={`${styles.nextMeta} ${styles.alternative}`}>
+                  <GameIcon
+                    entry={{
+                      name: next.recommendation.alternatives[0].choice.name,
+                      icon: next.recommendation.alternatives[0].choice.image,
+                    }}
+                    size={28}
+                    label=""
+                  />
+                  Autre choix : {next.recommendation.alternatives[0].choice.name}
+                </p>
+              )}
+            </>
+          ) : (
+            <p className="muted">Aucun item à proposer pour l’instant.</p>
+          )}
+        </section>
+      )}
 
       <Card title={`Mes items (${owned.length}/${INVENTORY.maxItems})`}>
         <ul className={styles.inventory}>

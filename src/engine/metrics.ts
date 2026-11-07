@@ -53,6 +53,11 @@ export function computeMetrics(enemies: readonly Champion[], opponent: Champion 
   }
 }
 
+/** Type de dégâts dominant d'un champion (AD à égalité) : sert à choisir ses items offensifs. */
+export function mainDamage(champion: Champion): 'ad' | 'ap' {
+  return champion.damage.ap > champion.damage.ad ? 'ap' : 'ad'
+}
+
 /** « ad » si la part AD dépasse le seuil, « ap » de même, sinon « mixed ». */
 export function damageProfile(champion: Champion): 'ad' | 'ap' | 'mixed' {
   if (champion.damage.ad >= METRIC_THRESHOLDS.laneDamageShare) return 'ad'
