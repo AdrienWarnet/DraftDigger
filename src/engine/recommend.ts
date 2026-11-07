@@ -175,3 +175,38 @@ export function situationalCategories(metrics: Metrics): string[] {
   if (metrics.enemyTankCount >= SITUATIONAL_ITEMS.antitankMinTanks) return ['antitank']
   return ['armor', 'mr', 'hp']
 }
+
+/**
+ * Applique un build choisi à la main par le joueur (T5.4) : il devient le choix, les autres
+ * (dont la recommandation du moteur) passent en alternatives. Sans effet si ce build ne fait pas
+ * partie des candidats (ex : autre champion) ; `forced` indique si le choix manuel s'applique.
+ */
+export function applyForcedBuild(
+  result: BuildRecommendation,
+  forcedBuildId: string | null,
+): BuildRecommendation & { forced: boolean } {
+  if (result.kind !== 'ok' || !forcedBuildId) return { ...result, forced: false }
+  const { recommendation } = result
+  if (recommendation.choice.id === forcedBuildId) return { ...result, forced: true }
+  const forced = recommendation.alternatives.find((a) => a.choice.id === forcedBuildId)
+  if (!forced) return { ...result, forced: false }
+  return {
+    ...result,
+    forced: true,
+    tied: [],
+    recommendation: {
+      ...recommendation,
+      choice: forced.choice,
+      score: forced.score,
+      reasons: forced.reasons,
+      alternatives: [
+        {
+          choice: recommendation.choice,
+          score: recommendation.score,
+          reasons: recommendation.reasons,
+        },
+        ...recommendation.alternatives.filter((a) => a.choice.id !== forcedBuildId),
+      ],
+    },
+  }
+}

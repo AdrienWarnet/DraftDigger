@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { playerChampionId } from '../../engine/draft'
 import { metricsFromDraft, type Metrics } from '../../engine/metrics'
 import {
+  applyForcedBuild,
   recommendBuild,
   recommendFirstItem,
   type BuildRecommendation,
@@ -19,6 +20,8 @@ export type PreGameRecommendation =
       championId: string
       metrics: Metrics
       build: BuildRecommendation
+      /** `true` si le build affiché a été choisi à la main (T5.4). */
+      forced: boolean
       firstItem: Recommendation<string> | null
     }
 
@@ -32,6 +35,7 @@ export function usePreGameRecommendation(): PreGameRecommendation {
   const buildsStatus = useBuildsStore((s) => s.status)
   const builds = useBuildsStore((s) => s.list.builds)
   const loadBuilds = useBuildsStore((s) => s.load)
+  const forcedBuildId = useDraftStore((s) => s.forcedBuildId)
 
   useEffect(() => {
     void loadBuilds()
@@ -42,9 +46,12 @@ export function usePreGameRecommendation(): PreGameRecommendation {
     const championId = playerChampionId(draft)
     if (!championId) return { status: 'noChampion' }
     const metrics = metricsFromDraft(draft, catalog.championsById, catalog.positionRates)
-    const build = recommendBuild(builds, championId, draft.playerPosition, metrics)
+    const { forced, ...build } = applyForcedBuild(
+      recommendBuild(builds, championId, draft.playerPosition, metrics),
+      forcedBuildId,
+    )
     const firstItem =
       build.kind === 'ok' ? recommendFirstItem(build.recommendation.choice, metrics, 'even') : null
-    return { status: 'ready', championId, metrics, build, firstItem }
-  }, [buildsStatus, builds, draft, catalog])
+    return { status: 'ready', championId, metrics, build, forced, firstItem }
+  }, [buildsStatus, builds, draft, catalog, forcedBuildId])
 }
