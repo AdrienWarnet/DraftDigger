@@ -60,9 +60,12 @@ export function defensiveReason(
   return `Contre leurs dégâts ${metrics.enemyApShare >= 0.6 ? 'surtout ' : ''}magiques (${percent(metrics.enemyApShare)}), cet item réduit les dégâts magiques reçus de ${percent(gain.apGain)}.`
 }
 
-/** Majuscule au début, point à la fin, espaces superflus retirés. */
+/**
+ * Majuscule au début, point à la fin, espaces superflus retirés. Les espaces insécables
+ * (« 12 % ») sont gardés : sinon le « % » peut passer seul à la ligne.
+ */
 export function toSentence(text: string): string {
-  const trimmed = text.replace(/\s+/g, ' ').trim()
+  const trimmed = text.replace(/[ \t\r\n]+/g, ' ').trim()
   if (!trimmed) return ''
   const capitalized = trimmed.charAt(0).toLocaleUpperCase('fr') + trimmed.slice(1)
   return /[.!?…]$/.test(capitalized) ? capitalized : `${capitalized}.`
@@ -76,6 +79,19 @@ export function buildChoiceFallbackReason(candidateCount: number, isFavorite: bo
   if (candidateCount <= 1) return "C'est ton seul build pour ce champion à ce poste."
   if (isFavorite) return 'Aucune condition ne départage tes builds : voici ton favori.'
   return "Aucune condition de tes builds ne s'applique à cette partie : voici le premier."
+}
+
+/**
+ * Raison affichée quand le prochain item n'a aucune raison propre (T6.3) : c'est simplement
+ * l'item suivant du build, ou un item de situation choisi pour sa catégorie.
+ */
+export function nextItemFallbackReason(slot: number | null, categories: readonly string[]): string {
+  if (slot !== null) return `C'est l'item n° ${slot} de ton build.`
+  if (categories.includes('antiheal'))
+    return 'Build terminé : ils se soignent, voici un item anti-soin.'
+  if (categories.includes('antitank'))
+    return 'Build terminé : ils ont plusieurs tanks, voici un item anti-tank.'
+  return 'Build terminé : voici un item défensif adapté à leurs dégâts.'
 }
 
 /**

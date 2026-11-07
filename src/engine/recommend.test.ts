@@ -8,7 +8,7 @@ import {
   JUNGLE,
   TEST_BUILDS,
 } from './__fixtures__/compos'
-import { computeMetrics, type Metrics } from './metrics'
+import { computeMetrics, mainDamage, type Metrics } from './metrics'
 import {
   recommendBuild,
   recommendFirstItem,
@@ -188,5 +188,62 @@ describe('recommendNextItem : situation, progression, build terminé', () => {
       itemOrder: [{ slot: 1, default: '9999', alternatives: [] }],
     }
     expect(recommendNextItem(broken, [], empty, 'even', context).recommendation).toBeNull()
+  })
+})
+
+describe('recommendNextItem : début, milieu et fin de partie (Bruiser, T6.3)', () => {
+  const ctx = { ...context, playerDamage: mainDamage(champion('Yorick')) }
+  const STAGES = {
+    début: [],
+    milieu: ['1055', '6610', '3047'],
+    fin: ['6610', '3047', '3071', '3053', '6333', '6694'],
+  } as const
+  const next = (compo: readonly string[], owned: readonly string[]) => {
+    const r = recommendNextItem(BRUISER, owned, metricsOf(compo), 'even', ctx)
+    return {
+      slot: r.slot,
+      item: r.recommendation?.choice.name,
+      alternatives: r.recommendation?.alternatives.map((a) => a.choice.name) ?? [],
+    }
+  }
+
+  it('compo AD : Ciel éventré, Couperet noir, puis un item d’armure (3 ex aequo)', () => {
+    expect(next(COMPOS.fullAd, STAGES.début)).toMatchObject({ slot: 1, item: 'Ciel éventré' })
+    expect(next(COMPOS.fullAd, STAGES.milieu)).toMatchObject({ slot: 3, item: 'Couperet noir' })
+    expect(next(COMPOS.fullAd, STAGES.fin)).toEqual({
+      slot: null,
+      item: 'Cœur gelé',
+      alternatives: ['Cotte épineuse', 'Présage de Randuin'],
+    })
+  })
+
+  it('compo AP : l’alternative Visage spirituel au milieu, un item de RM à la fin', () => {
+    expect(next(COMPOS.fullAp, STAGES.début)).toMatchObject({ slot: 1, item: 'Ciel éventré' })
+    expect(next(COMPOS.fullAp, STAGES.milieu)).toEqual({
+      slot: 3,
+      item: 'Visage spirituel',
+      alternatives: ['Couperet noir'],
+    })
+    expect(next(COMPOS.fullAp, STAGES.fin)).toMatchObject({
+      slot: null,
+      item: 'Rookern kaénique',
+      alternatives: ['Force de la nature', "Jak'Sho, le Protéiforme"],
+    })
+  })
+
+  it('compo mixte (3 tanks) : items anti-tank AD pour Yorick, jamais d’item AP', () => {
+    expect(next(COMPOS.mixte, STAGES.début)).toMatchObject({ slot: 1, item: 'Ciel éventré' })
+    expect(next(COMPOS.mixte, STAGES.milieu)).toMatchObject({ slot: 3, item: 'Couperet noir' })
+    const end = next(COMPOS.mixte, STAGES.fin)
+    expect(end).toEqual({
+      slot: null,
+      item: 'Lame du roi déchu',
+      alternatives: ['Rappel mortel', 'Salutations de Dominik'],
+    })
+  })
+
+  it('sans type de dégâts du joueur : aucun filtre (le Bâton du vide reste possible)', () => {
+    const r = recommendNextItem(BRUISER, STAGES.fin, metricsOf(COMPOS.mixte), 'even', context)
+    expect(r.recommendation?.choice.name).toBe('Bâton du vide')
   })
 })
