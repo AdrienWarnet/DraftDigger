@@ -123,3 +123,11 @@ export const INPUT_SHORTCUTS = {
   /** Nombre de champions récents proposés en tête du sélecteur. */
   recentChampions: 12,
 } as const
+
+/** Choix du modèle de build générique (epic 10) : points par critère commun avec le champion. */
+export const TEMPLATE_MATCH = {
+  /** Par tag Data Dragon commun (Fighter, Mage…). */
+  tag: 2,
+  /** Même type de dégâts principal (AD / AP) ; retirés si le modèle vise l'autre type. */
+  damage: 3,
+} as const
