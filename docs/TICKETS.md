@@ -684,18 +684,8 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 - [ ] Checklist de test (draft, reco, achat, changement de situation) dans `docs/TEST.md`.
 - [ ] Zone de notes dans l'app (un simple champ texte local, bouton « exporter ») pour noter ce qui cloche pendant et après la partie.
 
-**Terminé quand** : le joueur a testé sur au moins 3 parties et exporté ses notes.
+**Terminé quand** : la checklist existe et les notes se saisissent, gardent le contexte de la partie et s'exportent. Les parties de test elles-mêmes sont faites plus tard, sans bloquer l'epic 7 (T9.1).
 **Dépend de** : Epics 0 à 6.
-
-### T7.2 – Ajustement des règles et poids (M)
-
-**Quoi** : corriger le moteur d'après les retours.
-**À faire**
-- [ ] Reprendre les notes de T7.1, ajuster les presets de conditions, les overrides et les modificateurs de situation (les `weight` et `useWhen` des builds se règlent par le joueur dans l'éditeur).
-- [ ] Ajouter un test de régression pour chaque bug corrigé.
-
-**Terminé quand** : chaque retour est soit corrigé et testé, soit rejeté avec une raison.
-**Dépend de** : T7.1.
 
 ### T7.3 – Optimisation de la vitesse de saisie (M)
 
@@ -705,7 +695,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 - [ ] Raccourcis possibles : derniers champions utilisés en tête, champions de la dernière partie, validation au clavier.
 
 **Terminé quand** : le chiffre cible est atteint, documenté dans le README.
-**Dépend de** : T7.1.
+**Dépend de** : Epics 0 à 6 (les notes de T9.1 pourront ajouter d'autres raccourcis).
 
 ### T7.4 – Documentation d'usage (S)
 
@@ -745,6 +735,26 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 ---
 
+# EPIC 9 – Ajustements après parties réelles (plus tard, non bloquant)
+
+### T9.1 – Parties de test (S)
+
+**Quoi** : utiliser l'app en vraie partie avec la checklist `docs/TEST.md` et les notes de T7.1.
+**Terminé quand** : le joueur a testé sur au moins 3 parties et exporté ses notes.
+**Dépend de** : T7.1.
+
+### T9.2 – Ajustement des règles et poids (M)
+
+**Quoi** : corriger le moteur d'après les retours.
+**À faire**
+- [ ] Reprendre les notes de T9.1, ajuster les presets de conditions, les overrides et les modificateurs de situation (les `weight` et `useWhen` des builds se règlent par le joueur dans l'éditeur).
+- [ ] Ajouter un test de régression pour chaque bug corrigé.
+
+**Terminé quand** : chaque retour est soit corrigé et testé, soit rejeté avec une raison.
+**Dépend de** : T9.1.
+
+---
+
 ## Ordre de réalisation conseillé
 
 1. **Socle** : T0.1 → T0.4, puis T1.1 → T1.4.
@@ -752,12 +762,14 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 3. **Builds et éditeur** : T3.1 → T3.10 (epic 3 terminée et fermée avant le moteur : Git plus simple, et le joueur crée ses vrais builds tôt).
 4. **Moteur** : T4.1 → T4.6.
 5. **Usage** : T5.1 → T5.4, puis T6.1 → T6.5.
-6. **Finition** : T7.1 → T7.5.
-7. **Plus tard** : epic 8 (quêtes de rôle).
+6. **Finition** : T7.1, T7.3, T7.4, T7.5.
+7. **Après les parties de test** : epic 9 (T9.1 puis T9.2), quand le joueur a le temps.
+8. **Plus tard** : epic 8 (quêtes de rôle).
 
 ## Plus tard (hors MVP)
 
 - **Quêtes de rôle** : voir epic 8.
+- **Ajustements après parties réelles** : voir epic 9.
 - **Éditeur avancé de conditions** : saisie libre métrique / opérateur / valeur / poids, en complément des presets.
 - **Backend** : nouvelle implémentation de `BuildRepository` (synchro entre appareils, sauvegarde), calculs plus lourds côté serveur.
 - Lecture de la partie en direct, données automatiques, recommandation de pick, comptes.
