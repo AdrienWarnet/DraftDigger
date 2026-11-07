@@ -1,0 +1,122 @@
+.basis {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.notice {
+  padding: var(--space-3) var(--space-4);
+  border-left: 4px solid var(--color-behind);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+}
+
+.buildTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.buildName {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.firstItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.firstItemName {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+/* Runes et sorts en une ligne : rune clé (arbre secondaire en médaillon) puis les 2 sorts. */
+.loadout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.keystone {
+  position: relative;
+  display: inline-grid;
+}
+
+.secondaryTree {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  display: grid;
+  padding: 1px;
+  border-radius: 50%;
+  background: var(--color-surface);
+}
+
+.loadoutText {
+  flex-basis: 100%;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.reset {
+  align-self: flex-start;
+  padding: 0;
+}
+
+/* Autres builds, repliés par défaut. */
+.others summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--touch-min);
+  color: var(--color-accent-strong);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.otherList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.other {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+}
+
+.otherHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.otherName {
+  font-weight: 600;
+}
+
+.points {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.otherReasons {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}

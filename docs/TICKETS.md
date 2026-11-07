@@ -563,6 +563,8 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 # EPIC 5 – Recommandation avant la partie
 
+*(T5.1, T5.2 et T5.3 sont réalisés ensemble dans le ticket T5.3 : la logique de T5.1 et T5.2 est déjà écrite et testée en T4.6, il ne reste que le branchement.)*
+
 ### T5.1 – Choix du build (M)
 
 **Quoi** : appeler le moteur pour choisir parmi les builds du champion et du poste joués.
