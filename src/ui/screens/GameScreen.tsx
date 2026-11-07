@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { INVENTORY } from '../../engine/config'
 import { enemyLayout } from '../../engine/draft'
 import { POSITIONS, type Position, type Situation } from '../../engine/types'
@@ -6,7 +6,6 @@ import { nextItemFallbackReason } from '../../engine/explain'
 import { buildSuggestions, componentTarget } from '../../engine/inventory'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
-import { Card } from '../components/Card'
 import { EmptyState } from '../components/EmptyState'
 import { EnemySheet } from '../components/EnemySheet'
 import { GameIcon } from '../components/GameIcon'
@@ -14,9 +13,14 @@ import { ItemPicker } from '../components/ItemPicker'
 import { Sheet } from '../components/Sheet'
 import { Tabs, type TabOption } from '../components/Tabs'
 import { useCatalog } from '../data/gameDataContext'
-import { useGameRecommendation, usePreGameRecommendation } from '../data/useRecommendation'
+import {
+  useGameRecommendation,
+  usePreGameRecommendation,
+  type GameRecommendation,
+} from '../data/useRecommendation'
 import { POSITION_LABELS, SITUATION_LABELS } from '../labels'
 import { goBack, navigate, useRouteParams } from '../navigation/useRoute'
+import { useWakeLock } from '../useWakeLock'
 import styles from './GameScreen.module.css'
 
 const SITUATION_OPTIONS: TabOption<Situation>[] = [
@@ -55,6 +59,8 @@ export function GameScreen() {
   const sheet = parseSheet(useRouteParams(), owned.length)
   const next = useGameRecommendation(result, owned, situation)
   const draft = useDraftStore((s) => s.draft)
+  // Pendant la partie, l'écran reste allumé (le téléphone est posé à côté du clavier).
+  const wakeLock = useWakeLock(result.status === 'ready')
 
   const build =
     result.status === 'ready' && result.build.kind === 'ok'
@@ -102,67 +108,21 @@ export function GameScreen() {
         />
       </div>
 
-      <p className="muted">
-        {build
-          ? `Build : ${build.name}`
-          : `Aucun build pour ce champion : les achats sont notés sans suggestion.`}
-      </p>
-
-      {next && (
-        <section className={styles.nextCard} aria-label="Prochain item">
-          {next.recommendation ? (
-            <>
-              <div className={styles.next}>
-                <GameIcon
-                  entry={{
-                    name: next.recommendation.choice.name,
-                    icon: next.recommendation.choice.image,
-                  }}
-                  size={48}
-                  label=""
-                />
-                <div className={styles.nextText}>
-                  <p className={styles.nextLabel}>
-                    Prochain item ·{' '}
-                    {next.slot !== null ? `n° ${next.slot} du build` : 'de situation'}
-                  </p>
-                  <p className={styles.nextName}>{next.recommendation.choice.name}</p>
-                </div>
-              </div>
-              <ul className={styles.reasons}>
-                {(next.recommendation.reasons.length > 0
-                  ? next.recommendation.reasons
-                  : [nextItemFallbackReason(next.slot, next.categories)]
-                ).map((reason) => (
-                  <li key={reason}>{reason}</li>
-                ))}
-              </ul>
-              {next.componentsOwned.length > 0 && (
-                <p className={styles.nextMeta}>
-                  Déjà : {next.componentsOwned.map(itemName).join(', ')}.
-                </p>
-              )}
-              {next.recommendation.alternatives[0] && (
-                <p className={`${styles.nextMeta} ${styles.alternative}`}>
-                  <GameIcon
-                    entry={{
-                      name: next.recommendation.alternatives[0].choice.name,
-                      icon: next.recommendation.alternatives[0].choice.image,
-                    }}
-                    size={28}
-                    label=""
-                  />
-                  Autre choix : {next.recommendation.alternatives[0].choice.name}
-                </p>
-              )}
-            </>
-          ) : (
-            <p className="muted">Aucun item à proposer pour l’instant.</p>
-          )}
-        </section>
+      {!build && (
+        <p className="muted">
+          Aucun build pour ce champion : les achats sont notés sans suggestion.
+        </p>
       )}
 
-      <Card title={`Mes items (${owned.length}/${INVENTORY.maxItems})`}>
+      {next && <NextItemCard next={next} itemName={itemName} />}
+
+      <section className={styles.items} aria-labelledby="partie-items">
+        <div className={styles.itemsHeader}>
+          <h2 id="partie-items" className={styles.itemsTitle}>
+            Mes items {owned.length}/{INVENTORY.maxItems}
+          </h2>
+          {build && <span className={styles.buildName}>{build.name}</span>}
+        </div>
         <ul className={styles.inventory}>
           {owned.map((id, index) => {
             const item = catalog.itemsById.get(id)
@@ -174,15 +134,19 @@ export function GameScreen() {
                   className={styles.slot}
                   onClick={() => navigate('partie', ITEM_PARAM, String(index))}
                   aria-label={`${itemName(id)}${target ? `, vers ${itemName(target)}` : ''} : modifier`}
+                  title={target ? `${itemName(id)} → ${itemName(target)}` : itemName(id)}
                 >
                   <GameIcon
                     entry={item ? { name: item.name, icon: item.image } : null}
                     fallbackId={id}
-                    size={48}
+                    size={44}
                     label=""
                   />
-                  <span className={styles.name}>{itemName(id)}</span>
-                  {target && <span className={styles.progress}>→ {itemName(target)}</span>}
+                  {target && (
+                    <span className={styles.progress} aria-hidden="true">
+                      →
+                    </span>
+                  )}
                 </button>
               </li>
             )
@@ -203,18 +167,20 @@ export function GameScreen() {
             </li>
           ))}
         </ul>
-        <p className={styles.hint}>
-          {owned.length === 0
-            ? 'Touche « + » à chaque achat. Les composants sont remplacés automatiquement quand tu achètes l’item complet.'
-            : 'Touche un item pour le changer ou le retirer (vendu).'}
-        </p>
-      </Card>
+        {owned.length === 0 && (
+          <p className={styles.hint}>Touche « + » à chaque achat, un item pour le changer.</p>
+        )}
+      </section>
 
       <EnemyStrip
         layout={enemyLayout(draft, catalog.positionRates)}
         enemies={draft.enemies.map((e) => e.championId)}
         playerPosition={draft.playerPosition}
       />
+
+      {wakeLock === 'active' && (
+        <p className={styles.hint}>Écran gardé allumé pendant la partie.</p>
+      )}
 
       {sheet?.kind === 'enemy' && <EnemySheet target={sheet.position} onClose={closeSheet} />}
       {sheet?.kind === 'add' && (
@@ -329,5 +295,86 @@ function EnemyStrip({
         })}
       </ul>
     </details>
+  )
+}
+
+/**
+ * Prochain item, lisible à bout de bras (T6.5) : nom en grand, une raison sur une ligne.
+ * Un tap sur la raison affiche toutes les raisons.
+ */
+function NextItemCard({
+  next,
+  itemName,
+}: {
+  next: GameRecommendation
+  itemName: (id: string) => string
+}) {
+  const [expanded, setExpanded] = useState(false)
+  const recommendation = next.recommendation
+  if (!recommendation) {
+    return (
+      <section className={styles.nextCard} aria-label="Prochain item">
+        <p className="muted">Aucun item à proposer pour l’instant.</p>
+      </section>
+    )
+  }
+  const reasons =
+    recommendation.reasons.length > 0
+      ? recommendation.reasons
+      : [nextItemFallbackReason(next.slot, next.categories)]
+  const alternative = recommendation.alternatives[0]
+  return (
+    <section className={styles.nextCard} aria-label="Prochain item">
+      <div className={styles.next}>
+        <GameIcon
+          entry={{ name: recommendation.choice.name, icon: recommendation.choice.image }}
+          size={64}
+          label=""
+        />
+        <div className={styles.nextText}>
+          <p className={styles.nextLabel}>
+            Prochain item · {next.slot !== null ? `n° ${next.slot} du build` : 'de situation'}
+          </p>
+          <p className={styles.nextName}>{recommendation.choice.name}</p>
+        </div>
+      </div>
+      <button
+        type="button"
+        className={styles.reasons}
+        data-expanded={expanded || undefined}
+        aria-expanded={expanded}
+        onClick={() => setExpanded((e) => !e)}
+      >
+        {(expanded ? reasons : reasons.slice(0, 1)).map((reason) => (
+          <span key={reason} className={styles.reason}>
+            {reason}
+          </span>
+        ))}
+        {!expanded && reasons.length > 1 && (
+          <span className={styles.more}>
+            +{reasons.length - 1} raison{reasons.length > 2 ? 's' : ''}
+          </span>
+        )}
+      </button>
+      {(alternative || next.componentsOwned.length > 0) && (
+        <p className={styles.nextMeta}>
+          {alternative && (
+            <>
+              <GameIcon
+                entry={{ name: alternative.choice.name, icon: alternative.choice.image }}
+                size={28}
+                label=""
+              />
+              <span>ou {alternative.choice.name}</span>
+            </>
+          )}
+          {next.componentsOwned.length > 0 && (
+            <span className={styles.owned}>
+              Déjà : {next.componentsOwned.map(itemName).join(', ')}
+            </span>
+          )}
+        </p>
+      )}
+    </section>
   )
 }
