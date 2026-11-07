@@ -13,6 +13,8 @@ import {
   replaceEnemy,
   setAlly,
   setPlayerPosition,
+  nextEmptyAllyPosition,
+  rememberChampion,
 } from './draft'
 
 describe('draft', () => {
@@ -179,5 +181,26 @@ describe('parseDraft', () => {
       { championId: 'C', lockedPosition: null },
       { championId: 'D', lockedPosition: null },
     ])
+  })
+})
+
+describe('nextEmptyAllyPosition', () => {
+  it('poste vide suivant, en revenant au début, sinon null', () => {
+    let draft = setAlly(emptyDraft('mid'), 'mid', 'Ahri')
+    expect(nextEmptyAllyPosition(draft, 'mid')).toBe('bot')
+    expect(nextEmptyAllyPosition(draft, 'support')).toBe('top')
+    draft = setAlly(
+      setAlly(setAlly(setAlly(draft, 'top', 'Darius'), 'jungle', 'Elise'), 'bot', 'Jinx'),
+      'support',
+      'Lux',
+    )
+    expect(nextEmptyAllyPosition(draft, 'top')).toBeNull()
+  })
+})
+
+describe('rememberChampion', () => {
+  it('le dernier en tête, sans doublon, limité', () => {
+    expect(rememberChampion(['Ahri', 'Lux'], 'Lux', 3)).toEqual(['Lux', 'Ahri'])
+    expect(rememberChampion(['A', 'B', 'C'], 'D', 3)).toEqual(['D', 'A', 'B'])
   })
 })

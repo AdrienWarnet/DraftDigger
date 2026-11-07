@@ -182,3 +182,21 @@ function isPosition(value: unknown): value is Position {
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
+
+/**
+ * Prochain poste allié vide après `after` (dans l'ordre top → support, en revenant au début),
+ * pour enchaîner la saisie des alliés (T7.3). `null` si l'équipe est complète.
+ */
+export function nextEmptyAllyPosition(draft: Draft, after: Position): Position | null {
+  const start = POSITIONS.indexOf(after)
+  for (let step = 1; step <= POSITIONS.length; step++) {
+    const position = POSITIONS[(start + step) % POSITIONS.length]!
+    if (draft.allies[position] === null) return position
+  }
+  return null
+}
+
+/** Champions récents (T7.3) : le dernier choisi en tête, sans doublon, `max` au plus. */
+export function rememberChampion(recent: readonly string[], championId: string, max: number) {
+  return [championId, ...recent.filter((id) => id !== championId)].slice(0, max)
+}
