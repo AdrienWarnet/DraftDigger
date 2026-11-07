@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { addEnemy, emptyDraft, setPlayerPosition } from './draft'
-import { computeMetrics, damageProfile, metricsFromDraft } from './metrics'
+import { computeMetrics, damageProfile, mainDamage, metricsFromDraft } from './metrics'
 import type { Champion, Threats } from './types'
 
 /** Champion de test : dégâts et menaces explicites (les valeurs réelles viennent du catalogue). */
@@ -87,6 +87,14 @@ describe('damageProfile', () => {
     expect(damageProfile(champ('a', 0.65))).toBe('ad')
     expect(damageProfile(champ('b', 0.35))).toBe('ap')
     expect(damageProfile(champ('c', 0.5))).toBe('mixed')
+  })
+})
+
+describe('mainDamage', () => {
+  it('type dominant, AD à égalité', () => {
+    expect(mainDamage(champ('a', 0.6))).toBe('ad')
+    expect(mainDamage(champ('b', 0.4))).toBe('ap')
+    expect(mainDamage(champ('c', 0.5))).toBe('ad')
   })
 })
 

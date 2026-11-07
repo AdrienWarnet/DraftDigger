@@ -9,6 +9,9 @@ type ItemPickerProps = {
   onSelect: (item: Item) => void
   /** Ids à ne pas proposer (ex : items déjà dans le slot). */
   excludedIds?: readonly string[]
+  /** Items proposés en premier, tant qu'aucune recherche ni filtre n'est actif (ex : ton build). */
+  suggestedIds?: readonly string[]
+  suggestedLabel?: string
   autoFocus?: boolean
 }
 
@@ -20,6 +23,8 @@ export function ItemPicker({
   items,
   onSelect,
   excludedIds = [],
+  suggestedIds = [],
+  suggestedLabel = 'Suggestions',
   autoFocus = true,
 }: ItemPickerProps) {
   const [query, setQuery] = useState('')
@@ -38,6 +43,11 @@ export function ItemPicker({
   const search = useMemo(() => createSearch(available, (i) => [i.name, ...i.aliases]), [available])
   const results = useMemo(() => search(query), [search, query])
   const first = query.trim() ? results[0] : undefined
+  const suggested = useMemo(() => {
+    const byId = new Map(items.map((i) => [i.id, i]))
+    return suggestedIds.flatMap((id) => byId.get(id) ?? [])
+  }, [items, suggestedIds])
+  const showSuggested = suggested.length > 0 && !query.trim() && category === null
 
   useEffect(() => {
     if (autoFocus) inputRef.current?.focus()
@@ -106,30 +116,53 @@ export function ItemPicker({
         </p>
       </div>
 
-      <ul className={styles.grid}>
-        {results.map((item) => (
-          <li key={item.id}>
-            <button
-              type="button"
-              className={styles.cell}
-              data-first={item === first || undefined}
-              onClick={() => onSelect(item)}
-            >
-              <img
-                className={styles.icon}
-                src={item.image}
-                alt=""
-                width={48}
-                height={48}
-                loading="lazy"
-                decoding="async"
-              />
-              <span className={styles.name}>{item.name}</span>
-              <span className={styles.cost}>{item.cost}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
+      {showSuggested && (
+        <section className={styles.section} aria-label={suggestedLabel}>
+          <h3 className={styles.sectionTitle}>{suggestedLabel}</h3>
+          <ItemGrid items={suggested} first={undefined} onSelect={onSelect} />
+        </section>
+      )}
+      <section className={styles.section} aria-label="Tous les items">
+        {showSuggested && <h3 className={styles.sectionTitle}>Tous les items</h3>}
+        <ItemGrid items={results} first={first} onSelect={onSelect} />
+      </section>
     </div>
+  )
+}
+
+function ItemGrid({
+  items,
+  first,
+  onSelect,
+}: {
+  items: readonly Item[]
+  first: Item | undefined
+  onSelect: (item: Item) => void
+}) {
+  return (
+    <ul className={styles.grid}>
+      {items.map((item) => (
+        <li key={item.id}>
+          <button
+            type="button"
+            className={styles.cell}
+            data-first={item === first || undefined}
+            onClick={() => onSelect(item)}
+          >
+            <img
+              className={styles.icon}
+              src={item.image}
+              alt=""
+              width={48}
+              height={48}
+              loading="lazy"
+              decoding="async"
+            />
+            <span className={styles.name}>{item.name}</span>
+            <span className={styles.cost}>{item.cost}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
   )
 }

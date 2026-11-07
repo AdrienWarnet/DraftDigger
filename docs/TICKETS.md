@@ -620,7 +620,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 **Quoi** : noter les achats en quelques taps.
 **À faire**
-- [ ] Écran Partie : liste des items possédés (jusqu'à 6 + bottes), bouton « + » ouvrant le sélecteur d'items de T3.7 (recherche + suggestions du build en premier).
+- [ ] Écran Partie : liste des items possédés (6 emplacements, bottes comprises), bouton « + » ouvrant le sélecteur d'items de T3.7 (recherche + suggestions du build en premier).
 - [ ] Suppression et remplacement d'un item.
 - [ ] Un item acheté qui est un composant compte pour la progression vers son item final.
 
@@ -646,7 +646,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
   2. Candidats : le `default` + les alternatives dont toutes les conditions `when` sont vraies. Score selon la formule de la section 4 (« Échelle unique des scores »).
   3. Retourner une `Recommendation<Item>` avec les raisons.
 - [ ] Afficher « Prochain item » + 1 alternative + les raisons.
-- [ ] Si tous les slots sont faits : proposer un item de situation, parmi les items achetables non possédés : catégorie `antiheal` si `enemyHealCount` ≥ 2, `antitank` si `enemyTankCount` ≥ 2, sinon `armor` / `mr` / `hp`. Même formule de score (sans `bonusAlternative`), seuils dans `src/engine/config.ts`.
+- [ ] Si tous les slots sont faits : proposer un item de situation, parmi les items achetables non possédés : catégorie `antiheal` si `enemyHealCount` ≥ 2, `antitank` si `enemyTankCount` ≥ 2, sinon `armor` / `mr` / `hp`. Même formule de score (sans `bonusAlternative`), seuils dans `src/engine/config.ts`. Les items offensifs de l'autre type de dégâts que le champion joué sont écartés (pas d'item AP pour un champion surtout AD, et inversement).
 
 **Terminé quand** : tests sur 3 scénarios complets (début, milieu, fin de partie), avec une compo AD, AP et mixte.
 **Dépend de** : T4.2, T4.3, T4.5, T6.1.

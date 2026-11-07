@@ -1,13 +1,16 @@
 import { useEffect, useMemo } from 'react'
 import { playerChampionId } from '../../engine/draft'
-import { metricsFromDraft, type Metrics } from '../../engine/metrics'
+import { mainDamage, metricsFromDraft, type Metrics } from '../../engine/metrics'
 import {
   applyForcedBuild,
   recommendBuild,
   recommendFirstItem,
+  recommendNextItem,
+  situationalCategories,
   type BuildRecommendation,
+  type NextItemRecommendation,
 } from '../../engine/recommend'
-import type { Recommendation } from '../../engine/types'
+import type { Recommendation, Situation } from '../../engine/types'
 import { useBuildsStore } from '../../store/buildsStore'
 import { useDraftStore } from '../../store/draftStore'
 import { useCatalog } from './gameDataContext'
@@ -54,4 +57,33 @@ export function usePreGameRecommendation(): PreGameRecommendation {
       build.kind === 'ok' ? recommendFirstItem(build.recommendation.choice, metrics, 'even') : null
     return { status: 'ready', championId, metrics, build, forced, firstItem }
   }, [buildsStatus, builds, draft, catalog, forcedBuildId])
+}
+
+export type GameRecommendation = NextItemRecommendation & {
+  /** Catégories visées quand le build est terminé (pour expliquer l'item de situation). */
+  categories: string[]
+}
+
+/**
+ * Prochain item à acheter (T6.3) : build de la recommandation + items achetés + situation.
+ * `null` tant qu'il n'y a pas de build pour le champion joué.
+ */
+export function useGameRecommendation(
+  pre: PreGameRecommendation,
+  ownedItemIds: readonly string[],
+  situation: Situation,
+): GameRecommendation | null {
+  const catalog = useCatalog()
+  return useMemo(() => {
+    if (pre.status !== 'ready' || pre.build.kind !== 'ok') return null
+    const champion = catalog.championsById.get(pre.championId)
+    if (!champion) return null
+    const build = pre.build.recommendation.choice
+    const next = recommendNextItem(build, ownedItemIds, pre.metrics, situation, {
+      itemsById: catalog.itemsById,
+      baseStats: champion.baseStats,
+      playerDamage: mainDamage(champion),
+    })
+    return { ...next, categories: situationalCategories(pre.metrics) }
+  }, [pre, ownedItemIds, situation, catalog])
 }

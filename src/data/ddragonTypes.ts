@@ -72,4 +72,9 @@ export type DDragonData = {
   items: Record<string, RawItem>
   runeTrees: RawRuneTree[]
   summonerSpells: Record<string, RawSummonerSpell>
+  /** Noms anglais des items (recherche en anglais) ; absent si le fichier anglais a échoué. */
+  itemNamesEn?: Record<string, ItemNameEn>
 }
+
+/** Nom anglais d'un item et ses surnoms (`colloq` de Data Dragon, séparés par « ; »). */
+export type ItemNameEn = { name: string; colloq?: string }
