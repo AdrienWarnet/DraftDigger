@@ -34,6 +34,7 @@ Plus tard : recommandation de pick, données automatiques, backend.
 - En haut : ta situation (**Devant** / **Égalité** / **En retard**).
 - **Prochain item** : quoi acheter, pourquoi (touche la raison pour tout voir) et l'autre choix possible.
 - **Mes items** : touche « + » à chaque achat (les items de ton build sont proposés en premier, recherche en français ou en anglais). Touche un item pour le changer ou le retirer s'il est vendu.
+- **Quête** (à droite de « Mes items ») : coche-la quand ta quête de rôle est terminée. En Bot, tes bottes passent dans l’emplacement de quête (case dorée) et libèrent une place ; pour les autres postes, la récompense s’affiche sous tes items.
 - **Équipe ennemie** (repliée) : corriger un ennemi ou un poste sans repasser par la draft.
 - L'écran reste allumé tant que l'écran Partie est ouvert.
 

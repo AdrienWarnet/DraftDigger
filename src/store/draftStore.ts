@@ -18,6 +18,7 @@ import {
 import { INPUT_SHORTCUTS } from '../engine/config'
 import { buyItem, parseIdList, parseOwnedItems, removeItem, replaceItem } from '../engine/inventory'
 import type { PositionRates } from '../engine/positions'
+import type { RoleQuestEffects } from '../engine/roleQuests'
 import { parseSituation } from '../engine/situation'
 import type { Item, Position, Situation } from '../engine/types'
 
@@ -47,7 +48,11 @@ type DraftStore = {
   forceBuild: (buildId: string | null) => void
   /** Items achetés pendant la partie (T6.1), dans l'ordre d'achat. Vidés à la nouvelle partie. */
   ownedItemIds: string[]
-  buyItem: (itemId: string, itemsById: ReadonlyMap<string, Item>) => void
+  buyItem: (
+    itemId: string,
+    itemsById: ReadonlyMap<string, Item>,
+    questEffects?: RoleQuestEffects,
+  ) => void
   removeItem: (index: number) => void
   replaceItem: (index: number, itemId: string) => void
   /** Situation en partie (T6.2) : « à égalité » au début de chaque partie. */
@@ -55,6 +60,9 @@ type DraftStore = {
   setSituation: (situation: Situation) => void
   /** Derniers champions choisis dans la draft (T7.3), proposés en tête du sélecteur. */
   recentChampionIds: string[]
+  /** Quête de rôle du poste joué terminée (epic 8) : ses effets s'appliquent. */
+  questCompleted: boolean
+  setQuestCompleted: (completed: boolean) => void
 }
 
 export const useDraftStore = create<DraftStore>()(
@@ -87,18 +95,21 @@ export const useDraftStore = create<DraftStore>()(
           forcedBuildId: null,
           ownedItemIds: [],
           situation: 'even',
+          questCompleted: false,
         })),
       forcedBuildId: null,
       forceBuild: (buildId) => set({ forcedBuildId: buildId }),
       ownedItemIds: [],
-      buyItem: (itemId, itemsById) =>
-        set((s) => ({ ownedItemIds: buyItem(s.ownedItemIds, itemId, itemsById) })),
+      buyItem: (itemId, itemsById, questEffects) =>
+        set((s) => ({ ownedItemIds: buyItem(s.ownedItemIds, itemId, itemsById, questEffects) })),
       removeItem: (index) => set((s) => ({ ownedItemIds: removeItem(s.ownedItemIds, index) })),
       replaceItem: (index, itemId) =>
         set((s) => ({ ownedItemIds: replaceItem(s.ownedItemIds, index, itemId) })),
       situation: 'even',
       setSituation: (situation) => set({ situation }),
       recentChampionIds: [],
+      questCompleted: false,
+      setQuestCompleted: (completed) => set({ questCompleted: completed }),
     }),
     {
       name: GAME_STORAGE_KEY,
@@ -110,6 +121,7 @@ export const useDraftStore = create<DraftStore>()(
         ownedItemIds: state.ownedItemIds,
         situation: state.situation,
         recentChampionIds: state.recentChampionIds,
+        questCompleted: state.questCompleted,
       }),
       // Sauvegarde relue et validée : une sauvegarde illisible repart d'une draft vide.
       merge: (persisted, current) => {
@@ -145,6 +157,11 @@ export const useDraftStore = create<DraftStore>()(
               ownedItemIds: owned,
               situation,
               recentChampionIds: recent,
+              questCompleted:
+                typeof persisted === 'object' &&
+                persisted !== null &&
+                'questCompleted' in persisted &&
+                persisted.questCompleted === true,
             }
           : current
       },

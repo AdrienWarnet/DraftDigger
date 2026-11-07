@@ -1,4 +1,5 @@
 import { INVENTORY } from './config'
+import type { RoleQuestEffects } from './roleQuests'
 import type { Build, Item } from './types'
 
 /**
@@ -11,12 +12,47 @@ type ItemsById = ReadonlyMap<string, Item>
 /**
  * Achète un item. Comme en jeu, ses composants possédés sont consommés (récursivement : un
  * composant manquant peut être remplacé par ses propres composants). Refusé si l'inventaire est plein.
+ * Quête terminée avec un emplacement dédié (Bot : les bottes), une paire de bottes n'y prend pas
+ * de place (epic 8).
  */
-export function buyItem(owned: readonly string[], itemId: string, itemsById: ItemsById): string[] {
+export function buyItem(
+  owned: readonly string[],
+  itemId: string,
+  itemsById: ItemsById,
+  effects: RoleQuestEffects = {},
+): string[] {
   const remaining = [...owned]
   consumeComponents(remaining, itemId, itemsById, new Set())
-  if (remaining.length >= INVENTORY.maxItems) return [...owned]
+  const toQuestSlot =
+    inDedicatedSlot(itemsById.get(itemId), effects) &&
+    questSlotItemIndex(remaining, itemsById, effects) === null
+  if (!toQuestSlot && freeSlots(remaining, itemsById, effects) <= 0) return [...owned]
   return [...remaining, itemId]
+}
+
+/** `true` si l'item va dans l'emplacement de quête (ex : des bottes, quête Bot terminée). */
+function inDedicatedSlot(item: Item | undefined, effects: RoleQuestEffects): boolean {
+  return Boolean(item && effects.dedicatedSlot && item.categories.includes(effects.dedicatedSlot))
+}
+
+/** Place (dans `owned`) de l'item rangé dans l'emplacement de quête, ou `null`. */
+export function questSlotItemIndex(
+  owned: readonly string[],
+  itemsById: ItemsById,
+  effects: RoleQuestEffects,
+): number | null {
+  const index = owned.findIndex((id) => inDedicatedSlot(itemsById.get(id), effects))
+  return index >= 0 ? index : null
+}
+
+/** Emplacements normaux encore libres (l'item de l'emplacement de quête n'en prend pas). */
+export function freeSlots(
+  owned: readonly string[],
+  itemsById: ItemsById,
+  effects: RoleQuestEffects = {},
+): number {
+  const inQuestSlot = questSlotItemIndex(owned, itemsById, effects) === null ? 0 : 1
+  return INVENTORY.maxItems - (owned.length - inQuestSlot)
 }
 
 function consumeComponents(
@@ -124,7 +160,8 @@ export function buildSuggestions(
 
 /** Relit une liste d'items sauvegardée ; tout ce qui n'est pas lisible est écarté. */
 export function parseOwnedItems(value: unknown): string[] {
-  return parseIdList(value, INVENTORY.maxItems)
+  // + 1 : l'emplacement de quête (bottes, quête Bot terminée).
+  return parseIdList(value, INVENTORY.maxItems + 1)
 }
 
 /** Relit une liste d'ids sauvegardée (`max` au plus) ; tout ce qui n'est pas lisible est écarté. */
