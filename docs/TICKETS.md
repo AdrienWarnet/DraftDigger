@@ -719,19 +719,32 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 ---
 
-# EPIC 8 – Quêtes de rôle (hors MVP, plus tard)
+# EPIC 8 – Quêtes de rôle
 
-### T8.1 – Effets des quêtes de rôle (M)
+Source des effets : le wiki officiel (https://wiki.leagueoflegends.com/en-us/Role_Quests), avec l'historique des changements par patch. Data Dragon ne fournit pas ces informations. Seuls les effets qui changent les recommandations d'items sont modélisés ; les autres sont décrits en texte.
 
-**Quoi** : tenir compte des récompenses des quêtes de rôle de chaque poste dans les recommandations.
-**Entrée requise du joueur** : la liste des effets à prendre en compte par poste (ex : emplacement d'item supplémentaire, niveau max, XP bonus), valables au patch courant. Data Dragon ne fournit pas ces informations.
+### T8.1 – Données des quêtes de rôle (M)
+
+**Quoi** : les quêtes de chaque poste dans un fichier éditable, et un moyen simple de savoir quand le mettre à jour.
 **À faire**
-- [ ] `data/role-quests.json` : effets par poste, éditables à chaque patch sans toucher au code.
-- [ ] Prise en compte dans la recommandation d'items (T6.3) : par exemple un emplacement supplémentaire change le nombre de slots à remplir.
-- [ ] Explication affichée quand un effet de quête influence la recommandation.
+- [ ] `data/role-quests.json` : patch de référence, source, et par poste : points à atteindre, récompense (texte), effets modélisés. Éditable à chaque patch sans toucher au code, validé au chargement (avertissement si invalide, sans bloquer l'app).
+- [ ] Effet modélisé : `dedicatedSlot: "boots"` (Bot : les bottes vont dans l'emplacement de quête, donc 6 items + bottes).
+- [ ] `npm run check-role-quests` : relit la page du wiki et signale si un patch plus récent que celui du fichier a modifié les quêtes.
+- [ ] La quête du poste joué est affichée dans l'app (écran À propos : patch de référence).
+
+**Terminé quand** : modifier le fichier change les données lues par l'app (test), et la commande signale un wiki plus récent que le fichier.
+**Dépend de** : T6.3.
+
+### T8.2 – Effets des quêtes en partie (M)
+
+**Quoi** : tenir compte de la récompense de la quête du poste joué une fois la quête terminée.
+**À faire**
+- [ ] Écran Partie : interrupteur « Quête terminée » (remis à zéro à la nouvelle partie), avec la récompense du poste en une ligne.
+- [ ] Quête terminée avec `dedicatedSlot: "boots"` : les bottes ne comptent plus dans les 6 emplacements (inventaire et prochain item).
+- [ ] Explication affichée quand l'effet de la quête change la recommandation.
 
 **Terminé quand** : modifier un effet dans le JSON change la recommandation dans un test dédié.
-**Dépend de** : T6.3.
+**Dépend de** : T8.1.
 
 ---
 
@@ -764,7 +777,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 5. **Usage** : T5.1 → T5.4, puis T6.1 → T6.5.
 6. **Finition** : T7.1, T7.3, T7.4, T7.5.
 7. **Après les parties de test** : epic 9 (T9.1 puis T9.2), quand le joueur a le temps.
-8. **Plus tard** : epic 8 (quêtes de rôle).
+8. **Quêtes de rôle** : epic 8 (T8.1 puis T8.2).
 
 ## Plus tard (hors MVP)
 

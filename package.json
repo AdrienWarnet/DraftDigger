@@ -15,6 +15,7 @@
     "format:check": "prettier --check .",
     "generate-icons": "pwa-assets-generator",
     "update-positions": "node scripts/update-positions.mjs",
+    "check-role-quests": "node scripts/check-role-quests.mjs",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {

@@ -82,6 +82,15 @@ Data Dragon ne dit pas tout (soins, anti-tank, répartition AD/AP de certains ch
 
 Le format est rappelé dans la clé `_format` de chaque fichier. Un id inconnu ou une valeur invalide produit un avertissement dans la console du navigateur, sans bloquer l'app.
 
+### Mettre à jour les quêtes de rôle
+
+Les récompenses des quêtes de rôle de chaque poste sont dans [data/role-quests.json](data/role-quests.json) (source : [wiki officiel](https://wiki.leagueoflegends.com/en-us/Role_Quests)). À chaque nouveau patch :
+
+1. `npm run check-role-quests` : dit si le wiki a noté des changements depuis le patch du fichier.
+2. Si oui : relire la page du wiki, mettre à jour `reward`, `points`, `effects` et le champ `patch`, puis merger sur `main`.
+
+Seul l'effet `dedicatedSlot: "boots"` (Bot : 6 items + bottes) change les recommandations ; les autres récompenses sont affichées en texte (écran À propos).
+
 ## Développement
 
 ### Démarrer
@@ -125,6 +134,7 @@ En dev uniquement, `#/composants` affiche tous les composants de base (boutons, 
 | `npm run format:check` | vérifie le formatage                        |
 | `npm run generate-icons` | régénère les icônes PWA depuis `public/logo.svg` |
 | `npm run update-positions` | met à jour les taux de jeu par poste (postes ennemis devinés) |
+| `npm run check-role-quests` | signale si les quêtes de rôle ont changé sur le wiki depuis `data/role-quests.json` |
 
 ### Structure
 
@@ -139,5 +149,6 @@ data/
   defaults/   # valeurs par défaut (menaces par classe de champion)
   presets/    # presets de conditions de l'éditeur
   overrides/  # corrections manuelles champions / items
+  role-quests.json  # récompenses des quêtes de rôle par poste
 docs/TICKETS.md   # tickets du MVP
 ```

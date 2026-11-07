@@ -8,9 +8,10 @@ WebApp mobile-first (PWA) pour League of Legends. Le joueur crée ses propres bu
 
 Le moteur est **générique** : aucun code spécifique à un champion. L'app démarre avec un build d'exemple (Yorick) pour pouvoir tester tout de suite.
 
-## Périmètre actuel : MVP uniquement
-Tickets des epics 0 à 7. Tout tourne sur le téléphone : aucun serveur.
-Ne PAS faire : backend, comptes, lecture de partie en direct, recommandation de pick, données automatiques (stats de builds), éditeur avancé de conditions, quêtes de rôle (epic 8, plus tard).
+## Périmètre actuel
+MVP (epics 0 à 7) terminé et en ligne. Tout tourne sur le téléphone : aucun serveur.
+Ne PAS faire : backend, comptes, lecture de partie en direct, recommandation de pick, données automatiques (stats de builds), éditeur avancé de conditions.
+En cours : epic 8 (quêtes de rôle, effets dans `data/role-quests.json`). Plus tard : epic 9 (ajustements après parties réelles).
 Un backend viendra probablement plus tard (calculs plus lourds, synchro) : l'accès aux builds passe par une interface `BuildRepository` pour pouvoir changer d'implémentation sans toucher au moteur ni à l'UI.
 
 ## Stack
