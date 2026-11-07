@@ -8,9 +8,11 @@ import {
   toRecommendation,
   type ScoredOption,
 } from './evaluate'
-import { buildReasons } from './explain'
+import { buildReasons, inventoryReason, nextItemFallbackReason } from './explain'
+import { freeSlots } from './inventory'
 import { isCompletedItem } from './itemFilters'
 import type { Metrics } from './metrics'
+import type { RoleQuestEffects } from './roleQuests'
 import { withSituation } from './situation'
 import type { BaseStats, Build, Item, Position, Recommendation, Situation } from './types'
 
@@ -95,6 +97,8 @@ export type NextItemContext = {
    * l'autre type sont écartés (pas de Bâton du vide pour un champion AD). Absent : aucun filtre.
    */
   playerDamage?: 'ad' | 'ap'
+  /** Effets de la quête de rôle terminée (epic 8), ex : emplacement de quête pour les bottes. */
+  questEffects?: RoleQuestEffects
 }
 
 export type NextItemRecommendation = {
@@ -137,6 +141,13 @@ export function recommendNextItem(
   }
 
   let candidates: ScoredOption<Item>[]
+  // Build terminé : y a-t-il une place pour l'item de situation ? (quête de rôle comprise)
+  const placeReason = slot
+    ? null
+    : inventoryReason(
+        freeSlots(ownedItemIds, context.itemsById, context.questEffects),
+        freeSlots(ownedItemIds, context.itemsById),
+      )
   if (slot) {
     const defaultItem = context.itemsById.get(slot.default)
     candidates = [
@@ -156,12 +167,21 @@ export function recommendNextItem(
       .filter((i) => wanted.some((c) => i.categories.includes(c)))
       .filter((i) => suitsDamage(i, context.playerDamage))
       .map((i) => scoreItem(i, 0, []))
+      // Sans argument chiffré, on dit au moins pourquoi cette catégorie (anti-soin, anti-tank…).
+      .map((s) =>
+        s.reasons.length > 0 ? s : { ...s, reasons: [nextItemFallbackReason(null, wanted)] },
+      )
   }
 
   const ranked = withSituation(
     candidates.sort((a, b) => b.score - a.score),
     situation,
-  ).map((s) => ({ ...s, reasons: buildReasons({ conditionReasons: s.reasons }) }))
+  ).map((s) => ({
+    ...s,
+    reasons: buildReasons({
+      conditionReasons: [...s.reasons, ...(placeReason ? [placeReason] : [])],
+    }),
+  }))
   const kept = slot ? ranked : ranked.slice(0, SITUATIONAL_ITEMS.count)
   const recommendation = toRecommendation(kept, metrics.knownEnemies)
   const choice = recommendation?.choice

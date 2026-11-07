@@ -1,0 +1,32 @@
+{
+  "_format": "Quêtes de rôle par poste. patch = dernier patch du wiki pris en compte (npm run check-role-quests signale un patch plus récent). points = points à atteindre, reward = récompense affichée, effects = effets qui changent les recommandations : dedicatedSlot \"boots\" (les bottes vont dans l'emplacement de quête : 6 items + bottes). Les clés qui commencent par _ sont ignorées.",
+  "patch": "26.19",
+  "source": "https://wiki.leagueoflegends.com/en-us/Role_Quests",
+  "quests": {
+    "top": {
+      "points": 1200,
+      "reward": "Téléportation améliorée en sort bonus (bouclier de 35 % des PV max), +11 % d'XP, +80 XP par élimination, niveau max 20.",
+      "effects": {}
+    },
+    "jungle": {
+      "points": 35,
+      "reward": "Châtiment amélioré, +10 or et +10 XP par camp, +4 % de vitesse en jungle et rivière (8 % hors combat).",
+      "effects": {}
+    },
+    "mid": {
+      "points": 1350,
+      "reward": "+8 % d'AD et d'AP bonus, bottes de niveau 2 améliorées gratuitement en bottes de niveau 3 exclusives.",
+      "effects": {}
+    },
+    "bot": {
+      "points": 1350,
+      "reward": "+300 or, +2 or par sbire, +40 or par élimination, emplacement de quête réservé aux bottes (6 items + bottes).",
+      "effects": { "dedicatedSlot": "boots" }
+    },
+    "support": {
+      "points": 800,
+      "reward": "Objet de support amélioré gratuitement, balises de contrôle à 40 or rangées dans l'emplacement de quête.",
+      "effects": {}
+    }
+  }
+}

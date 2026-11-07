@@ -95,6 +95,18 @@ export function nextItemFallbackReason(slot: number | null, categories: readonly
 }
 
 /**
+ * Place pour un item de situation, build terminé (epic 8) : inventaire plein (à acheter à la place
+ * d'un autre), ou emplacement libéré par la quête de rôle. `null` s'il reste de la place sans quête.
+ */
+export function inventoryReason(freeSlots: number, freeSlotsWithoutQuest: number): string | null {
+  if (freeSlots <= 0) return 'Inventaire plein : à acheter à la place de ton item le moins utile.'
+  if (freeSlotsWithoutQuest <= 0) {
+    return 'Quête de rôle terminée : tes bottes sont dans l’emplacement de quête, une place reste libre.'
+  }
+  return null
+}
+
+/**
  * Explication du niveau de confiance (T5.4), ex : « 5/5 ennemis connus, et ce build devance
  * le suivant de 3 points. » `gap` à `null` : une seule option.
  */

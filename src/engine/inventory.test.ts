@@ -5,7 +5,9 @@ import {
   buyItem,
   componentTarget,
   isInRecipe,
+  freeSlots,
   parseOwnedItems,
+  questSlotItemIndex,
   removeItem,
   replaceItem,
 } from './inventory'
@@ -130,6 +132,33 @@ describe('parseOwnedItems', () => {
   it('garde les ids lisibles, 6 au plus', () => {
     expect(parseOwnedItems(['1055', 3, '', '1036'])).toEqual(['1055', '1036'])
     expect(parseOwnedItems('x')).toEqual([])
-    expect(parseOwnedItems(['1', '2', '3', '4', '5', '6', '7'])).toHaveLength(6)
+    expect(parseOwnedItems(['1', '2', '3', '4', '5', '6', '7', '8'])).toHaveLength(7)
+  })
+})
+
+describe('emplacement de quête (quête Bot terminée : les bottes à part)', () => {
+  const bot = { dedicatedSlot: 'boots' } as const
+  // 3047 Coques en acier (bottes), 1001 Bottes, 3111 Sandales de Mercure.
+  const sixWithBoots = ['1055', '6610', '3047', '3071', '3053', '6333']
+
+  it('sans quête : 6 items bottes comprises, inventaire plein', () => {
+    expect(freeSlots(sixWithBoots, itemsById)).toBe(0)
+    expect(buyItem(sixWithBoots, '6694', itemsById)).toEqual(sixWithBoots)
+  })
+
+  it('quête terminée : les bottes ne comptent plus, un emplacement se libère', () => {
+    expect(questSlotItemIndex(sixWithBoots, itemsById, bot)).toBe(2)
+    expect(freeSlots(sixWithBoots, itemsById, bot)).toBe(1)
+    expect(buyItem(sixWithBoots, '6694', itemsById, bot)).toEqual([...sixWithBoots, '6694'])
+  })
+
+  it('6 items sans bottes : les bottes vont dans l’emplacement de quête', () => {
+    const six = ['1055', '6610', '3071', '3053', '6333', '6694']
+    expect(buyItem(six, '1001', itemsById)).toEqual(six)
+    expect(buyItem(six, '1001', itemsById, bot)).toEqual([...six, '1001'])
+    // Améliorer les bottes : elles restent dans l'emplacement de quête.
+    expect(buyItem([...six, '1001'], '3111', itemsById, bot)).toEqual([...six, '3111'])
+    // Une 2e paire de bottes n'a plus de place.
+    expect(buyItem([...six, '1001'], '1001', itemsById, bot)).toEqual([...six, '1001'])
   })
 })
