@@ -247,3 +247,56 @@ describe('recommendNextItem : début, milieu et fin de partie (Bruiser, T6.3)', 
     expect(r.recommendation?.choice.name).toBe('Bâton du vide')
   })
 })
+
+describe('recommendBuild : build générique (epic 10)', () => {
+  const { runes, summonerSpells, useWhen, firstItemOptions, itemOrder } = BRUISER
+  const templates = [
+    {
+      id: 'mage-ap',
+      name: 'Mage AP mid',
+      match: { positions: ['mid' as const], tags: ['Mage'], damage: 'ap' as const },
+      runes,
+      summonerSpells,
+      useWhen,
+      firstItemOptions,
+      itemOrder,
+    },
+  ]
+  const m = metricsOf(COMPOS.fullAd)
+
+  it('aucun build du joueur pour ce champion : le modèle adapté, en confiance faible', () => {
+    const result = recommendBuild(TEST_BUILDS, 'Ahri', 'mid', m, {
+      champion: champion('Ahri'),
+      templates,
+    })
+    expect(result.kind).toBe('ok')
+    if (result.kind !== 'ok') return
+    expect(result.generic?.template.id).toBe('mage-ap')
+    expect(result.recommendation).toMatchObject({
+      confidence: 'low',
+      alternatives: [],
+      choice: { championId: 'Ahri', position: 'mid', name: 'Mage AP mid' },
+    })
+    expect(result.recommendation.reasons[0]).toBe(
+      "Tu n'as pas de build pour ce champion : voici le modèle « Mage AP mid ». Ahri : mage, assassin, dégâts AP.",
+    )
+    // Le build générique sert ensuite au premier item et au prochain item comme un autre.
+    expect(recommendFirstItem(result.recommendation.choice, m)?.choice).toBe('1055')
+    expect(recommendNextItem(result.recommendation.choice, [], m, 'even', context).slot).toBe(1)
+  })
+
+  it('les builds du joueur passent avant le modèle, même à un autre poste', () => {
+    const result = recommendBuild(TEST_BUILDS, 'Yorick', 'mid', m, {
+      champion: champion('Yorick'),
+      templates,
+    })
+    expect(result.kind === 'ok' && result.generic).toBeNull()
+  })
+
+  it('aucun modèle pour ce poste, ou pas de modèles : aucun build', () => {
+    expect(
+      recommendBuild([], 'Ahri', 'bot', m, { champion: champion('Ahri'), templates }).kind,
+    ).toBe('noBuild')
+    expect(recommendBuild([], 'Ahri', 'mid', m).kind).toBe('noBuild')
+  })
+})

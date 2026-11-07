@@ -14,6 +14,7 @@ import type { RoleQuestEffects } from '../../engine/roleQuests'
 import type { Recommendation, Situation } from '../../engine/types'
 import { useBuildsStore } from '../../store/buildsStore'
 import { useDraftStore } from '../../store/draftStore'
+import { BUILD_TEMPLATES } from '../../data/buildTemplates'
 import { useCatalog } from './gameDataContext'
 
 export type PreGameRecommendation =
@@ -50,8 +51,11 @@ export function usePreGameRecommendation(): PreGameRecommendation {
     const championId = playerChampionId(draft)
     if (!championId) return { status: 'noChampion' }
     const metrics = metricsFromDraft(draft, catalog.championsById, catalog.positionRates)
+    // Sans build du joueur pour ce champion : build générique (epic 10).
+    const champion = catalog.championsById.get(championId)
+    const generic = champion ? { champion, templates: BUILD_TEMPLATES } : undefined
     const { forced, ...build } = applyForcedBuild(
-      recommendBuild(builds, championId, draft.playerPosition, metrics),
+      recommendBuild(builds, championId, draft.playerPosition, metrics, generic),
       forcedBuildId,
     )
     const firstItem =

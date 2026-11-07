@@ -50,6 +50,12 @@ Plus tard : recommandation de pick, données automatiques, backend.
 
 Pour modifier un build : **Builds** → le build → **Modifier**. **Dupliquer** sert de point de départ pour une variante.
 
+### Champion sans build : le build générique
+
+Si tu n'as aucun build pour le champion joué, la Reco propose un **build générique** choisi d'après son profil (classe et dégâts AD/AP) et ton poste, par exemple « Mage AP mid » pour Ahri. Il s'adapte à la compo comme tes builds (premier item, prochain item, alternatives). **Copier dans mes builds** en fait un vrai build, ouvert dans l'éditeur pour l'ajuster.
+
+Les modèles sont dans [data/templates/builds.json](data/templates/builds.json) (même format qu'un build, plus les postes, tags et type de dégâts visés). Les poids du choix du modèle sont dans [src/engine/config.ts](src/engine/config.ts) (`TEMPLATE_MATCH`).
+
 ### Sauvegarder ses builds (export / import)
 
 Les builds ne sont enregistrés que sur le téléphone. Dans l'onglet **Builds** :

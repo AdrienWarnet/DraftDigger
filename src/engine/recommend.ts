@@ -8,13 +8,19 @@ import {
   toRecommendation,
   type ScoredOption,
 } from './evaluate'
-import { buildReasons, inventoryReason, nextItemFallbackReason } from './explain'
+import { pickTemplate, templateToBuild, type BuildTemplate } from './buildTemplates'
+import {
+  buildReasons,
+  genericBuildReason,
+  inventoryReason,
+  nextItemFallbackReason,
+} from './explain'
 import { freeSlots } from './inventory'
 import { isCompletedItem } from './itemFilters'
 import type { Metrics } from './metrics'
 import type { RoleQuestEffects } from './roleQuests'
 import { withSituation } from './situation'
-import type { BaseStats, Build, Item, Position, Recommendation, Situation } from './types'
+import type { BaseStats, Build, Champion, Item, Position, Recommendation, Situation } from './types'
 
 // --- Choix du build (T5.1) ---------------------------------------------------------
 
@@ -30,26 +36,36 @@ export type BuildRecommendation =
       tied: Build[]
       /** Poste des builds proposés quand aucun build n'existe pour le poste joué, sinon `null`. */
       fallbackPosition: Position | null
+      /**
+       * Build générique (epic 10) quand le joueur n'a aucun build pour ce champion : le modèle
+       * appliqué et la raison du choix. `null` pour un build du joueur.
+       */
+      generic: { template: BuildTemplate; reason: string } | null
     }
+
+/** Modèles génériques proposés quand le joueur n'a aucun build pour le champion (epic 10). */
+export type GenericFallback = { champion: Champion; templates: readonly BuildTemplate[] }
 
 /**
  * Choisit parmi les builds du champion et du poste joués (section 4, T5.1) :
  * - plus haut score (somme des poids des conditions vraies) ;
  * - égalité en tête : le favori l'emporte s'il en fait partie, sinon les ex aequo sont proposés ;
- * - sans build pour ce poste : ceux du champion à d'autres postes, en confiance faible.
+ * - sans build pour ce poste : ceux du champion à d'autres postes, en confiance faible ;
+ * - sans aucun build pour ce champion : le build générique adapté (epic 10), en confiance faible.
  */
 export function recommendBuild(
   builds: readonly Build[],
   championId: string,
   position: Position,
   metrics: Metrics,
+  generic?: GenericFallback,
 ): BuildRecommendation {
   const ofChampion = builds.filter((b) => b.championId === championId)
   const forPosition = ofChampion.filter((b) => b.position === position)
   const candidates = (forPosition.length > 0 ? forPosition : ofChampion)
     .slice()
     .sort(compareInGroup)
-  if (candidates.length === 0) return { kind: 'noBuild' }
+  if (candidates.length === 0) return genericRecommendation(position, metrics, generic)
 
   // Favori placé en premier : à égalité il garde la tête (tri stable).
   const scored = scoreOptions(
@@ -67,6 +83,32 @@ export function recommendBuild(
     recommendation: fallback ? { ...recommendation, confidence: 'low' } : recommendation,
     tied,
     fallbackPosition: fallback ? candidates[0]!.position : null,
+    generic: null,
+  }
+}
+
+/** Build générique du champion à ce poste, ou `noBuild` si aucun modèle ne vise ce poste. */
+function genericRecommendation(
+  position: Position,
+  metrics: Metrics,
+  generic: GenericFallback | undefined,
+): BuildRecommendation {
+  const choice = generic ? pickTemplate(generic.champion, position, generic.templates) : null
+  if (!generic || !choice) return { kind: 'noBuild' }
+  const build = templateToBuild(choice.template, generic.champion.id, position)
+  const [scored] = scoreOptions([{ choice: build, useWhen: build.useWhen }], metrics, 'even')
+  return {
+    kind: 'ok',
+    recommendation: {
+      choice: build,
+      score: scored!.score,
+      confidence: 'low',
+      reasons: [genericBuildReason(choice.template.name, choice.reason)],
+      alternatives: [],
+    },
+    tied: [],
+    fallbackPosition: null,
+    generic: choice,
   }
 }
 
