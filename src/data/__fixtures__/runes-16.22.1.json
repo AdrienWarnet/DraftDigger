@@ -669,6 +669,185 @@
       "image": {
         "full": "SummonerTeleport.png"
       }
+    },
+    "SummonerBarrier": {
+      "id": "SummonerBarrier",
+      "key": "21",
+      "name": "Barrière",
+      "modes": [
+        "ARAM",
+        "TUTORIAL",
+        "KIWI",
+        "ULTBOOK",
+        "FIRSTBLOOD",
+        "SWIFTPLAY",
+        "CLASSIC",
+        "PRACTICETOOL",
+        "RUBY",
+        "RUBY_TRIAL_1",
+        "BRAWL",
+        "URF",
+        "KIWI_JADE",
+        "RUBY_TRIAL_3",
+        "ONEFORALL",
+        "ASSASSINATE",
+        "ARSR",
+        "NEXUSBLITZ",
+        "DOOMBOTSTEEMO",
+        "RUBY_TRIAL_2"
+      ],
+      "image": {
+        "full": "SummonerBarrier.png",
+        "sprite": "spell0.png",
+        "group": "spell",
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 48
+      }
+    },
+    "SummonerBoost": {
+      "id": "SummonerBoost",
+      "key": "1",
+      "name": "Purge",
+      "modes": [
+        "ARAM",
+        "TUTORIAL",
+        "KIWI",
+        "ULTBOOK",
+        "FIRSTBLOOD",
+        "SWIFTPLAY",
+        "CLASSIC",
+        "PRACTICETOOL",
+        "RUBY",
+        "RUBY_TRIAL_1",
+        "BRAWL",
+        "URF",
+        "KIWI_JADE",
+        "RUBY_TRIAL_3",
+        "ONEFORALL",
+        "ARSR",
+        "NEXUSBLITZ",
+        "DOOMBOTSTEEMO",
+        "RUBY_TRIAL_2"
+      ],
+      "image": {
+        "full": "SummonerBoost.png",
+        "sprite": "spell0.png",
+        "group": "spell",
+        "x": 144,
+        "y": 0,
+        "w": 48,
+        "h": 48
+      }
+    },
+    "SummonerExhaust": {
+      "id": "SummonerExhaust",
+      "key": "3",
+      "name": "Fatigue",
+      "modes": [
+        "URF",
+        "PRACTICETOOL",
+        "CLASSIC",
+        "ULTBOOK",
+        "DOOMBOTSTEEMO",
+        "ARAM",
+        "RUBY_TRIAL_3",
+        "NEXUSBLITZ",
+        "SWIFTPLAY",
+        "ONEFORALL",
+        "TUTORIAL",
+        "RUBY",
+        "WIPMODEWIP",
+        "RUBY_TRIAL_2",
+        "WIPMODEWIP3",
+        "RUBY_TRIAL_1",
+        "ARSR"
+      ],
+      "image": {
+        "full": "SummonerExhaust.png",
+        "sprite": "spell0.png",
+        "group": "spell",
+        "x": 0,
+        "y": 48,
+        "w": 48,
+        "h": 48
+      }
+    },
+    "SummonerHaste": {
+      "id": "SummonerHaste",
+      "key": "6",
+      "name": "Fantôme",
+      "modes": [
+        "ARAM",
+        "TUTORIAL_MODULE_1",
+        "TUTORIAL",
+        "KIWI",
+        "ULTBOOK",
+        "FIRSTBLOOD",
+        "SWIFTPLAY",
+        "CLASSIC",
+        "PRACTICETOOL",
+        "RUBY",
+        "RUBY_TRIAL_1",
+        "BRAWL",
+        "URF",
+        "KIWI_JADE",
+        "RUBY_TRIAL_3",
+        "TUTORIAL_MODULE_2",
+        "ONEFORALL",
+        "ASSASSINATE",
+        "ARSR",
+        "NEXUSBLITZ",
+        "DOOMBOTSTEEMO",
+        "RUBY_TRIAL_2"
+      ],
+      "image": {
+        "full": "SummonerHaste.png",
+        "sprite": "spell0.png",
+        "group": "spell",
+        "x": 240,
+        "y": 48,
+        "w": 48,
+        "h": 48
+      }
+    },
+    "SummonerHeal": {
+      "id": "SummonerHeal",
+      "key": "7",
+      "name": "Soins",
+      "modes": [
+        "ARAM",
+        "TUTORIAL_MODULE_1",
+        "TUTORIAL",
+        "KIWI",
+        "ULTBOOK",
+        "SWIFTPLAY",
+        "CLASSIC",
+        "PRACTICETOOL",
+        "RUBY",
+        "RUBY_TRIAL_1",
+        "BRAWL",
+        "URF",
+        "KIWI_JADE",
+        "RUBY_TRIAL_3",
+        "TUTORIAL_MODULE_2",
+        "ONEFORALL",
+        "ASSASSINATE",
+        "ARSR",
+        "NEXUSBLITZ",
+        "DOOMBOTSTEEMO",
+        "RUBY_TRIAL_2"
+      ],
+      "image": {
+        "full": "SummonerHeal.png",
+        "sprite": "spell0.png",
+        "group": "spell",
+        "x": 336,
+        "y": 48,
+        "w": 48,
+        "h": 48
+      }
     }
   }
 }
