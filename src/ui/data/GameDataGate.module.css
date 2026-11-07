@@ -18,5 +18,6 @@
   color: var(--color-text-muted);
   font-size: 0.75rem;
   text-align: center;
+  text-decoration: none;
   opacity: 0.8;
 }
