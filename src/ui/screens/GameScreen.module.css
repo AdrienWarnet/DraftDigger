@@ -63,3 +63,13 @@
   color: var(--color-text-muted);
   font-size: var(--text-sm);
 }
+
+/* Situation toujours visible : reste collée en haut quand l'écran défile. */
+.situation {
+  position: sticky;
+  top: calc(-1 * var(--space-2));
+  z-index: 1;
+  margin: calc(-1 * var(--space-2)) 0 0;
+  padding: var(--space-2) 0;
+  background: var(--color-bg);
+}

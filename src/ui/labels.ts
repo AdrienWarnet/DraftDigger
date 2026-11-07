@@ -1,4 +1,4 @@
-import type { Position } from '../engine/types'
+import type { Position, Situation } from '../engine/types'
 
 /** Libellés affichés des postes. */
 export const POSITION_LABELS: Record<Position, string> = {
@@ -7,4 +7,11 @@ export const POSITION_LABELS: Record<Position, string> = {
   mid: 'Mid',
   bot: 'Bot',
   support: 'Support',
+}
+
+/** Libellés de la situation en partie (T6.2). */
+export const SITUATION_LABELS: Record<Situation, string> = {
+  ahead: 'Devant',
+  even: 'Égalité',
+  behind: 'En retard',
 }

@@ -19,7 +19,6 @@
   color: var(--color-text-muted);
   font-weight: 600;
   cursor: pointer;
-  transition: background-color var(--duration-fast);
 }
 
 @media (hover: hover) {
@@ -36,12 +35,17 @@
   background: var(--color-accent);
 }
 
+/* Situation en partie : vert = devant, bleu = à égalité, rouge = en retard. */
 .ahead[aria-checked='true'] {
   background: var(--color-ahead);
 }
 
+.even[aria-checked='true'] {
+  background: var(--color-ally);
+}
+
 .behind[aria-checked='true'] {
-  background: var(--color-behind);
+  background: var(--color-danger);
 }
 
 /* 5 options ou plus (ex : postes) : texte plus petit pour tenir sur un petit écran. */

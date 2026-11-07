@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import type { ScoredOption } from './evaluate'
-import { isDefensiveItem, isOffensiveItem, situationAdjustments, withSituation } from './situation'
+import {
+  isDefensiveItem,
+  isOffensiveItem,
+  situationAdjustments,
+  withSituation,
+  parseSituation,
+} from './situation'
 import type { Item } from './types'
 
 function item(id: string, cost: number, stats: Item['stats']): Item {
@@ -84,5 +90,14 @@ describe('situationAdjustments', () => {
       ['Rancune de Serylda', 2],
       ['Cotte épineuse', 2],
     ])
+  })
+})
+
+describe('parseSituation', () => {
+  it('garde une situation valide, sinon « à égalité »', () => {
+    expect(parseSituation('ahead')).toBe('ahead')
+    expect(parseSituation('behind')).toBe('behind')
+    expect(parseSituation('gagnant')).toBe('even')
+    expect(parseSituation(undefined)).toBe('even')
   })
 })

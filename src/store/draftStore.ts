@@ -16,7 +16,8 @@ import {
 } from '../engine/draft'
 import { buyItem, parseOwnedItems, removeItem, replaceItem } from '../engine/inventory'
 import type { PositionRates } from '../engine/positions'
-import type { Item, Position } from '../engine/types'
+import { parseSituation } from '../engine/situation'
+import type { Item, Position, Situation } from '../engine/types'
 
 /** Clé de la partie en cours dans le stockage local. */
 export const GAME_STORAGE_KEY = 'draftdigger:partie'
@@ -47,6 +48,9 @@ type DraftStore = {
   buyItem: (itemId: string, itemsById: ReadonlyMap<string, Item>) => void
   removeItem: (index: number) => void
   replaceItem: (index: number, itemId: string) => void
+  /** Situation en partie (T6.2) : « à égalité » au début de chaque partie. */
+  situation: Situation
+  setSituation: (situation: Situation) => void
 }
 
 export const useDraftStore = create<DraftStore>()(
@@ -65,7 +69,12 @@ export const useDraftStore = create<DraftStore>()(
       moveEnemy: (from, to, rates) => set((s) => ({ draft: moveEnemy(s.draft, from, to, rates) })),
       unlockEnemy: (index) => set((s) => ({ draft: unlockEnemy(s.draft, index) })),
       newGame: () =>
-        set((s) => ({ draft: newGame(s.draft), forcedBuildId: null, ownedItemIds: [] })),
+        set((s) => ({
+          draft: newGame(s.draft),
+          forcedBuildId: null,
+          ownedItemIds: [],
+          situation: 'even',
+        })),
       forcedBuildId: null,
       forceBuild: (buildId) => set({ forcedBuildId: buildId }),
       ownedItemIds: [],
@@ -74,6 +83,8 @@ export const useDraftStore = create<DraftStore>()(
       removeItem: (index) => set((s) => ({ ownedItemIds: removeItem(s.ownedItemIds, index) })),
       replaceItem: (index, itemId) =>
         set((s) => ({ ownedItemIds: replaceItem(s.ownedItemIds, index, itemId) })),
+      situation: 'even',
+      setSituation: (situation) => set({ situation }),
     }),
     {
       name: GAME_STORAGE_KEY,
@@ -83,6 +94,7 @@ export const useDraftStore = create<DraftStore>()(
         draft: state.draft,
         forcedBuildId: state.forcedBuildId,
         ownedItemIds: state.ownedItemIds,
+        situation: state.situation,
       }),
       // Sauvegarde relue et validée : une sauvegarde illisible repart d'une draft vide.
       merge: (persisted, current) => {
@@ -101,8 +113,13 @@ export const useDraftStore = create<DraftStore>()(
           typeof persisted === 'object' && persisted !== null && 'ownedItemIds' in persisted
             ? parseOwnedItems(persisted.ownedItemIds)
             : []
+        const situation = parseSituation(
+          typeof persisted === 'object' && persisted !== null && 'situation' in persisted
+            ? persisted.situation
+            : undefined,
+        )
         return saved
-          ? { ...current, draft: saved, forcedBuildId: forced, ownedItemIds: owned }
+          ? { ...current, draft: saved, forcedBuildId: forced, ownedItemIds: owned, situation }
           : current
       },
     },

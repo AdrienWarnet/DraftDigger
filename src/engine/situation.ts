@@ -80,3 +80,10 @@ export function withSituation(
     })
     .sort((a, b) => b.score - a.score)
 }
+
+export const SITUATIONS = ['ahead', 'even', 'behind'] as const satisfies readonly Situation[]
+
+/** Relit une situation sauvegardée ; toute autre valeur donne « à égalité ». */
+export function parseSituation(value: unknown): Situation {
+  return (SITUATIONS as readonly unknown[]).includes(value) ? (value as Situation) : 'even'
+}

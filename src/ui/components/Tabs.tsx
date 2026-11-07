@@ -5,7 +5,7 @@ export type TabOption<T extends string> = {
   value: T
   label: string
   /** Teinte de l'onglet actif (ex : vert pour « Devant »). Or par défaut. */
-  tone?: 'accent' | 'ahead' | 'behind'
+  tone?: 'accent' | 'ahead' | 'even' | 'behind'
 }
 
 type TabsProps<T extends string> = {
