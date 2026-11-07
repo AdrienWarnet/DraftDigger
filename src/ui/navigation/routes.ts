@@ -11,7 +11,10 @@ export type ScreenId = (typeof SCREENS)[number]['id']
 /** Page de démonstration des composants, accessible en développement uniquement. */
 export const DEV_SHOWCASE = 'composants'
 
-export type Route = ScreenId | typeof DEV_SHOWCASE
+/** Écran « À propos » (T7.4) : hors barre de navigation, ouvert depuis le pied de page. */
+export const ABOUT = 'a-propos'
+
+export type Route = ScreenId | typeof DEV_SHOWCASE | typeof ABOUT
 
 export const DEFAULT_SCREEN: ScreenId = 'draft'
 
@@ -30,6 +33,7 @@ export function parseRouteParams(hash: string): string[] {
 export function parseRoute(hash: string, options: { allowDevShowcase?: boolean } = {}): Route {
   const id = hash.replace(/^#\/?/, '').split(/[/?]/)[0]
   if (options.allowDevShowcase && id === DEV_SHOWCASE) return DEV_SHOWCASE
+  if (id === ABOUT) return ABOUT
   const screen = SCREENS.find((s) => s.id === id)
   return screen ? screen.id : DEFAULT_SCREEN
 }

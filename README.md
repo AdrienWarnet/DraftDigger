@@ -1,11 +1,82 @@
 # DraftDigger
 WebApp mobile (PWA) d'aide à la décision pour League of Legends. Le joueur crée ses propres builds (runes, sorts, items, conditions d'usage) pour n'importe quel champion, directement dans l'app. À partir de la compo alliée et ennemie, l'app choisit le build le plus adapté et le premier item, puis recommande les items à acheter en cours de partie, avec explications.
 
+**App en ligne : https://adrienwarnet.github.io/DraftDigger/**
+
 Tout tourne en local sur le téléphone, sans serveur. Moteur de règles et calcul de stats, données Data Dragon.
 
 Plus tard : recommandation de pick, données automatiques, backend.
 
-## Démarrer
+## Utiliser l'app
+
+### Installer l'app sur le téléphone
+
+1. Sur le téléphone (Chrome Android), ouvrir **https://adrienwarnet.github.io/DraftDigger/**.
+2. Menu ⋮ → **Installer l'application** (ou « Ajouter à l'écran d'accueil »).
+3. L'icône DraftDigger apparaît avec les autres applis. L'app marche ensuite hors ligne et se met à jour toute seule à l'ouverture suivante d'une nouvelle version.
+
+### Avant la partie
+
+1. **Draft** : choisis ton poste puis ton champion (case dorée « Toi »), ajoute tes alliés poste par poste et les ennemis dans n'importe quel ordre. L'app devine le poste des ennemis ; touche un ennemi pour corriger son poste. Ton vis-à-vis est entouré de rouge.
+2. **Reco** : le build recommandé parmi les tiens pour ce champion à ce poste, son niveau de confiance (touche le badge pour l'explication), le premier item et le « Pourquoi ». « Autres builds possibles » permet d'en jouer un autre.
+3. **Lancer la partie**.
+
+### Pendant la partie
+
+- En haut : ta situation (**Devant** / **Égalité** / **En retard**).
+- **Prochain item** : quoi acheter, pourquoi (touche la raison pour tout voir) et l'autre choix possible.
+- **Mes items** : touche « + » à chaque achat (les items de ton build sont proposés en premier, recherche en français ou en anglais). Touche un item pour le changer ou le retirer s'il est vendu.
+- **Équipe ennemie** (repliée) : corriger un ennemi ou un poste sans repasser par la draft.
+- L'écran reste allumé tant que l'écran Partie est ouvert.
+
+### Créer un build pour un nouveau champion
+
+1. Onglet **Builds** → **Nouveau build**.
+2. **Champion**, **Poste** et nom du build.
+3. **Runes** (arbre principal, rune clé, runes principales, arbre secondaire et ses 2 runes, fragments) et 2 **sorts d'invocateur**.
+4. **Premier item** : une ou plusieurs options ; pour chacune, **Choisir quand le proposer** (ex : « Vis-à-vis AP »).
+5. **Ordre des items** : un item par emplacement ; sous un item, **Ajouter une alternative** et choisis quand la prendre (ex : « Compo majoritairement AP » → Sandales de Mercure).
+6. **Quand jouer ce build** : les conditions qui le font recommander, avec leur poids (faible, moyen, fort).
+7. **Enregistrer**. L'étoile marque ton build **favori** : à égalité, c'est lui qui est proposé.
+
+Pour modifier un build : **Builds** → le build → **Modifier**. **Dupliquer** sert de point de départ pour une variante.
+
+### Sauvegarder ses builds (export / import)
+
+Les builds ne sont enregistrés que sur le téléphone. Dans l'onglet **Builds** :
+
+- **Exporter** crée un fichier JSON (partage Android vers Drive, mail… ou téléchargement). Chaque fiche de build a aussi son bouton **Exporter**.
+- **Importer** relit un fichier : aperçu, puis « Garder les deux » ou « Remplacer » si un build existe déjà.
+- Un rappel s'affiche si des builds n'ont pas été exportés depuis 7 jours.
+
+### Ajouter un preset de condition
+
+Les conditions proposées dans l'éditeur sont dans [data/presets/conditions.json](data/presets/conditions.json). Ajouter une entrée à `presets`, par exemple :
+
+```json
+{
+  "id": "enormement-cc",
+  "label": "Énormément de contrôles",
+  "condition": { "metric": "enemyCcCount", "op": ">=", "value": 8 },
+  "explain": "Ils enchaînent les contrôles : la ténacité devient prioritaire."
+}
+```
+
+Les métriques disponibles (`enemyAdShare`, `enemyApShare`, `enemyCcCount`, `enemyHealCount`, `enemyTankCount`, `enemyBurstCount`, `laneOpponentDamage`, `situation`…) sont décrites dans [docs/TICKETS.md](docs/TICKETS.md), section 3. Puis rebuild et redéploiement (merge sur `main`).
+
+### Corriger les données du jeu (overrides)
+
+Data Dragon ne dit pas tout (soins, anti-tank, répartition AD/AP de certains champions). Les corrections se font sans toucher au code :
+
+- [data/overrides/champions.json](data/overrides/champions.json) : par id de champion, `damage`, `threats` (`cc`, `burst`, `engage`, `heal`, `tank` de 0 à 3), `tags`. Exemple : `"DrMundo": { "threats": { "heal": 3 }, "note": "Régénération massive." }`.
+- [data/overrides/items.json](data/overrides/items.json) : par id d'item, `addCategories` / `removeCategories`. Exemple : `"3036": { "addCategories": ["antitank"] }`.
+- [data/defaults/](data/defaults/) : règles par défaut (menaces par classe de champion, catégories d'items).
+
+Le format est rappelé dans la clé `_format` de chaque fichier. Un id inconnu ou une valeur invalide produit un avertissement dans la console du navigateur, sans bloquer l'app.
+
+## Développement
+
+### Démarrer
 
 Prérequis : Node.js 24+.
 
@@ -13,12 +84,6 @@ Prérequis : Node.js 24+.
 npm install
 npm run dev
 ```
-
-## En ligne
-
-**https://adrienwarnet.github.io/DraftDigger/**
-
-Sur le téléphone (Chrome Android) : ouvrir l'URL, puis menu ⋮ → « Installer l'application ». L'app fonctionne ensuite hors ligne et se met à jour automatiquement à l'ouverture suivante d'une nouvelle version.
 
 ### Déploiement
 
@@ -32,26 +97,11 @@ La branche `gh-pages` est générée par la CI : ne jamais la modifier à la mai
 
 En dev uniquement, `#/composants` affiche tous les composants de base (boutons, cartes, onglets, bandeau « Pourquoi »). Les couleurs, tailles et espacements sont dans [src/ui/theme/tokens.css](src/ui/theme/tokens.css).
 
-### Sauvegarder ses builds
-
-Les builds ne sont enregistrés que sur le téléphone. Dans l'onglet **Builds** : **Exporter** crée un fichier JSON (partage Android vers Drive, mail… ou téléchargement), **Importer** le relit (aperçu, puis « Garder les deux » ou « Remplacer » si un build existe déjà). Un rappel s'affiche si des builds n'ont pas été exportés depuis 7 jours. Chaque fiche de build a aussi son bouton **Exporter**.
-
-### Corriger les données du jeu
-
-Data Dragon ne dit pas tout (soins, anti-tank, répartition AD/AP de certains champions). Les corrections se font sans toucher au code :
-
-- [data/overrides/champions.json](data/overrides/champions.json) : par id de champion, `damage`, `threats` (`cc`, `burst`, `engage`, `heal`, `tank` de 0 à 3), `tags`.
-- [data/overrides/items.json](data/overrides/items.json) : par id d'item, `addCategories` / `removeCategories` (ex : `antitank`).
-- [data/defaults/](data/defaults/) : règles par défaut (menaces par classe de champion, catégories d'items).
-- [data/presets/conditions.json](data/presets/conditions.json) : conditions proposées dans l'éditeur de builds (« Compo majoritairement AP »…) et leurs seuils.
-
-Le format est rappelé dans la clé `_format` de chaque fichier. Un id inconnu ou une valeur invalide produit un avertissement dans la console du navigateur, sans bloquer l'app.
-
 ### Tester sur le téléphone pendant le dev
 
 `npm run dev:phone`, puis ouvrir sur le téléphone l'adresse « Network » affichée (même wifi que le PC). Pas d'installation ni de hors-ligne dans ce mode.
 
-## Commandes
+### Commandes
 
 | Commande               | Rôle                                        |
 | ---------------------- | ------------------------------------------- |
@@ -68,7 +118,7 @@ Le format est rappelé dans la clé `_format` de chaque fichier. Un id inconnu o
 | `npm run generate-icons` | régénère les icônes PWA depuis `public/logo.svg` |
 | `npm run update-positions` | met à jour les taux de jeu par poste (postes ennemis devinés) |
 
-## Structure
+### Structure
 
 ```
 src/

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  ABOUT,
   DEFAULT_SCREEN,
   DEV_SHOWCASE,
   hashFor,
@@ -15,6 +16,11 @@ describe('parseRoute', () => {
 
   it.each(['', '#', '#/', '#/inconnu'])('renvoie l’écran par défaut pour « %s »', (hash) => {
     expect(parseRoute(hash)).toBe(DEFAULT_SCREEN)
+  })
+
+  it('reconnaît l’écran « À propos », hors navigation', () => {
+    expect(parseRoute('#/a-propos')).toBe(ABOUT)
+    expect(SCREENS.map((s) => s.id)).not.toContain(ABOUT)
   })
 
   it('accepte un hash sans barre oblique', () => {
