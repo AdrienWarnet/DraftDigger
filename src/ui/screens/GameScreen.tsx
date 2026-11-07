@@ -1,19 +1,21 @@
 import { useMemo } from 'react'
 import { INVENTORY } from '../../engine/config'
-import type { Situation } from '../../engine/types'
+import { enemyLayout } from '../../engine/draft'
+import { POSITIONS, type Position, type Situation } from '../../engine/types'
 import { nextItemFallbackReason } from '../../engine/explain'
 import { buildSuggestions, componentTarget } from '../../engine/inventory'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { EmptyState } from '../components/EmptyState'
+import { EnemySheet } from '../components/EnemySheet'
 import { GameIcon } from '../components/GameIcon'
 import { ItemPicker } from '../components/ItemPicker'
 import { Sheet } from '../components/Sheet'
 import { Tabs, type TabOption } from '../components/Tabs'
 import { useCatalog } from '../data/gameDataContext'
 import { useGameRecommendation, usePreGameRecommendation } from '../data/useRecommendation'
-import { SITUATION_LABELS } from '../labels'
+import { POSITION_LABELS, SITUATION_LABELS } from '../labels'
 import { goBack, navigate, useRouteParams } from '../navigation/useRoute'
 import styles from './GameScreen.module.css'
 
@@ -25,9 +27,12 @@ const SITUATION_OPTIONS: TabOption<Situation>[] = [
 
 const ADD_PARAM = 'ajouter'
 const ITEM_PARAM = 'item'
+const ENEMY_PARAM = 'ennemi'
 
-/** Panneau ouvert d'après l'URL : `#/partie/ajouter` ou `#/partie/item/2`. */
+/** Panneau ouvert d'après l'URL : `#/partie/ajouter`, `#/partie/item/2` ou `#/partie/ennemi/mid`. */
 function parseSheet(params: readonly string[], ownedCount: number) {
+  const position = POSITIONS.find((p) => p === params[1])
+  if (params[0] === ENEMY_PARAM && position) return { kind: 'enemy', position } as const
   if (params[0] === ADD_PARAM && ownedCount < INVENTORY.maxItems) return { kind: 'add' } as const
   if (params[0] === ITEM_PARAM) {
     const index = Number(params[1])
@@ -49,6 +54,7 @@ export function GameScreen() {
   const setSituation = useDraftStore((s) => s.setSituation)
   const sheet = parseSheet(useRouteParams(), owned.length)
   const next = useGameRecommendation(result, owned, situation)
+  const draft = useDraftStore((s) => s.draft)
 
   const build =
     result.status === 'ready' && result.build.kind === 'ok'
@@ -204,6 +210,13 @@ export function GameScreen() {
         </p>
       </Card>
 
+      <EnemyStrip
+        layout={enemyLayout(draft, catalog.positionRates)}
+        enemies={draft.enemies.map((e) => e.championId)}
+        playerPosition={draft.playerPosition}
+      />
+
+      {sheet?.kind === 'enemy' && <EnemySheet target={sheet.position} onClose={closeSheet} />}
       {sheet?.kind === 'add' && (
         <Sheet title="Item acheté" onClose={closeSheet}>
           <ItemPicker
@@ -247,5 +260,74 @@ export function GameScreen() {
         </Sheet>
       )}
     </>
+  )
+}
+
+/**
+ * Les 5 ennemis par poste, toujours modifiables pendant la partie (T6.4) : un tap ouvre le
+ * panneau pour changer le champion ou corriger son poste. Le vis-à-vis est entouré de rouge.
+ */
+function EnemyStrip({
+  layout,
+  enemies,
+  playerPosition,
+}: {
+  layout: Record<Position, number | null>
+  enemies: readonly string[]
+  playerPosition: Position
+}) {
+  const { championsById } = useCatalog()
+  const opponentIndex = layout[playerPosition]
+  const opponentId = opponentIndex === null ? null : enemies[opponentIndex]
+  const opponent = opponentId ? (championsById.get(opponentId)?.name ?? opponentId) : null
+  // Résumé visible fermé : nombre d'ennemis et vis-à-vis.
+  const summary = `${enemies.length}/5${opponent ? ` · vis-à-vis : ${opponent}` : ''}`
+  return (
+    <details className={styles.enemies} aria-labelledby="partie-ennemis">
+      <summary className={styles.enemiesHeader}>
+        <span id="partie-ennemis" className={styles.enemiesTitle}>
+          Équipe ennemie
+        </span>
+        <span className={styles.enemiesHint}>{summary}</span>
+      </summary>
+      <p className={styles.enemiesHint}>Reprise de ta draft · touche un ennemi pour le modifier.</p>
+      <ul className={styles.enemyList}>
+        {POSITIONS.map((position) => {
+          const index = layout[position]
+          const id = index === null ? null : (enemies[index] ?? null)
+          const champion = id ? (championsById.get(id) ?? null) : null
+          const label = POSITION_LABELS[position]
+          const opponent = position === playerPosition
+          return (
+            <li key={position}>
+              <button
+                type="button"
+                className={styles.enemy}
+                data-opponent={opponent || undefined}
+                onClick={() => navigate('partie', ENEMY_PARAM, position)}
+                aria-label={`${opponent ? 'Ton vis-à-vis' : 'Ennemi'} ${label} : ${
+                  id ? `${champion?.name ?? id}, modifier` : 'ajouter'
+                }`}
+              >
+                {id ? (
+                  <GameIcon
+                    entry={champion ? { name: champion.name, icon: champion.image } : null}
+                    fallbackId={id}
+                    size={40}
+                    shape="round"
+                    label=""
+                  />
+                ) : (
+                  <span className={styles.enemyEmpty} aria-hidden="true">
+                    +
+                  </span>
+                )}
+                <span className={styles.enemyPosition}>{label}</span>
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+    </details>
   )
 }
