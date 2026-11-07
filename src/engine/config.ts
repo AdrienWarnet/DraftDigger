@@ -110,3 +110,10 @@ export const SITUATIONAL_ITEMS = {
   /** Nombre de propositions retenues (la meilleure et ses alternatives). */
   count: 3,
 } as const
+
+/** Inventaire en partie (T6.1). */
+export const INVENTORY = {
+  // 6 emplacements comme dans le jeu, bottes comprises (validé par le joueur).
+  /** Nombre d'items possédés au plus. */
+  maxItems: 6,
+} as const

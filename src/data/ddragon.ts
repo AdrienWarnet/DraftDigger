@@ -1,5 +1,6 @@
 import type {
   DDragonData,
+  ItemNameEn,
   RawChampion,
   RawItem,
   RawRuneTree,
@@ -8,11 +9,13 @@ import type {
 
 export const DDRAGON_BASE_URL = 'https://ddragon.leagueoflegends.com'
 export const DDRAGON_LOCALE = 'fr_FR'
+/** Langue des noms d'items en plus du français, pour la recherche. */
+export const DDRAGON_SEARCH_LOCALE = 'en_US'
 
 /** Clé du cache dans le stockage local. Une seule version est gardée. */
 export const DDRAGON_CACHE_KEY = 'draftdigger:ddragon'
 /** À incrémenter si le format de `DDragonData` change : l'ancien cache sera ignoré. */
-const CACHE_FORMAT = 1
+const CACHE_FORMAT = 2
 /** Au-delà, on considère le réseau indisponible (connexion très lente en partie). */
 const DEFAULT_TIMEOUT_MS = 8000
 
@@ -20,8 +23,8 @@ type DataFile = 'champion' | 'item' | 'runesReforged' | 'summoner'
 
 export const ddragonUrls = {
   versions: () => `${DDRAGON_BASE_URL}/api/versions.json`,
-  data: (version: string, file: DataFile) =>
-    `${DDRAGON_BASE_URL}/cdn/${version}/data/${DDRAGON_LOCALE}/${file}.json`,
+  data: (version: string, file: DataFile, locale: string = DDRAGON_LOCALE) =>
+    `${DDRAGON_BASE_URL}/cdn/${version}/data/${locale}/${file}.json`,
   championImage: (version: string, file: string) =>
     `${DDRAGON_BASE_URL}/cdn/${version}/img/champion/${file}`,
   itemImage: (version: string, file: string) =>
@@ -57,7 +60,7 @@ export class DDragonError extends Error {
 /**
  * Charge les données du dernier patch.
  * - Version inchangée depuis le dernier chargement : seul `versions.json` est téléchargé.
- * - Nouvelle version : les 4 fichiers sont téléchargés et remplacent le cache.
+ * - Nouvelle version : les 4 fichiers (et les noms anglais des items) sont téléchargés et remplacent le cache.
  * - Réseau indisponible : le cache est utilisé (`stale: true`) ; sans cache, `DDragonError`.
  */
 export async function loadDDragon(deps: DDragonDeps = defaultDeps()): Promise<DDragonLoadResult> {
@@ -94,18 +97,21 @@ export async function fetchLatestVersion(deps: DDragonDeps): Promise<string> {
 }
 
 async function fetchPatchData(version: string, deps: DDragonDeps): Promise<DDragonData> {
-  const [champions, items, runeTrees, summonerSpells] = await Promise.all([
+  const [champions, items, runeTrees, summonerSpells, itemsEn] = await Promise.all([
     fetchJson(ddragonUrls.data(version, 'champion'), deps),
     fetchJson(ddragonUrls.data(version, 'item'), deps),
     fetchJson(ddragonUrls.data(version, 'runesReforged'), deps),
     fetchJson(ddragonUrls.data(version, 'summoner'), deps),
+    // Noms anglais : facultatifs, leur échec ne bloque pas le chargement.
+    fetchJson(ddragonUrls.data(version, 'item', DDRAGON_SEARCH_LOCALE), deps).catch(() => null),
   ])
-  const data = {
+  const data: DDragonData = {
     version,
     champions: dataField(champions) as Record<string, RawChampion>,
     items: dataField(items) as Record<string, RawItem>,
     runeTrees: runeTrees as RawRuneTree[],
     summonerSpells: dataField(summonerSpells) as Record<string, RawSummonerSpell>,
+    itemNamesEn: itemNames(dataField(itemsEn)),
   }
   if (!isDDragonData(data)) throw new DDragonError(`Fichiers du patch ${version} inattendus.`)
   return data
@@ -121,6 +127,18 @@ async function fetchJson(url: string, deps: DDragonDeps): Promise<unknown> {
   } finally {
     clearTimeout(timer)
   }
+}
+
+/** Garde seulement le nom et les surnoms de chaque item (le cache reste léger). */
+function itemNames(items: unknown): Record<string, ItemNameEn> {
+  if (!isRecord(items)) return {}
+  const names: Record<string, ItemNameEn> = {}
+  for (const [id, raw] of Object.entries(items)) {
+    if (!isRecord(raw) || typeof raw.name !== 'string') continue
+    names[id] =
+      typeof raw.colloq === 'string' ? { name: raw.name, colloq: raw.colloq } : { name: raw.name }
+  }
+  return names
 }
 
 function dataField(file: unknown): unknown {

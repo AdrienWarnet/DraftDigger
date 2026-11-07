@@ -20,6 +20,9 @@ function patchFiles(version: string): Record<string, unknown> {
     [ddragonUrls.data(version, 'item')]: { data: { '3065': { name: 'Visage spirituel' } } },
     [ddragonUrls.data(version, 'runesReforged')]: [{ id: 8100, key: 'Domination', slots: [] }],
     [ddragonUrls.data(version, 'summoner')]: { data: { SummonerFlash: { id: 'SummonerFlash' } } },
+    [ddragonUrls.data(version, 'item', 'en_US')]: {
+      data: { '3065': { name: 'Spirit Visage', colloq: 'sv', description: '…' } },
+    },
   }
 }
 
@@ -63,7 +66,14 @@ afterEach(() => {
 // --- Tests --------------------------------------------------------------------
 
 describe('loadDDragon', () => {
-  it('1er lancement : télécharge la version puis les 4 fichiers en fr_FR, et les met en cache', async () => {
+  it('noms anglais indisponibles : le chargement réussit quand même', async () => {
+    const { deps } = setup({ failingFiles: ['/en_US/'] })
+    const result = await loadDDragon(deps)
+    expect(result.source).toBe('network')
+    expect(result.data.itemNamesEn).toEqual({})
+  })
+
+  it('1er lancement : télécharge la version, les 4 fichiers en fr_FR et les noms anglais des items, et les met en cache', async () => {
     const { fetch, storage, deps } = setup()
 
     const result = await loadDDragon(deps)
@@ -73,10 +83,12 @@ describe('loadDDragon', () => {
     expect(result.data.version).toBe('16.22.1')
     expect(Object.keys(result.data.champions)).toEqual(['Yorick'])
     expect(result.data.runeTrees).toHaveLength(1)
-    expect(fetch).toHaveBeenCalledTimes(5)
+    expect(fetch).toHaveBeenCalledTimes(6)
     const urls = fetch.mock.calls.map(([url]) => String(url))
     expect(urls).toContain(ddragonUrls.versions())
     expect(urls.filter((u) => u.includes('/16.22.1/data/fr_FR/'))).toHaveLength(4)
+    // Noms anglais des items : seulement le nom et les surnoms, pour la recherche.
+    expect(result.data.itemNamesEn).toEqual({ '3065': { name: 'Spirit Visage', colloq: 'sv' } })
     expect(storage.getItem(DDRAGON_CACHE_KEY)).toContain('16.22.1')
   })
 
@@ -93,7 +105,7 @@ describe('loadDDragon', () => {
     expect(String(fetch.mock.calls[0]?.[0])).toBe(ddragonUrls.versions())
   })
 
-  it('nouveau patch : recharge les 4 fichiers et remplace le cache', async () => {
+  it('nouveau patch : recharge les fichiers et remplace le cache', async () => {
     const { server, fetch, storage, deps } = setup()
     await loadDDragon(deps)
     server.latest = '16.23.1'
@@ -103,7 +115,7 @@ describe('loadDDragon', () => {
 
     expect(result.source).toBe('network')
     expect(result.data.version).toBe('16.23.1')
-    expect(fetch).toHaveBeenCalledTimes(5)
+    expect(fetch).toHaveBeenCalledTimes(6)
     expect(storage.getItem(DDRAGON_CACHE_KEY)).toContain('16.23.1')
     expect(storage.getItem(DDRAGON_CACHE_KEY)).not.toContain('16.22.1')
   })
@@ -149,7 +161,7 @@ describe('loadDDragon', () => {
     const result = await loadDDragon(deps)
 
     expect(result.source).toBe('network')
-    expect(fetch).toHaveBeenCalledTimes(5)
+    expect(fetch).toHaveBeenCalledTimes(6)
   })
 
   it('cache d’un ancien format : l’ignore', async () => {
@@ -158,7 +170,7 @@ describe('loadDDragon', () => {
 
     await loadDDragon(deps)
 
-    expect(fetch).toHaveBeenCalledTimes(5)
+    expect(fetch).toHaveBeenCalledTimes(6)
   })
 
   it('stockage plein : renvoie quand même les données', async () => {

@@ -118,3 +118,18 @@ describe('parseItemCategoryRules', () => {
     expect(() => parseItemCategoryRules({ fromDescription: {} })).toThrow('« fromTags »')
   })
 })
+
+describe('buildItems : noms anglais', () => {
+  it('ajoute le nom et les surnoms anglais aux alias, sans doublon', () => {
+    const withEn = buildItems({
+      version: fixture.version,
+      items: raw,
+      itemNamesEn: { '3065': { name: 'Spirit Visage', colloq: 'sv;Spirit Visage' } },
+    })
+    expect(withEn.find((i) => i.id === '3065')?.aliases).toEqual(['Spirit Visage', 'sv'])
+  })
+
+  it('sans noms anglais, les alias restent ceux du français', () => {
+    expect(byId['3065']?.aliases).not.toContain('Spirit Visage')
+  })
+})
