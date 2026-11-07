@@ -126,8 +126,8 @@ export const INPUT_SHORTCUTS = {
 
 /** Choix du modèle de build générique (epic 10) : points par critère commun avec le champion. */
 export const TEMPLATE_MATCH = {
-  /** Par tag Data Dragon commun (Fighter, Mage…). */
-  tag: 2,
+  /** Par tag Data Dragon commun (Fighter, Mage…) : la classe compte plus que les dégâts seuls. */
+  tag: 3,
   /** Même type de dégâts principal (AD / AP) ; retirés si le modèle vise l'autre type. */
-  damage: 3,
+  damage: 2,
 } as const

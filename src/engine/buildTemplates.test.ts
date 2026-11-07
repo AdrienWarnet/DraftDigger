@@ -59,16 +59,13 @@ describe('pickTemplate : 5 profils de champions', () => {
   })
 
   it('modifier les modèles change le choix', () => {
-    const edited = [
+    const tankOnly = [template('tank-top', { positions: ['top'], tags: ['Tank'] }), ...TEMPLATES]
+    expect(pickTemplate(champion('Darius'), 'top', tankOnly)?.template.id).toBe('combattant-ad')
+    const both = [
       template('tank-top', { positions: ['top'], tags: ['Fighter', 'Tank'] }),
       ...TEMPLATES,
     ]
-    expect(pickTemplate(champion('Darius'), 'top', edited)?.template.id).toBe('combattant-ad')
-    const heavier = [
-      template('tank-top', { positions: ['top'], tags: ['Fighter', 'Tank'], damage: 'ad' }),
-      ...TEMPLATES,
-    ]
-    expect(pickTemplate(champion('Darius'), 'top', heavier)?.template.id).toBe('tank-top')
+    expect(pickTemplate(champion('Darius'), 'top', both)?.template.id).toBe('tank-top')
   })
 })
 
