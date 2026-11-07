@@ -551,6 +551,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 **Quoi** : filet de sécurité avant l'UI.
 **À faire**
+- [ ] Fonctions d'enchaînement du moteur (pures, écrites ici pour tester de bout en bout ; T5.1, T5.2 et T6.3 les branchent à l'écran) : `recommendBuild`, `recommendFirstItem`, `recommendNextItem` (règles de T5.1, T5.2, T6.3 et section 4).
 - [ ] Fixtures de 5 compos (full AD, full AP, mixte, beaucoup de CC, beaucoup de soin).
 - [ ] Un test de bout en bout par compo : choix du build, premier item, 2 items suivants.
 - [ ] Un test avec draft vide.
@@ -566,7 +567,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 **Quoi** : appeler le moteur pour choisir parmi les builds du champion et du poste joués.
 **À faire**
-- [ ] `recommendBuild(builds, metrics)` utilisant les `useWhen` des builds (l'appelant passe les builds de `playerChampionId` + `playerPosition`).
+- [ ] `recommendBuild` (écrit et testé en T4.6) utilisant les `useWhen` des builds du champion et du poste joués : à brancher sur l'écran.
 - [ ] Départage : le favori l'emporte s'il est à égalité en tête ; sinon les builds ex aequo sont tous proposés. Sans condition vraie, le favori est proposé.
 - [ ] Un seul build : il est retenu, confiance selon les ennemis connus.
 - [ ] Aucun build pour ce champion à ce poste, mais des builds à d'autres postes : ils sont proposés avec la mention « build prévu pour <poste> », confiance « low ».
@@ -579,7 +580,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 **Quoi** : départager les 2-3 options de premier item du build retenu.
 **À faire**
-- [ ] `recommendFirstItem(build, metrics, situation)` avec les `useWhen` de chaque option.
+- [ ] `recommendFirstItem` (écrit et testé en T4.6) avec les `useWhen` de chaque option : à brancher sur l'écran.
 - [ ] Le **vis-à-vis de lane** pèse plus que le reste de l'équipe : utiliser `laneOpponentDamage` en priorité (par exemple poids élevé dans les `useWhen`), garder les autres métriques comme départage.
 
 **Terminé quand** : vis-à-vis AP → l'option RM est choisie ; vis-à-vis AD → l'option armure ; test dédié.
@@ -638,7 +639,7 @@ Toute cette epic est du TypeScript pur, sans React, avec des tests.
 
 **Quoi** : dire quoi acheter ensuite, et pourquoi.
 **À faire**
-- [ ] `recommendNextItem(build, ownedItems, metrics, situation)` :
+- [ ] `recommendNextItem(build, ownedItems, metrics, situation)` (écrit et testé en T4.6, à brancher sur l'écran) :
   1. Trouver le premier `slot` du `itemOrder` pas encore couvert. Un slot est couvert si on possède son `default` ou l'une de ses alternatives (item final) ; un composant possédé ne couvre pas le slot mais s'affiche comme progression.
   2. Candidats : le `default` + les alternatives dont toutes les conditions `when` sont vraies. Score selon la formule de la section 4 (« Échelle unique des scores »).
   3. Retourner une `Recommendation<Item>` avec les raisons.

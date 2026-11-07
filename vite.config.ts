@@ -56,5 +56,13 @@ export default defineConfig({
   test: {
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     passWithNoTests: true,
+    // Couverture du moteur (objectif > 80 %, docs/TICKETS.md T4.6) : npm run test:coverage
+    coverage: {
+      provider: 'v8',
+      include: ['src/engine/**/*.ts'],
+      exclude: ['**/*.test.ts', '**/__fixtures__/**'],
+      reporter: ['text-summary', 'text'],
+      thresholds: { lines: 80, statements: 80, functions: 80, branches: 80 },
+    },
   },
 })
