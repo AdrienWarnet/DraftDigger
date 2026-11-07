@@ -67,3 +67,13 @@ export function toSentence(text: string): string {
   const capitalized = trimmed.charAt(0).toLocaleUpperCase('fr') + trimmed.slice(1)
   return /[.!?…]$/.test(capitalized) ? capitalized : `${capitalized}.`
 }
+
+/**
+ * Raison affichée quand aucune condition du build choisi n'est vraie :
+ * dit pourquoi ce build quand même (seul build, favori, ou par défaut).
+ */
+export function buildChoiceFallbackReason(candidateCount: number, isFavorite: boolean): string {
+  if (candidateCount <= 1) return "C'est ton seul build pour ce champion à ce poste."
+  if (isFavorite) return 'Aucune condition ne départage tes builds : voici ton favori.'
+  return "Aucune condition de tes builds ne s'applique à cette partie : voici le premier."
+}

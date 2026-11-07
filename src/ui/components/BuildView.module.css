@@ -8,6 +8,13 @@
   border-radius: var(--radius-lg);
 }
 
+/* Dans une autre carte (ex : recommandation) : pas de second cadre. */
+.build[data-embedded] {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
 .header {
   display: flex;
   align-items: center;

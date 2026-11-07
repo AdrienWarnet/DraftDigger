@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import example from '../../data/builds/example.json'
 import { defensiveGain } from './defense'
 import { scoreOptions } from './evaluate'
-import { buildReasons, defensiveReason, toSentence } from './explain'
+import { buildChoiceFallbackReason, buildReasons, defensiveReason, toSentence } from './explain'
 import type { Metrics } from './metrics'
 import type { Build, Item } from './types'
 
@@ -107,5 +107,17 @@ describe('toSentence', () => {
     expect(toSentence('  ils se   soignent ')).toBe('Ils se soignent.')
     expect(toSentence('Déjà une phrase !')).toBe('Déjà une phrase !')
     expect(toSentence('  ')).toBe('')
+  })
+})
+
+describe('buildChoiceFallbackReason', () => {
+  it('seul build, favori, ou premier build', () => {
+    expect(buildChoiceFallbackReason(1, false)).toBe(
+      "C'est ton seul build pour ce champion à ce poste.",
+    )
+    expect(buildChoiceFallbackReason(2, true)).toBe(
+      'Aucune condition ne départage tes builds : voici ton favori.',
+    )
+    expect(buildChoiceFallbackReason(3, false)).toContain('voici le premier')
   })
 })
