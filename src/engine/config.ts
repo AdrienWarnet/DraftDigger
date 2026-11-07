@@ -117,3 +117,9 @@ export const INVENTORY = {
   /** Nombre d'items possédés au plus. */
   maxItems: 6,
 } as const
+
+/** Raccourcis de saisie (T7.3). */
+export const INPUT_SHORTCUTS = {
+  /** Nombre de champions récents proposés en tête du sélecteur. */
+  recentChampions: 12,
+} as const

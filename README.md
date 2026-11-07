@@ -21,6 +21,14 @@ Plus tard : recommandation de pick, données automatiques, backend.
 2. **Reco** : le build recommandé parmi les tiens pour ce champion à ce poste, son niveau de confiance (touche le badge pour l'explication), le premier item et le « Pourquoi ». « Autres builds possibles » permet d'en jouer un autre.
 3. **Lancer la partie**.
 
+**Saisie rapide** : touche la première case alliée vide, puis choisis les champions à la suite, le sélecteur passe tout seul au poste suivant. Même chose avec **Ajouter un ennemi**, qui reste ouvert jusqu'au 5e. Les champions récents sont proposés en tête ; sinon, tape 2 ou 3 lettres puis Entrée ou touche le champion surligné.
+
+| Saisie (mesurée, T7.3)                                    | Taps à l'écran            |
+| --------------------------------------------------------- | ------------------------- |
+| Draft complète (4 alliés + 5 ennemis, ton champion gardé) | **11** (objectif ≤ 12)    |
+| … avec la recherche au lieu des récents                   | 11 + 2 à 3 lettres par champion |
+| Un item acheté (« + » puis l'item de ton build)           | **2**                     |
+
 ### Pendant la partie
 
 - En haut : ta situation (**Devant** / **Égalité** / **En retard**).

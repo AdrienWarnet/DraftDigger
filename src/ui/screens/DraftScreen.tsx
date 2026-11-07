@@ -3,6 +3,7 @@ import {
   enemyLayout,
   hasDraftContent,
   MAX_ENEMIES,
+  nextEmptyAllyPosition,
   pickedChampionIds,
   type Draft,
 } from '../../engine/draft'
@@ -17,7 +18,7 @@ import { Sheet } from '../components/Sheet'
 import { Tabs } from '../components/Tabs'
 import { useCatalog } from '../data/gameDataContext'
 import { POSITION_LABELS } from '../labels'
-import { goBack, navigate, useRouteParams } from '../navigation/useRoute'
+import { goBack, navigate, replaceRoute, useRouteParams } from '../navigation/useRoute'
 import {
   encodePickerTarget,
   parsePickerTarget,
@@ -33,6 +34,7 @@ export function DraftScreen() {
   const setAlly = useDraftStore((s) => s.setAlly)
   const startNewGame = useDraftStore((s) => s.newGame)
   const hasItems = useDraftStore((s) => s.ownedItemIds.length > 0)
+  const recentIds = useDraftStore((s) => s.recentChampionIds)
   const [confirmingReset, setConfirmingReset] = useState(false)
 
   const layout = enemyLayout(draft, positionRates)
@@ -50,9 +52,17 @@ export function DraftScreen() {
   const currentId = target?.team === 'ally' ? draft.allies[target.position] : null
 
   // Sélecteur d'un allié (les ennemis passent par EnemySheet, partagé avec l'écran Partie).
+  // Saisie enchaînée (T7.3) : une case vide remplie, le sélecteur passe au poste vide suivant.
   function handleSelect(selected: Champion) {
-    if (target?.team === 'ally') setAlly(target.position, selected.id)
-    closePicker()
+    if (target?.team !== 'ally') return closePicker()
+    const wasEmpty = draft.allies[target.position] === null
+    setAlly(target.position, selected.id)
+    const next = wasEmpty
+      ? nextEmptyAllyPosition(useDraftStore.getState().draft, target.position)
+      : null
+    if (next)
+      replaceRoute('draft', PICKER_PARAM, encodePickerTarget({ team: 'ally', position: next }))
+    else closePicker()
   }
 
   function handleRemove() {
@@ -163,7 +173,12 @@ export function DraftScreen() {
             )
           }
         >
-          <ChampionPicker champions={available} onSelect={handleSelect} />
+          <ChampionPicker
+            key={encodePickerTarget(target)}
+            champions={available}
+            onSelect={handleSelect}
+            recentIds={recentIds}
+          />
         </Sheet>
       )}
       {target?.team === 'enemy' && <EnemySheet target={target.position} onClose={closePicker} />}

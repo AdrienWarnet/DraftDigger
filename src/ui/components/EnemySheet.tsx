@@ -1,4 +1,5 @@
-import { enemyLayout, pickedChampionIds } from '../../engine/draft'
+import { useState } from 'react'
+import { enemyLayout, MAX_ENEMIES, pickedChampionIds } from '../../engine/draft'
 import { POSITIONS, type Champion, type Position } from '../../engine/types'
 import { useDraftStore } from '../../store/draftStore'
 import { useCatalog } from '../data/gameDataContext'
@@ -27,6 +28,9 @@ export function EnemySheet({ target, onClose }: EnemySheetProps) {
   const removeEnemy = useDraftStore((s) => s.removeEnemy)
   const moveEnemy = useDraftStore((s) => s.moveEnemy)
   const unlockEnemy = useDraftStore((s) => s.unlockEnemy)
+  const recentIds = useDraftStore((s) => s.recentChampionIds)
+  // Ajouts enchaînés (T7.3) : le sélecteur reste ouvert jusqu'à 5 ennemis.
+  const [round, setRound] = useState(0)
 
   const layout = enemyLayout(draft, positionRates)
   const index = target === 'new' ? null : layout[target]
@@ -39,8 +43,13 @@ export function EnemySheet({ target, onClose }: EnemySheetProps) {
   const available = champions.filter((c) => !picked.has(c.id) || c.id === pick?.championId)
 
   function handleSelect(selected: Champion) {
-    if (target === 'new') addEnemy(selected.id)
-    else if (index === null) addEnemy(selected.id, target)
+    if (target === 'new') {
+      addEnemy(selected.id)
+      if (useDraftStore.getState().draft.enemies.length < MAX_ENEMIES) {
+        setRound((r) => r + 1)
+        return
+      }
+    } else if (index === null) addEnemy(selected.id, target)
     else replaceEnemy(index, selected.id)
     onClose()
   }
@@ -52,7 +61,11 @@ export function EnemySheet({ target, onClose }: EnemySheetProps) {
 
   return (
     <Sheet
-      title={target === 'new' ? 'Ajouter un ennemi' : `Ennemi ${POSITION_LABELS[target]}`}
+      title={
+        target === 'new'
+          ? `Ajouter un ennemi (${draft.enemies.length + 1}/${MAX_ENEMIES})`
+          : `Ennemi ${POSITION_LABELS[target]}`
+      }
       onClose={onClose}
       action={
         currentName && (
@@ -96,7 +109,13 @@ export function EnemySheet({ target, onClose }: EnemySheetProps) {
           </div>
         </section>
       )}
-      <ChampionPicker champions={available} onSelect={handleSelect} autoFocus={!pick} />
+      <ChampionPicker
+        key={round}
+        champions={available}
+        onSelect={handleSelect}
+        autoFocus={!pick}
+        recentIds={recentIds}
+      />
     </Sheet>
   )
 }
