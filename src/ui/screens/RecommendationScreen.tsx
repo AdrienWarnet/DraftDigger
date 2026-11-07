@@ -1,6 +1,9 @@
+import { createBuildId } from '../../data/localBuildRepository'
+import { templateIssues } from '../../engine/buildTemplates'
 import { buildChoiceFallbackReason, confidenceExplanation } from '../../engine/explain'
 import type { Metrics } from '../../engine/metrics'
 import type { Position } from '../../engine/types'
+import { useBuildsStore } from '../../store/buildsStore'
 import { useDraftStore } from '../../store/draftStore'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
@@ -18,6 +21,7 @@ export function RecommendationScreen() {
   const catalog = useCatalog()
   const playerPosition = useDraftStore((s) => s.draft.playerPosition)
   const forceBuild = useDraftStore((s) => s.forceBuild)
+  const saveBuild = useBuildsStore((s) => s.save)
   const result = usePreGameRecommendation()
 
   if (result.status === 'loading') {
@@ -51,9 +55,15 @@ export function RecommendationScreen() {
     )
   }
 
-  const { recommendation, tied, fallbackPosition } = result.build
+  const { recommendation, tied, fallbackPosition, generic } = result.build
   const build = recommendation.choice
   const firstItem = result.firstItem ? catalog.itemsById.get(result.firstItem.choice) : undefined
+  // Build générique (epic 10) : ids absents du patch signalés, copie en un vrai build modifiable.
+  const patchIssues = generic ? templateIssues(generic.template, catalog) : []
+  async function copyGenericBuild() {
+    const saved = await saveBuild({ ...build, id: createBuildId() })
+    navigate('builds', 'modifier', saved.id)
+  }
 
   return (
     <>
@@ -74,7 +84,11 @@ export function RecommendationScreen() {
         </p>
       )}
 
-      <Card title={result.forced ? 'Build choisi par toi' : 'Build recommandé'}>
+      <Card
+        title={
+          generic ? 'Build générique' : result.forced ? 'Build choisi par toi' : 'Build recommandé'
+        }
+      >
         {result.forced ? (
           <Button variant="ghost" className={styles.reset} onClick={() => forceBuild(null)}>
             Revenir à la recommandation
@@ -104,6 +118,7 @@ export function RecommendationScreen() {
             <p className="muted">
               {championName}, {POSITION_LABELS[build.position]}
               {build.favorite ? ', favori' : ''}
+              {generic ? ', modèle générique' : ''}
             </p>
           </div>
         </div>
@@ -157,9 +172,22 @@ export function RecommendationScreen() {
                 ]
           }
         />
-        <Button variant="ghost" onClick={() => navigate('builds', 'voir', build.id)}>
-          Voir le build complet
-        </Button>
+        {generic ? (
+          <>
+            {patchIssues.length > 0 && (
+              <p className={styles.notice}>
+                Ce modèle date d’un autre patch : {patchIssues.map((i) => i.message).join(' ')}
+              </p>
+            )}
+            <Button variant="secondary" onClick={() => void copyGenericBuild()}>
+              Copier dans mes builds
+            </Button>
+          </>
+        ) : (
+          <Button variant="ghost" onClick={() => navigate('builds', 'voir', build.id)}>
+            Voir le build complet
+          </Button>
+        )}
         {recommendation.alternatives.length > 0 && (
           <details className={styles.others}>
             <summary>

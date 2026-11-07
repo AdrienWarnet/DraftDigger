@@ -34,11 +34,16 @@ describe('buildRuneCatalog (patch 16.22.1)', () => {
   })
 
   it('garde uniquement les sorts de la Faille', () => {
-    // Tri par nom français : Châtiment, Embrasement, Saut éclair, Téléportation.
+    // Les 9 sorts de la Faille, triés par nom français (Barrière, Châtiment… Téléportation).
     expect(catalog.summonerSpells.map((s) => s.id)).toEqual([
+      'SummonerBarrier',
       'SummonerSmite',
       'SummonerDot',
+      'SummonerHaste',
+      'SummonerExhaust',
+      'SummonerBoost',
       'SummonerFlash',
+      'SummonerHeal',
       'SummonerTeleport',
     ])
     expect(catalog.summonerSpellsById.get('SummonerSnowball')).toBeUndefined()

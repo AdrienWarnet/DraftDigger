@@ -10,8 +10,8 @@ Le moteur est **générique** : aucun code spécifique à un champion. L'app dé
 
 ## Périmètre actuel
 MVP (epics 0 à 7) terminé et en ligne. Tout tourne sur le téléphone : aucun serveur.
-Ne PAS faire : backend, comptes, lecture de partie en direct, recommandation de pick, données automatiques (stats de builds), éditeur avancé de conditions.
-En cours : epic 8 (quêtes de rôle, effets dans `data/role-quests.json`). Plus tard : epic 9 (ajustements après parties réelles).
+Ne PAS faire : backend, comptes, lecture de partie en direct, recommandation de pick, éditeur avancé de conditions, récupération de données sur les sites de stats.
+Epic 8 (quêtes de rôle) terminée. Prévu : epic 10 (builds génériques), epic 11 (builds populaires du patch via l'API officielle de Riot, script lancé sur le PC). Plus tard : epic 9 (ajustements après parties réelles).
 Un backend viendra probablement plus tard (calculs plus lourds, synchro) : l'accès aux builds passe par une interface `BuildRepository` pour pouvoir changer d'implémentation sans toucher au moteur ni à l'UI.
 
 ## Stack

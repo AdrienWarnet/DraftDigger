@@ -15,7 +15,7 @@ Le moteur doit être **générique** (aucun code spécifique à un champion). Au
 
 **Tout tourne sur le téléphone** : aucun serveur dans le MVP. Un backend viendra probablement plus tard (calculs plus lourds, synchro) : l'accès aux builds passe donc par une interface `BuildRepository` remplaçable.
 
-Hors MVP (ne pas le faire) : lecture de la partie en direct, backend, comptes utilisateurs, recommandation de pick, données automatiques (stats de builds), éditeur avancé de conditions (voir « Plus tard »).
+Hors MVP (ne pas le faire) : lecture de la partie en direct, backend, comptes utilisateurs, recommandation de pick, éditeur avancé de conditions (voir « Plus tard »). Les builds calculés depuis l'API Riot sont prévus en epic 11.
 
 ## 1. Choix techniques (à suivre sauf bonne raison contraire)
 
@@ -768,6 +768,92 @@ Source des effets : le wiki officiel (https://wiki.leagueoflegends.com/en-us/Rol
 
 ---
 
+# EPIC 10 – Builds génériques
+
+Pour un champion sans build du joueur, l'app propose un **build générique** choisi d'après le profil du champion (classe, type de dégâts) et le poste joué. Tout reste hors ligne. Ordre de priorité : les builds du joueur (au poste joué, puis à un autre poste, règle actuelle de T5.1), puis le build populaire du patch (epic 11), puis le build générique.
+
+### T10.1 – Modèles de build et choix du modèle (M)
+
+**Quoi** : décrire des modèles de build dans un fichier, et choisir le bon pour un champion et un poste.
+**À faire**
+- [ ] `data/templates/builds.json` : liste de modèles. Un modèle = un build sans champion (runes, sorts, options de premier item, ordre des items avec alternatives, `useWhen`) + un nom (« Mage AP mid ») + `match` : postes visés, tags Data Dragon visés (`Fighter`, `Mage`, `Marksman`, `Tank`, `Support`, `Assassin`), type de dégâts (`ad` / `ap`, d'après `mainDamage`).
+- [ ] Validation au chargement avec le schéma des builds (Zod) : un modèle invalide est ignoré avec un avertissement qui le désigne, sans bloquer l'app.
+- [ ] `pickTemplate(champion, position, templates)` dans `src/engine` : poste obligatoire, puis score = tags communs + type de dégâts identique (poids dans `src/engine/config.ts`) ; à égalité, l'ordre du fichier. Renvoie le modèle et la raison du choix (« Ahri est une mage AP »).
+- [ ] Contrôle des ids d'items et de runes contre le patch courant (même règle que T3.9) : un id disparu est signalé.
+
+**Terminé quand** : tests sur 5 champions de profils différents (combattant AD, mage AP, tireur, tank, enchanteur), et modifier le fichier change le modèle choisi.
+**Dépend de** : T3.1, T3.9, T5.1.
+
+### T10.2 – Contenu des modèles (M)
+
+**Quoi** : écrire les premiers modèles, à valider par le joueur.
+**À faire**
+- [ ] Une première version proposée par Claude Code, au patch courant : au moins un modèle par poste et par profil courant (top : combattant AD, tank ; jungle : combattant AD, assassin AD, tank ; mid : mage AP, assassin AD et AP ; bot : tireur ; support : enchanteur, tank, mage). Alternatives et conditions reprises des presets existants.
+- [ ] Modèles relus et validés par le joueur (runes, sorts, items) avant fusion ; corrections faites dans le fichier, pas dans le code.
+- [ ] Chaque modèle passe la validation de T10.1 et le contrôle des ids au patch courant.
+
+**Terminé quand** : chaque poste a au moins un modèle, tous valides au patch courant et validés par le joueur.
+**Dépend de** : T10.1.
+
+### T10.3 – Build générique dans la Reco et la Partie (M)
+
+**Quoi** : proposer le build générique quand le joueur n'en a pas, et le copier en un tap.
+**À faire**
+- [ ] `recommendBuild` : sans build du joueur pour ce champion, renvoyer le build générique (le modèle appliqué au champion), confiance faible, avec la raison du choix du modèle.
+- [ ] Écran Reco : titre « Build générique », raison (« Aucun build pour Ahri : modèle Mage AP mid, car Ahri est une mage AP »), bouton **« Copier dans mes builds »** (crée un vrai build pour ce champion et ce poste, ouvre l'éditeur).
+- [ ] Premier item et prochain item fonctionnent avec le build générique comme avec un build du joueur (alternatives, items de situation, explications).
+- [ ] Le build générique n'apparaît pas dans « Mes builds » tant qu'il n'est pas copié.
+
+**Terminé quand** : pour un champion sans build, la Reco et la Partie fonctionnent de bout en bout, et la copie donne un build modifiable.
+**Dépend de** : T10.2, T5.3, T6.3.
+
+---
+
+# EPIC 11 – Builds populaires du patch
+
+Builds calculés à partir de vraies parties classées, via l'**API officielle de Riot** (pas de récupération sur les sites de stats). Un script lancé sur le PC à chaque patch produit un fichier JSON intégré à l'app : rien n'est téléchargé par le téléphone, tout marche hors ligne.
+
+**Entrée requise du joueur** : une clé de développement Riot (gratuite, developer.riotgames.com, valable 24 h), à générer le jour où le script est lancé. Elle ne doit jamais être commitée.
+**À trancher au début de T11.1** : niveau des parties (Master et plus, ou Émeraude et plus), région(s), nombre de parties visé.
+
+### T11.1 – Collecte des parties (M)
+
+**Quoi** : récupérer des parties classées récentes du patch courant.
+**À faire**
+- [ ] `npm run update-builds` : clé lue dans `RIOT_API_KEY` (variable d'environnement ou `.env.local`, ignoré par git).
+- [ ] Joueurs du niveau choisi (ligues), leurs parties classées solo du patch courant, détails des parties, puis chronologies (ordre d'achat).
+- [ ] Respect des limites de l'API (en-têtes de limite, attente automatique) ; cache sur disque (dossier ignoré par git) pour reprendre une collecte interrompue (clé expirée, coupure).
+- [ ] Réglages (niveau, régions, nombre de parties, patch) dans un fichier de config du script, pas en dur.
+
+**Terminé quand** : le script collecte au moins le nombre de parties visé et reprend là où il s'est arrêté après une interruption.
+**Dépend de** : rien (script indépendant de l'app).
+
+### T11.2 – Calcul des builds populaires (L)
+
+**Quoi** : transformer les parties en un build par champion et par poste.
+**À faire**
+- [ ] Par champion et poste : page de runes la plus jouée, paire de sorts la plus jouée, premier item le plus acheté, ordre des items finaux le plus fréquent (d'après les chronologies).
+- [ ] Alternatives : un item souvent pris à la place de celui du slot devient une alternative, avec une condition tirée des presets quand l'écart est net (ex : Sandales de Mercure bien plus prises contre une compo AP). Seuils dans la config du script.
+- [ ] Nombre de parties par build ; en dessous d'un minimum (config), pas de build populaire pour ce champion à ce poste.
+- [ ] Sortie `data/builds-popular.json` (patch, date, nombre de parties, builds), validée avec le schéma des builds ; tests de l'agrégation sur des parties de test (fixtures).
+
+**Terminé quand** : le fichier produit est valide et les tests d'agrégation passent (build, alternatives avec condition, seuil minimum).
+**Dépend de** : T11.1, T10.1 (format commun).
+
+### T11.3 – Builds populaires dans l'app (M)
+
+**Quoi** : proposer le build populaire avant le build générique.
+**À faire**
+- [ ] Priorité : builds du joueur, puis build populaire (si assez de parties), puis build générique (T10.3).
+- [ ] Reco : « Build populaire (patch 16.22, 1 240 parties) », même bouton « Copier dans mes builds ».
+- [ ] Écran À propos : patch et date des builds populaires, nombre de champions couverts.
+- [ ] README : procédure à chaque patch (clé Riot, `npm run update-builds`, vérification, merge sur `main`).
+
+**Terminé quand** : un champion sans build du joueur mais avec assez de parties reçoit le build populaire ; sinon le build générique.
+**Dépend de** : T11.2, T10.3.
+
+---
+
 ## Ordre de réalisation conseillé
 
 1. **Socle** : T0.1 → T0.4, puis T1.1 → T1.4.
@@ -778,6 +864,7 @@ Source des effets : le wiki officiel (https://wiki.leagueoflegends.com/en-us/Rol
 6. **Finition** : T7.1, T7.3, T7.4, T7.5.
 7. **Après les parties de test** : epic 9 (T9.1 puis T9.2), quand le joueur a le temps.
 8. **Quêtes de rôle** : epic 8 (T8.1 puis T8.2).
+9. **Builds proposés** : epic 10 (T10.1 → T10.3), puis epic 11 (T11.1 → T11.3).
 
 ## Plus tard (hors MVP)
 
@@ -785,7 +872,8 @@ Source des effets : le wiki officiel (https://wiki.leagueoflegends.com/en-us/Rol
 - **Ajustements après parties réelles** : voir epic 9.
 - **Éditeur avancé de conditions** : saisie libre métrique / opérateur / valeur / poids, en complément des presets.
 - **Backend** : nouvelle implémentation de `BuildRepository` (synchro entre appareils, sauvegarde), calculs plus lourds côté serveur.
-- Lecture de la partie en direct, données automatiques, recommandation de pick, comptes.
+- **Builds proposés pour les champions sans build** : voir epics 10 (génériques) et 11 (populaires du patch, API Riot).
+- Lecture de la partie en direct, recommandation de pick, comptes.
 
 ## Règles de travail pour Claude Code
 

@@ -1,0 +1,1476 @@
+{
+  "_format": "Modèles de build génériques, proposés quand le joueur n'a aucun build pour le champion joué. Un modèle = id, name, match (positions visées, tags Data Dragon visés : Fighter, Mage, Marksman, Tank, Support, Assassin, damage ad ou ap facultatif) + les champs d'un build : runes, summonerSpells, useWhen, firstItemOptions, itemOrder. Les clés qui commencent par _ sont ignorées.",
+  "templates": [
+    {
+      "id": "top-combattant-ad",
+      "name": "Combattant AD top",
+      "match": {
+        "positions": ["top"],
+        "tags": ["Fighter"],
+        "damage": "ad"
+      },
+      "runes": {
+        "primaryTree": "8000",
+        "keystone": "8010",
+        "primarySlots": ["9111", "9105", "8299"],
+        "secondaryTree": "8400",
+        "secondarySlots": ["8444", "8451"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerTeleport"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1055",
+          "useWhen": []
+        },
+        {
+          "itemId": "1054",
+          "useWhen": [
+            {
+              "condition": {
+                "metric": "laneOpponentDamage",
+                "op": "==",
+                "value": "ap"
+              },
+              "weight": 3,
+              "explain": "Contre un vis-à-vis AP, le Bouclier de Doran encaisse mieux le harcèlement."
+            }
+          ]
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "3071",
+          "alternatives": [
+            {
+              "itemId": "3078",
+              "when": [
+                {
+                  "metric": "situation",
+                  "op": "==",
+                  "value": "ahead"
+                }
+              ],
+              "explain": "En avance, la Force de la trinité accélère les dégâts."
+            }
+          ]
+        },
+        {
+          "slot": 2,
+          "default": "3047",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : les Sandales de Mercure réduisent dégâts magiques et contrôles."
+            },
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "3053",
+          "alternatives": [
+            {
+              "itemId": "3075",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : la Cotte épineuse applique l'anti-soin."
+            }
+          ]
+        },
+        {
+          "slot": 4,
+          "default": "6333",
+          "alternatives": [
+            {
+              "itemId": "3065",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : le Visage spirituel apporte RM et PV."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "6694",
+          "alternatives": [
+            {
+              "itemId": "3026",
+              "when": [
+                {
+                  "metric": "enemyBurstCount",
+                  "op": ">=",
+                  "value": 4
+                }
+              ],
+              "explain": "Ils peuvent te tuer très vite : l'Ange gardien te donne une seconde vie."
+            }
+          ]
+        },
+        {
+          "slot": 6,
+          "default": "3742",
+          "alternatives": [
+            {
+              "itemId": "4401",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : la Force de la nature encaisse les dégâts magiques."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "top-mage-ap",
+      "name": "Mage AP top",
+      "match": {
+        "positions": ["top"],
+        "tags": ["Mage", "Fighter"],
+        "damage": "ap"
+      },
+      "runes": {
+        "primaryTree": "8000",
+        "keystone": "8010",
+        "primarySlots": ["9111", "9105", "8299"],
+        "secondaryTree": "8400",
+        "secondarySlots": ["8444", "8451"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerTeleport"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1056",
+          "useWhen": []
+        },
+        {
+          "itemId": "1054",
+          "useWhen": [
+            {
+              "condition": {
+                "metric": "laneOpponentDamage",
+                "op": "==",
+                "value": "ad"
+              },
+              "weight": 2,
+              "explain": "Contre un vis-à-vis AD, le Bouclier de Doran tient mieux la lane."
+            }
+          ]
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "6653",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3020",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            },
+            {
+              "itemId": "3047",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : les Coques en acier réduisent les attaques de base."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "4633",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "3157",
+          "alternatives": [
+            {
+              "itemId": "3102",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : le Voile de la banshee bloque un sort et apporte de la RM."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "3089",
+          "alternatives": []
+        },
+        {
+          "slot": 6,
+          "default": "3135",
+          "alternatives": [
+            {
+              "itemId": "3165",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : le Morellonomicon applique l'anti-soin."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "top-tank",
+      "name": "Tank top",
+      "match": {
+        "positions": ["top"],
+        "tags": ["Tank"]
+      },
+      "runes": {
+        "primaryTree": "8400",
+        "keystone": "8437",
+        "primarySlots": ["8446", "8444", "8451"],
+        "secondaryTree": "8000",
+        "secondarySlots": ["9111", "9105"],
+        "shards": ["5008", "5001", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerTeleport"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1054",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "3068",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3047",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : les Sandales de Mercure réduisent dégâts magiques et contrôles."
+            },
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "3143",
+          "alternatives": [
+            {
+              "itemId": "3075",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : la Cotte épineuse applique l'anti-soin."
+            }
+          ]
+        },
+        {
+          "slot": 4,
+          "default": "4401",
+          "alternatives": [
+            {
+              "itemId": "3110",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : le Cœur gelé ralentit leurs attaques."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "6665",
+          "alternatives": []
+        },
+        {
+          "slot": 6,
+          "default": "3083",
+          "alternatives": [
+            {
+              "itemId": "3742",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.75
+                }
+              ],
+              "explain": "Compo très AD : la Plaque du mort apporte armure et mobilité."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jungle-combattant-ad",
+      "name": "Combattant AD jungle",
+      "match": {
+        "positions": ["jungle"],
+        "tags": ["Fighter"],
+        "damage": "ad"
+      },
+      "runes": {
+        "primaryTree": "8000",
+        "keystone": "8010",
+        "primarySlots": ["9111", "9105", "8299"],
+        "secondaryTree": "8100",
+        "secondarySlots": ["8143", "8105"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerSmite"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1101",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "3071",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3047",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : les Sandales de Mercure réduisent dégâts magiques et contrôles."
+            },
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "3053",
+          "alternatives": [
+            {
+              "itemId": "3075",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : la Cotte épineuse applique l'anti-soin."
+            }
+          ]
+        },
+        {
+          "slot": 4,
+          "default": "6333",
+          "alternatives": [
+            {
+              "itemId": "3065",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : le Visage spirituel apporte RM et PV."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "3026",
+          "alternatives": []
+        },
+        {
+          "slot": 6,
+          "default": "6694",
+          "alternatives": [
+            {
+              "itemId": "3742",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.75
+                }
+              ],
+              "explain": "Compo très AD : la Plaque du mort apporte armure et mobilité."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jungle-assassin-ad",
+      "name": "Assassin AD jungle",
+      "match": {
+        "positions": ["jungle"],
+        "tags": ["Assassin"],
+        "damage": "ad"
+      },
+      "runes": {
+        "primaryTree": "8100",
+        "keystone": "8112",
+        "primarySlots": ["8143", "8140", "8105"],
+        "secondaryTree": "8000",
+        "secondarySlots": ["9111", "8014"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerSmite"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1101",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "3142",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3158",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : les Sandales de Mercure réduisent dégâts magiques et contrôles."
+            },
+            {
+              "itemId": "3047",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : les Coques en acier réduisent les attaques de base."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "6698",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "6694",
+          "alternatives": []
+        },
+        {
+          "slot": 5,
+          "default": "3814",
+          "alternatives": [
+            {
+              "itemId": "3026",
+              "when": [
+                {
+                  "metric": "enemyBurstCount",
+                  "op": ">=",
+                  "value": 4
+                }
+              ],
+              "explain": "Ils peuvent te tuer très vite : l'Ange gardien te donne une seconde vie."
+            }
+          ]
+        },
+        {
+          "slot": 6,
+          "default": "3036",
+          "alternatives": []
+        }
+      ]
+    },
+    {
+      "id": "jungle-assassin-ap",
+      "name": "Assassin AP jungle",
+      "match": {
+        "positions": ["jungle"],
+        "tags": ["Assassin"],
+        "damage": "ap"
+      },
+      "runes": {
+        "primaryTree": "8100",
+        "keystone": "8112",
+        "primarySlots": ["8139", "8140", "8105"],
+        "secondaryTree": "8200",
+        "secondarySlots": ["8210", "8237"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerSmite"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1101",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "3152",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3020",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            },
+            {
+              "itemId": "3047",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : les Coques en acier réduisent les attaques de base."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "4645",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "3157",
+          "alternatives": [
+            {
+              "itemId": "3102",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : le Voile de la banshee bloque un sort et apporte de la RM."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "3089",
+          "alternatives": []
+        },
+        {
+          "slot": 6,
+          "default": "3135",
+          "alternatives": [
+            {
+              "itemId": "3165",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : le Morellonomicon applique l'anti-soin."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jungle-tank",
+      "name": "Tank jungle",
+      "match": {
+        "positions": ["jungle"],
+        "tags": ["Tank"]
+      },
+      "runes": {
+        "primaryTree": "8400",
+        "keystone": "8439",
+        "primarySlots": ["8401", "8429", "8451"],
+        "secondaryTree": "8300",
+        "secondarySlots": ["8304", "8347"],
+        "shards": ["5008", "5001", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerSmite"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1101",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "3068",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3047",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : les Sandales de Mercure réduisent dégâts magiques et contrôles."
+            },
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "3143",
+          "alternatives": [
+            {
+              "itemId": "3075",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : la Cotte épineuse applique l'anti-soin."
+            }
+          ]
+        },
+        {
+          "slot": 4,
+          "default": "4401",
+          "alternatives": [
+            {
+              "itemId": "3110",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : le Cœur gelé ralentit leurs attaques."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "6665",
+          "alternatives": []
+        },
+        {
+          "slot": 6,
+          "default": "3742",
+          "alternatives": []
+        }
+      ]
+    },
+    {
+      "id": "mid-mage-ap",
+      "name": "Mage AP mid",
+      "match": {
+        "positions": ["mid"],
+        "tags": ["Mage"],
+        "damage": "ap"
+      },
+      "runes": {
+        "primaryTree": "8200",
+        "keystone": "8229",
+        "primarySlots": ["8226", "8210", "8237"],
+        "secondaryTree": "8100",
+        "secondarySlots": ["8126", "8135"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerDot"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1056",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "6655",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3020",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            },
+            {
+              "itemId": "3047",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : les Coques en acier réduisent les attaques de base."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "4645",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "3157",
+          "alternatives": [
+            {
+              "itemId": "3102",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : le Voile de la banshee bloque un sort et apporte de la RM."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "3089",
+          "alternatives": []
+        },
+        {
+          "slot": 6,
+          "default": "3135",
+          "alternatives": [
+            {
+              "itemId": "3165",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : le Morellonomicon applique l'anti-soin."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mid-assassin-ap",
+      "name": "Assassin AP mid",
+      "match": {
+        "positions": ["mid"],
+        "tags": ["Assassin"],
+        "damage": "ap"
+      },
+      "runes": {
+        "primaryTree": "8100",
+        "keystone": "8112",
+        "primarySlots": ["8139", "8140", "8105"],
+        "secondaryTree": "8200",
+        "secondarySlots": ["8210", "8237"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerDot"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1056",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "3152",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3020",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            },
+            {
+              "itemId": "3047",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : les Coques en acier réduisent les attaques de base."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "4645",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "3157",
+          "alternatives": [
+            {
+              "itemId": "3102",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : le Voile de la banshee bloque un sort et apporte de la RM."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "3089",
+          "alternatives": []
+        },
+        {
+          "slot": 6,
+          "default": "3135",
+          "alternatives": [
+            {
+              "itemId": "3165",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : le Morellonomicon applique l'anti-soin."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mid-assassin-ad",
+      "name": "Assassin AD mid",
+      "match": {
+        "positions": ["mid"],
+        "tags": ["Assassin"],
+        "damage": "ad"
+      },
+      "runes": {
+        "primaryTree": "8100",
+        "keystone": "8112",
+        "primarySlots": ["8143", "8140", "8105"],
+        "secondaryTree": "8000",
+        "secondarySlots": ["9111", "8014"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerDot"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1055",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "3142",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3158",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : les Sandales de Mercure réduisent dégâts magiques et contrôles."
+            },
+            {
+              "itemId": "3047",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : les Coques en acier réduisent les attaques de base."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "6698",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "6694",
+          "alternatives": []
+        },
+        {
+          "slot": 5,
+          "default": "3814",
+          "alternatives": [
+            {
+              "itemId": "3026",
+              "when": [
+                {
+                  "metric": "enemyBurstCount",
+                  "op": ">=",
+                  "value": 4
+                }
+              ],
+              "explain": "Ils peuvent te tuer très vite : l'Ange gardien te donne une seconde vie."
+            }
+          ]
+        },
+        {
+          "slot": 6,
+          "default": "3036",
+          "alternatives": []
+        }
+      ]
+    },
+    {
+      "id": "bot-tireur",
+      "name": "Tireur bot",
+      "match": {
+        "positions": ["bot"],
+        "tags": ["Marksman"],
+        "damage": "ad"
+      },
+      "runes": {
+        "primaryTree": "8000",
+        "keystone": "8008",
+        "primarySlots": ["9111", "9104", "8014"],
+        "secondaryTree": "8100",
+        "secondarySlots": ["8139", "8135"],
+        "shards": ["5005", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerHeal"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "1055",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "6672",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3006",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "3031",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "3036",
+          "alternatives": [
+            {
+              "itemId": "3033",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : le Rappel mortel applique l'anti-soin."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "3072",
+          "alternatives": [
+            {
+              "itemId": "3156",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : la Gueule de Malmortius apporte RM et bouclier."
+            }
+          ]
+        },
+        {
+          "slot": 6,
+          "default": "3026",
+          "alternatives": [
+            {
+              "itemId": "3139",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : le Cimeterre mercuriel les purge."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "support-tank",
+      "name": "Tank support",
+      "match": {
+        "positions": ["support"],
+        "tags": ["Tank"]
+      },
+      "runes": {
+        "primaryTree": "8400",
+        "keystone": "8439",
+        "primarySlots": ["8401", "8429", "8451"],
+        "secondaryTree": "8300",
+        "secondarySlots": ["8304", "8347"],
+        "shards": ["5008", "5001", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerExhaust"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "3865",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "3190",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3047",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : les Sandales de Mercure réduisent dégâts magiques et contrôles."
+            },
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "3109",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "3050",
+          "alternatives": []
+        },
+        {
+          "slot": 5,
+          "default": "4401",
+          "alternatives": [
+            {
+              "itemId": "3110",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : le Cœur gelé ralentit leurs attaques."
+            }
+          ]
+        },
+        {
+          "slot": 6,
+          "default": "3143",
+          "alternatives": [
+            {
+              "itemId": "3075",
+              "when": [
+                {
+                  "metric": "enemyHealCount",
+                  "op": ">=",
+                  "value": 2
+                }
+              ],
+              "explain": "Ils se soignent : la Cotte épineuse applique l'anti-soin."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "support-mage",
+      "name": "Mage support",
+      "match": {
+        "positions": ["support"],
+        "tags": ["Mage"],
+        "damage": "ap"
+      },
+      "runes": {
+        "primaryTree": "8200",
+        "keystone": "8229",
+        "primarySlots": ["8226", "8210", "8237"],
+        "secondaryTree": "8300",
+        "secondarySlots": ["8304", "8347"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerDot"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "3865",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "6653",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3020",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            },
+            {
+              "itemId": "3047",
+              "when": [
+                {
+                  "metric": "enemyAdShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AD : les Coques en acier réduisent les attaques de base."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "6655",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "3157",
+          "alternatives": [
+            {
+              "itemId": "3102",
+              "when": [
+                {
+                  "metric": "enemyApShare",
+                  "op": ">=",
+                  "value": 0.6
+                }
+              ],
+              "explain": "Compo surtout AP : le Voile de la banshee bloque un sort et apporte de la RM."
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "default": "3089",
+          "alternatives": []
+        },
+        {
+          "slot": 6,
+          "default": "3165",
+          "alternatives": []
+        }
+      ]
+    },
+    {
+      "id": "support-enchanteur",
+      "name": "Enchanteur support",
+      "match": {
+        "positions": ["support"],
+        "tags": ["Support", "Mage"],
+        "damage": "ap"
+      },
+      "runes": {
+        "primaryTree": "8200",
+        "keystone": "8214",
+        "primarySlots": ["8226", "8210", "8237"],
+        "secondaryTree": "8400",
+        "secondarySlots": ["8463", "8453"],
+        "shards": ["5008", "5008", "5011"]
+      },
+      "summonerSpells": ["SummonerFlash", "SummonerExhaust"],
+      "useWhen": [],
+      "firstItemOptions": [
+        {
+          "itemId": "3865",
+          "useWhen": []
+        }
+      ],
+      "itemOrder": [
+        {
+          "slot": 1,
+          "default": "6617",
+          "alternatives": []
+        },
+        {
+          "slot": 2,
+          "default": "3158",
+          "alternatives": [
+            {
+              "itemId": "3111",
+              "when": [
+                {
+                  "metric": "enemyCcCount",
+                  "op": ">=",
+                  "value": 5
+                }
+              ],
+              "explain": "Beaucoup de contrôles en face : la ténacité des Sandales de Mercure aide."
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "default": "3107",
+          "alternatives": []
+        },
+        {
+          "slot": 4,
+          "default": "3222",
+          "alternatives": []
+        },
+        {
+          "slot": 5,
+          "default": "6616",
+          "alternatives": []
+        },
+        {
+          "slot": 6,
+          "default": "3504",
+          "alternatives": []
+        }
+      ]
+    }
+  ]
+}

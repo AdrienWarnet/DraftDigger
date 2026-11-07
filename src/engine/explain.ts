@@ -94,6 +94,12 @@ export function nextItemFallbackReason(slot: number | null, categories: readonly
   return 'Build terminé : voici un item défensif adapté à leurs dégâts.'
 }
 
+/** Raison du build générique (epic 10), ex : « … modèle « Mage AP mid ». Ahri : mage, dégâts AP. » */
+export function genericBuildReason(templateName: string, profile: string): string {
+  // Espaces insécables dans « » : les guillemets ne se retrouvent jamais seuls en bout de ligne.
+  return `Tu n'as pas de build pour ce champion : voici le modèle « ${templateName} ». ${profile}`
+}
+
 /**
  * Place pour un item de situation, build terminé (epic 8) : inventaire plein (à acheter à la place
  * d'un autre), ou emplacement libéré par la quête de rôle. `null` s'il reste de la place sans quête.
