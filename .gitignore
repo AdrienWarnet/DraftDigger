@@ -25,3 +25,4 @@ dist-ssr
 
 # Captures d’écran de vérification (locales)
 captures/
+coverage

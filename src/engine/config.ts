@@ -92,3 +92,21 @@ export const SITUATION_MODIFIERS = {
     reason: 'Devant, on accélère avec un item offensif.',
   },
 } as const
+
+/** Score du prochain item (docs/TICKETS.md section 4 « Échelle unique des scores »). */
+export const NEXT_ITEM_SCORING = {
+  /** Points d'une alternative dont les conditions sont vraies (le défaut en a 0). */
+  alternativeBonus: 2,
+  /** Conversion du gain défensif (0 à 1) en points : 0,3 → 3 points. */
+  gainToPoints: 10,
+} as const
+
+/** Items de situation proposés quand tous les slots du build sont achetés (T6.3). */
+export const SITUATIONAL_ITEMS = {
+  /** Total de soin ennemi à partir duquel l'anti-soin est proposé. */
+  antihealMinHeal: 2,
+  /** Nombre de tanks ennemis à partir duquel l'anti-tank est proposé. */
+  antitankMinTanks: 2,
+  /** Nombre de propositions retenues (la meilleure et ses alternatives). */
+  count: 3,
+} as const

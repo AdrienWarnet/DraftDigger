@@ -61,6 +61,7 @@ Le format est rappelé dans la clé `_format` de chaque fichier. Un id inconnu o
 | `npm run preview`      | sert le build de production en local        |
 | `npm test`             | tests Vitest (une passe)                    |
 | `npm run test:watch`   | tests Vitest en continu                     |
+| `npm run test:coverage` | tests + couverture du moteur (seuil 80 %) |
 | `npm run lint`         | lint (oxlint)                               |
 | `npm run format`       | formate le code (Prettier)                  |
 | `npm run format:check` | vérifie le formatage                        |
