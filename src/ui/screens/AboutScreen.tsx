@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
 import { POSITION_RATES_PATCH } from '../../data/positionRates'
+import { ROLE_QUESTS } from '../../data/roleQuests'
+import { POSITIONS } from '../../engine/types'
 import { useBuildsStore } from '../../store/buildsStore'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { useCatalog } from '../data/gameDataContext'
 import { promptInstall, useCanInstall } from '../install'
+import { POSITION_LABELS } from '../labels'
 import styles from './AboutScreen.module.css'
 
 /** Mode d'emploi complet : section « Utiliser l'app » du README. */
@@ -17,6 +20,7 @@ export function AboutScreen() {
   const buildCount = useBuildsStore((s) => s.list.builds.length)
   const load = useBuildsStore((s) => s.load)
   const canInstall = useCanInstall()
+  const quests = ROLE_QUESTS
 
   useEffect(() => {
     void load()
@@ -51,6 +55,8 @@ export function AboutScreen() {
           <dd>{catalog.version}</dd>
           <dt>Postes des ennemis devinés d’après le patch</dt>
           <dd>{POSITION_RATES_PATCH}</dd>
+          <dt>Quêtes de rôle d’après le patch</dt>
+          <dd>{quests?.patch ?? 'indisponibles'}</dd>
           <dt>Builds enregistrés sur ce téléphone</dt>
           <dd>{status === 'ready' ? buildCount : '…'}</dd>
         </dl>
@@ -59,6 +65,19 @@ export function AboutScreen() {
           sauvegarder.
         </p>
       </Card>
+
+      {quests && (
+        <Card title="Quêtes de rôle">
+          <ul className={styles.quests}>
+            {POSITIONS.map((position) => (
+              <li key={position}>
+                <span className={styles.questRole}>{POSITION_LABELS[position]}</span>{' '}
+                {quests.quests[position].reward}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
     </>
   )
 }
